@@ -67,6 +67,14 @@ GPT、GitHub Copilot、Microsoft 365 Copilotを役割分担させ、
 
 👉 [Zenn Book](https://zenn.dev/nullcontroller/books/b9a9feaefb4001)
 
+### レガシーシステムを「理解可能な状態」にする設計手法
+
+仕様書が不足し、担当者も不在で、コードだけが残っているレガシーシステムを対象に、  
+ソースコードから構造を復元し、PlantUMLやMarkdownを用いて理解可能・再利用可能な知識へ変換する設計手法を整理しています。
+
+👉 [Zenn Book](https://zenn.dev/nullcontroller/books/db491398459cbc)
+
+
 ---
 
 ## Keywords
