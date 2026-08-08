@@ -56,7 +56,7 @@ AI出力については、
 
 ## Case Studies
 
-実務での生成AI活用やソフトウェア設計事例は、Zennで公開しています。
+実務での生成AI活用事例は、Zennで公開しています。
 
 👉 [Zenn - nullcontroller](https://zenn.dev/nullcontroller)
 
