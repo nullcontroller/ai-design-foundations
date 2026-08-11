@@ -222,9 +222,5 @@ GPT、GitHub Copilot、Microsoft 365 Copilotを役割分担させ、
 `AI Architecture` `AI Orchestration` `AI Governance`  
 `HITL` `AI Evaluation`  
 `GitHub Copilot` `Microsoft 365 Copilot`  
-<<<<<<< HEAD
 `Software Architecture` `AI-Assisted Software Engineering`  
 `Legacy System` `Modernization`
-=======
-`Software Architecture` `Legacy System`
->>>>>>> 059cf6796235ea647edbe45fba1f4cd1da9cf457
