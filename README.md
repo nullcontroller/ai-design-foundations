@@ -167,11 +167,7 @@ AIごとの特性を活かし、
 
 ## Case Studies
 
-<<<<<<< HEAD
 実務での生成AI活用・ソフトウェア設計事例は Zenn で公開しています。
-=======
-実務での生成AI活用事例は、Zennで公開しています。
->>>>>>> 059cf6796235ea647edbe45fba1f4cd1da9cf457
 
 👉 [Zenn - nullcontroller](https://zenn.dev/nullcontroller)
 
