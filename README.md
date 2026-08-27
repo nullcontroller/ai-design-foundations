@@ -2,11 +2,11 @@
 
 生成AIを単なる「コード生成ツール」や「プロンプト操作の対象」としてではなく、
 
-> **確率的に出力を生成するコンポーネントとして、実務システムの中でどう設計・制御・検証するか**
+> **確率的に出力を生成するコンポーネントとして、実務システムの中でどう設計・制御・検証・運用するか**
 
 という観点から整理した設計体系です。
 
-LLM / RAG / QA / AIオーケストレーション / HITL / AIガバナンスを中心に、  
+LLM / RAG / QA / AIオーケストレーション / HITL / AIガバナンス / AI Architecture / Lifecycleを中心に、  
 生成AIを実務へ継続的に組み込むための設計思想・設計原則をまとめています。
 
 ---
@@ -22,6 +22,9 @@ LLM / RAG / QA / AIオーケストレーション / HITL / AIガバナンスを�
 - 複数AIの役割分担とオーケストレーション
 - HITLによる判断・確認・責任境界
 - AI出力の評価・検証可能性・ガバナンス
+- AI業務システムの責務分離と参照アーキテクチャ
+- Model / Prompt / Knowledge / Retrieval / Tool / Validator / Workflowを含む変更管理
+- 再評価、Release、監視、Rollback、Incidentまで含むLifecycle設計
 - 既存システム・レガシーシステムへのAI適用
 
 ---
@@ -30,7 +33,7 @@ LLM / RAG / QA / AIオーケストレーション / HITL / AIガバナンスを�
 
 このリポジトリで重視しているのは、
 
-> **AIに何を任せるかだけでなく、何を任せないか、どこで人間が確認し、誰が最終判断を持つかまで設計すること**
+> **AIに何を任せるかだけでなく、何を任せないか、どこで検証し、どこで人間が確認し、誰が最終判断を持つかまで設計すること**
 
 です。
 
@@ -38,13 +41,13 @@ LLM / RAG / QA / AIオーケストレーション / HITL / AIガバナンスを�
 
 そのため、
 
-> **後工程で検証可能な中間成果物にはAIを積極的に利用し、品質・安全性・責任に直結する判断は人間が確認する**
+> **生成できること、受理できること、実行してよいことを分離し、後工程で検証可能な境界を設ける**
 
 ことを基本原則としています。
 
 AI単体の性能ではなく、
 
-> **AI・人間・既存システム・Workflow・Knowledge・Reviewを一つのシステムとして設計する**
+> **AI・人間・Knowledge・Validator・Workflow・既存システム・監視を一つの業務システムとして設計する**
 
 ことを重視しています。
 
@@ -58,29 +61,47 @@ AI単体の性能ではなく、
 
 | Section | Theme |
 | --- | --- |
-| 100 | 数学・確率モデルから見たAI |
-| 200 | RAG / QAチャット設計 |
-| 300 | プロンプト・制約・I/O設計 |
-| 400 | コード生成・AI支援開発工程 |
+| 100 | 数学から見たAI |
+| 200 | QAチャット設計思想 |
+| 300 | プロンプト構造 |
+| 400 | コード生成・開発工程 |
 | 500 | AIオーケストレーション |
-| 600 | AIガバナンス・HITL |
-| 700 | Architecture・Lifecycle・変更／再評価設計 |
+| 600 | AIガバナンスとHITL |
+| 700 | AI Architecture・Lifecycle |
 
-設計ノートは個別のTipsではなく、以下の流れを持つ一つの設計体系として整理しています。
+設計ノートは個別のTipsではなく、次の流れを持つ一つの設計体系として整理しています。
 
 ```text
 LLMの性質
 ↓
-制約設計
+制約・回答範囲の設計
 ↓
 RAG / QA
+↓
+プロンプト・Context設計
 ↓
 開発工程への組み込み
 ↓
 複数AIの役割分担
 ↓
 HITL / Governance
+↓
+AI業務システムのArchitecture
+↓
+変更・再評価・Release・監視
 ```
+
+### 700. AI Architecture・Lifecycle
+
+100〜600章で扱った設計原則を、一つの業務システムとして接続する章です。
+
+- [AI業務システムの参照アーキテクチャ](https://github.com/nullcontroller/ai-design-foundations/wiki/AI%E6%A5%AD%E5%8B%99%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0%E3%81%AE%E5%8F%82%E7%85%A7%E3%82%A2%E3%83%BC%E3%82%AD%E3%83%86%E3%82%AF%E3%83%81%E3%83%A3)
+- [AIシステムの変更・再評価設計](https://github.com/nullcontroller/ai-design-foundations/wiki/AI%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0%E3%81%AE%E5%A4%89%E6%9B%B4%E3%83%BB%E5%86%8D%E8%A9%95%E4%BE%A1%E8%A8%AD%E8%A8%88)
+
+参照アーキテクチャでは、入力、Context構築、生成、検証、承認、実行、監視を責務として分離します。  
+変更・再評価設計では、Modelだけではなく、Prompt、Knowledge、Retrieval、Tool、Validator、Workflow、GovernanceまでをVersion Bundleとして扱い、変更時の再評価範囲、Release条件、Rollback単位を設計します。
+
+---
 
 ## Design Principles
 
@@ -92,9 +113,11 @@ AIは、常に正解を返す決定的なシステムではありません。
 
 - 入力
 - 制約
-- Knowledge
+- Knowledge / Evidence
 - 検証
-- 人間による判断
+- 承認
+- 実行境界
+- 監視
 
 まで含めて設計します。
 
@@ -112,24 +135,33 @@ AIを「使える場所」だけでなく、
 
 ---
 
-### 3. 検証可能性を重視する
+### 3. 生成・受理・実行を分離する
+
+AIが出力を生成できることと、その出力を業務で採用できること、外部システムへ実行してよいことは別です。
+
+そのため、Model Runtimeだけで完結させず、Validator、Decision Gate、Approval Boundary、Execution Boundaryを分離して設計します。
+
+---
+
+### 4. 検証可能性を重視する
 
 AI出力は、後工程で検証できる形にします。
 
 例：
 
-- コード → テスト・レビュー
+- コード → Build・Test・Review
 - 仕様案 → 既存仕様との照合
 - 影響範囲 → 実コードで確認
-- RAG回答 → 根拠情報を確認
+- RAG回答 → Evidenceを確認
+- Tool Call → 権限・対象・上限を検証
 
 ---
 
-### 4. AIを開発工程全体へ組み込む
+### 5. AIを開発工程全体へ組み込む
 
 コード生成だけを最適化しません。
 
-~~~text
+```text
 要求整理
 ↓
 既存コード調査
@@ -145,13 +177,15 @@ AI出力は、後工程で検証できる形にします。
 レビュー
 ↓
 テスト
-~~~
+↓
+Release
+```
 
 各工程でAIと人間の役割を分けて設計します。
 
 ---
 
-### 5. 複数AIは競争ではなく役割分担させる
+### 6. 複数AIは競争ではなく役割分担させる
 
 AIごとの特性を活かし、
 
@@ -163,6 +197,22 @@ AIごとの特性を活かし、
 - レビュー
 
 などを工程単位で分担させます。
+
+---
+
+### 7. AIシステムは変更を前提に設計する
+
+Model、Prompt、Knowledge、Retrieval、Tool、Validator、Workflowのいずれかが変われば、同じService名でも挙動は変わり得ます。
+
+そのため、変更された構成要素だけを見るのではなく、
+
+- 影響を受ける経路
+- 再評価範囲
+- Release条件
+- 監視項目
+- Rollback単位
+
+まで含めてLifecycleを設計します。
 
 ---
 
@@ -200,7 +250,9 @@ GPT、GitHub Copilot、Microsoft 365 Copilotを役割分担させ、
 
 です。
 
-特に以下の領域を中心に扱います。
+特定Cloud、Framework、Model製品の構成例ではなく、Modelが変わっても再利用できる責務分離・検証・変更管理の原則を中心に扱います。
+
+特に以下の領域を対象としています。
 
 - Enterprise AI
 - Applied AI
@@ -209,7 +261,9 @@ GPT、GitHub Copilot、Microsoft 365 Copilotを役割分担させ、
 - AI-Assisted Software Engineering
 - Legacy System / Modernization
 - HITL
+- AI Evaluation
 - AI Governance
+- AI System Lifecycle
 
 ---
 
@@ -217,7 +271,7 @@ GPT、GitHub Copilot、Microsoft 365 Copilotを役割分担させ、
 
 `LLM` `RAG` `Generative AI` `Applied AI`  
 `AI Architecture` `AI Orchestration` `AI Governance`  
-`HITL` `AI Evaluation`  
+`HITL` `AI Evaluation` `AI System Lifecycle`  
 `GitHub Copilot` `Microsoft 365 Copilot`  
 `Software Architecture` `AI-Assisted Software Engineering`  
 `Legacy System` `Modernization`
