@@ -222,20 +222,6 @@ Model、Prompt、Knowledge、Retrieval、Tool、Validator、Workflowのいずれ
 
 👉 [Zenn - nullcontroller](https://zenn.dev/nullcontroller)
 
-### 3つのAIをオーケストレーションしたレガシー保守
-
-GPT、GitHub Copilot、Microsoft 365 Copilotを役割分担させ、  
-要件整理、既存コード調査、仕様化、実装、単体テストまでを一つの開発・保守プロセスとして設計した事例です。
-
-👉 [Zenn Book](https://zenn.dev/nullcontroller/books/b9a9feaefb4001)
-
-### レガシーシステムを「理解可能な状態」にする設計手法
-
-仕様書が不足し、担当者も不在で、コードだけが残っているレガシーシステムを対象に、  
-ソースコードから構造を復元し、PlantUMLやMarkdownを利用して、理解可能・再利用可能な知識へ変換する設計手法を整理しています。
-
-👉 [Zenn Book](https://zenn.dev/nullcontroller/books/db491398459cbc)
-
 ---
 
 ## Positioning
