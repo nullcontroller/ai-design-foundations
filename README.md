@@ -69,6 +69,13 @@ AI単体の性能ではなく、
 | 600 | AIガバナンスとHITL |
 | 700 | AI Architecture・Lifecycle |
 
+Architecture全体を把握する入口として、次の設計ノートを推奨します。
+
+- [AI適用可否と委任レベルの設計](https://github.com/nullcontroller/ai-design-foundations/wiki/AI%E9%81%A9%E7%94%A8%E5%8F%AF%E5%90%A6%E3%81%A8%E5%A7%94%E4%BB%BB%E3%83%AC%E3%83%99%E3%83%AB%E3%81%AE%E8%A8%AD%E8%A8%88)
+- [AI出力の責任境界とHITL](https://github.com/nullcontroller/ai-design-foundations/wiki/AI%E5%87%BA%E5%8A%9B%E3%81%AE%E8%B2%AC%E4%BB%BB%E5%A2%83%E7%95%8C%E3%81%A8HITL)
+- [AI業務システムの参照アーキテクチャ](https://github.com/nullcontroller/ai-design-foundations/wiki/AI%E6%A5%AD%E5%8B%99%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0%E3%81%AE%E5%8F%82%E7%85%A7%E3%82%A2%E3%83%BC%E3%82%AD%E3%83%86%E3%82%AF%E3%83%81%E3%83%A3)
+- [AIシステムの変更・再評価設計](https://github.com/nullcontroller/ai-design-foundations/wiki/AI%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0%E3%81%AE%E5%A4%89%E6%9B%B4%E3%83%BB%E5%86%8D%E8%A9%95%E4%BE%A1%E8%A8%AD%E8%A8%88)
+
 設計ノートは個別のTipsではなく、次の流れを持つ一つの設計体系として整理しています。
 
 ```text
@@ -97,6 +104,8 @@ AI業務システムのArchitecture
 
 - [AI業務システムの参照アーキテクチャ](https://github.com/nullcontroller/ai-design-foundations/wiki/AI%E6%A5%AD%E5%8B%99%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0%E3%81%AE%E5%8F%82%E7%85%A7%E3%82%A2%E3%83%BC%E3%82%AD%E3%83%86%E3%82%AF%E3%83%81%E3%83%A3)
 - [AIシステムの変更・再評価設計](https://github.com/nullcontroller/ai-design-foundations/wiki/AI%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0%E3%81%AE%E5%A4%89%E6%9B%B4%E3%83%BB%E5%86%8D%E8%A9%95%E4%BE%A1%E8%A8%AD%E8%A8%88)
+- [AIシステムのオブザーバビリティとSLO設計](https://github.com/nullcontroller/ai-design-foundations/wiki/AI%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0%E3%81%AE%E3%82%AA%E3%83%96%E3%82%B6%E3%83%BC%E3%83%90%E3%83%93%E3%83%AA%E3%83%86%E3%82%A3%E3%81%A8SLO%E8%A8%AD%E8%A8%88)
+- [AI評価データセットと回帰評価設計](https://github.com/nullcontroller/ai-design-foundations/wiki/AI%E8%A9%95%E4%BE%A1%E3%83%87%E3%83%BC%E3%82%BF%E3%82%BB%E3%83%83%E3%83%88%E3%81%A8%E5%9B%9E%E5%B8%B0%E8%A9%95%E4%BE%A1%E8%A8%AD%E8%A8%88)
 
 参照アーキテクチャでは、入力、Context構築、生成、検証、承認、実行、監視を責務として分離します。  
 変更・再評価設計では、Modelだけではなく、Prompt、Knowledge、Retrieval、Tool、Validator、Workflow、GovernanceまでをVersion Bundleとして扱い、変更時の再評価範囲、Release条件、Rollback単位を設計します。
@@ -221,6 +230,10 @@ Model、Prompt、Knowledge、Retrieval、Tool、Validator、Workflowのいずれ
 実務での生成AI活用・ソフトウェア設計事例は Zenn で公開しています。
 
 👉 [Zenn - nullcontroller](https://zenn.dev/nullcontroller)
+
+- [生成AIを業務へ組み込む設計原則](https://zenn.dev/nullcontroller/books/76ed12dcc7e5d7)：AI・人間・既存システムの責任分界、HITL、評価を業務設計として整理
+- [3つのAIをオーケストレーションしたレガシー保守](https://zenn.dev/nullcontroller/books/b9a9feaefb4001)：要件整理、既存Code調査、仕様化、実装、Reviewを役割分担した事例
+- [レガシーシステムを「理解可能な状態」にする設計手法](https://zenn.dev/nullcontroller/books/db491398459cbc)：Reverse EngineeringからKnowledge化、RAG / QAへ接続する設計事例
 
 ---
 
