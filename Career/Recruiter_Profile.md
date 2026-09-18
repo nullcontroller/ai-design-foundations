@@ -107,12 +107,10 @@ AIだけでなく、既存製品・既存システムを長期的に捉え、
 
 - Windows業務ソフトウェアの設計・実装・評価・保守
 - 要件定義・要件分析
-- 既存仕様・ソースコードのリバースエンジニアリング
 - 変更影響分析
 - レガシーモダナイゼーション
 - プロジェクトマネジメント
 - PlantUMLによるシステム・業務フロー可視化
-- DPAPI / CNGを用いた暗号方式変更対応
 - 外部委託を不要化し、従来想定比で工期を約7割短縮した開発改善
 
 
@@ -174,11 +172,6 @@ AIについても、**AI導入そのものを目的とするポジションよ�
 - People Managementの有無
 - 英語の日常的な使用有無
 - 想定年収レンジと実際の平均残業時間
-
-
-## 技術・専門領域
-
-Applied AI / Enterprise AI Architecture / LLM / RAG / AI Evaluation / Human in the Loop / AI Governance / Context Engineering / Knowledge Design / AI-Assisted Software Engineering / System Architecture / 要件定義・要件分析 / Legacy Modernization / PlantUML / C# / .NET / Windows Application / DPAPI / CNG / Project Management
 
 
 ## 資格・認定
