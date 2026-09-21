@@ -3,11 +3,78 @@ import Site from "../../layouts/Site.astro";
 import { url } from "../../lib/site";
 ---
 
-<Site title="Project" section="project">
-  <h1>Project</h1>
-  <p class="lead">プロジェクトと、その過程の記録。</p>
-  <p>現在、このサイトに掲載しているプロジェクトはありません。</p>
-  <p>
-    <a href={url("project/journal")}>Project Journal — 検討・実装の記録</a>
+<Site title="AI Design Foundations — Project" section="project">
+  <h1>AI Design Foundations</h1>
+  <p class="meta">
+    Project · 開始日：<time datetime="2026-09-21">2026-09-21</time> · Active /
+    Evolving
   </p>
+  <p class="lead">
+    Zenn、GitHub
+    Wiki、既存Markdownへ分散していたAI関連の知識・設計原則・実務事例を再構成し、Markdownを正本とする技術知識基盤として継続運用するプロジェクト。
+  </p>
+  <div class="prose">
+    <h2>Purpose</h2>
+    <p>
+      AI設計知識を体系化し、AI数学論（Theory）・AI Design・Practices・Case
+      Studies・Publicationsの役割を分けて、必要な知識へ辿れる基盤を作ります。
+    </p>
+    <p>
+      Markdownで知識を管理し、Gitで変更履歴を残します。AIによる編集・レビューを支援として用い、AstroとTypeScriptによる生成・検証、GitHub
+      ActionsによるBuild / Deploymentを経てGitHub Pagesで公開します。
+    </p>
+    <h2>Architecture</h2>
+    <ol class="reading-route" aria-label="編集から公開までの流れ">
+      {[
+        "Markdown",
+        "Git",
+        "AIによる編集・レビュー",
+        "Astro / TypeScript",
+        "Validation / Build",
+        "GitHub Actions",
+        "GitHub Pages",
+      ].map((step) => (
+        <li>{step}</li>
+      ))}
+    </ol>
+    <p>
+      編集したMarkdownをContent
+      CollectionsのSchemaで検証し、静的HTMLと検索索引を生成します。GitHub
+      Actionsでも検証とBuildを実行し、成功した成果物を公開します。AIによる編集・レビューは編集工程で行います。
+    </p>
+    <h2>Technology</h2>
+    <ul>
+      <li>Markdown / Git：本文と変更履歴の管理</li>
+      <li>Astro / Content Collections / TypeScript：静的生成とContent Model</li>
+      <li>CSS Custom Properties：共通デザインとLight / Dark表示</li>
+      <li>remark-directive：意味構造を持つMarkdown拡張</li>
+      <li>Mermaid / KaTeX / Shiki：図・数式・コードの表示</li>
+      <li>Pagefind：静的サイト内検索</li>
+      <li>Node.js：移行完全性・内部リンク・索引の検証</li>
+      <li>GitHub Actions / GitHub Pages：Build・Deployment・公開</li>
+    </ul>
+    <h2>Knowledge / Publishing as Code</h2>
+    <p>
+      Markdownを知識の正本として扱い、Gitで差分を管理します。AIの編集支援で作った変更も差分として確認し、自動検証とBuild
+      /
+      Deploymentへつなげます。本文、分類、公開の仕組みをRepositoryで一緒に管理する考え方です。
+    </p>
+    <h2>Continuous Evolution</h2>
+    <p>
+      一度完成させて終わる成果物ではありません。実務・学習・検証・発信から得た知見を継続的に取り込み、情報構造・設計原則・実装を更新します。判断の背景と結果はProject
+      Journalへ残します。
+    </p>
+    <h2>Repository</h2>
+    <p>
+      <a href="https://github.com/nullcontroller/ai-design-foundations">
+        nullcontroller/ai-design-foundations
+      </a>
+    </p>
+    <h2>Project Journal</h2>
+    <p>
+      <a href={url("project/journal")}>
+        Project Journal — 課題・設計判断・実装・結果の記録
+      </a>
+    </p>
+  </div>
 </Site>

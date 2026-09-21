@@ -13,7 +13,7 @@ const section = z.enum([
 ]);
 const pages = defineCollection({
   loader: glob({
-    pattern: "**/*.md",
+    pattern: ["**/*.md", "!project/**/*.md"],
     base: "./src/content",
     generateId: ({ entry }) => entry.replace(/\.md$/, ""),
   }),
@@ -87,4 +87,16 @@ const pages = defineCollection({
         });
     }),
 });
-export const collections = { pages };
+const journal = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/project/journal" }),
+  schema: z.object({
+    title: z.string().min(1),
+    summary: z.string().trim().min(1),
+    layer: z.literal("project"),
+    project: z.literal("ai-design-foundations"),
+    journal_kind: z.enum(["milestone", "decision", "reflection"]),
+    date: z.iso.date(),
+    status: z.enum(["draft", "evolving", "stable", "archived"]),
+  }),
+});
+export const collections = { pages, journal };

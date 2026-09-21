@@ -180,3 +180,16 @@ Zennとの自動双方向同期は行いません。
 `scripts/migrate.mjs`は初回移行専用です。元READMEが現行READMEへ置き換わる前のスナップショットに対して実行するため、通常の編集・buildでは実行しません。
 元Zennと公開Wikiのcommit、各ファイルのハッシュ、変換先は`migration/`に記録しています。
 catalogは分類根拠、templatesは参考資料として扱い、公開記事として水増ししていません。
+
+## Project Journal
+
+Journalは src/content/project/journal/<semantic-slug>.md で管理します。
+専用の journal Content Collectionを使用し、通常の pages には混ぜません。
+
+必須項目は title、summary、layer: project、project: ai-design-foundations、
+journal_kind（milestone / decision / reflection）、date（引用符付きYYYY-MM-DD）、
+status（draft / evolving / stable / archived）です。
+本文は目的・課題・設計判断・実装・成果・次にやることを中心に、実装済みの事実を記録します。
+
+一覧は日付の降順、同日はslug順です。draft は一覧・個別ページとも公開しません。
+公開URLは /project/journal/<semantic-slug>/ です。

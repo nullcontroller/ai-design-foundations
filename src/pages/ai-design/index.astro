@@ -2,8 +2,7 @@
 import { getCollection } from "astro:content";
 import Site from "../../layouts/Site.astro";
 import ContentIndex from "../../components/ContentIndex.astro";
-import RelatedPublications from "../../components/RelatedPublications.astro";
-import { designTopics, relatedPublications } from "../../lib/navigation";
+import { designTopics } from "../../lib/navigation";
 import { publicEntry, url } from "../../lib/site";
 const all = await getCollection("pages", publicEntry);
 ---
@@ -32,5 +31,4 @@ const all = await getCollection("pages", publicEntry);
       />
     </section>
   ))}
-  <RelatedPublications entries={relatedPublications(all, "applicability")} />
 </Site>

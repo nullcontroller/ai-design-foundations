@@ -31,10 +31,7 @@ const all = await getCollection("pages", publicEntry);
   <h2>全体像の参照資料</h2>
   <ContentIndex
     entries={all.filter((e) =>
-      [
-        "foundations/design-system-overview",
-        "foundations/wiki-overview",
-      ].includes(e.id),
+      ["foundations/design-system-overview"].includes(e.id),
     )}
   />
 </Site>

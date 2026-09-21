@@ -1,13 +1,33 @@
 ---
+import { getCollection } from "astro:content";
 import Site from "../../layouts/Site.astro";
-import { url } from "../../lib/site";
+import { publicEntry, url } from "../../lib/site";
+const entries = (await getCollection("journal", publicEntry)).sort(
+  (a, b) => b.data.date.localeCompare(a.data.date) || a.id.localeCompare(b.id),
+);
 ---
 
 <Site title="Project Journal" section="project">
   <h1>Project Journal</h1>
-  <p class="lead">プロジェクトの検討・実装・判断を記録する場所。</p>
-  <p>現在、公開中のJournalはありません。</p>
+  <p class="lead">
+    AI Design
+    Foundationsの課題・設計判断・実装・結果を、新しい日付順で記録します。
+  </p>
+  <ol class="reading-route">
+    {entries.map((entry) => (
+      <li class="content-entry" data-journal-id={entry.id}>
+        <p class="meta">
+          <time datetime={entry.data.date}>{entry.data.date}</time> ·{" "}
+          {entry.data.journal_kind} · Project
+        </p>
+        <h2 class="content-title">
+          <a href={url("project/journal/" + entry.id)}>{entry.data.title}</a>
+        </h2>
+        <p class="content-summary">{entry.data.summary}</p>
+      </li>
+    ))}
+  </ol>
   <p>
-    <a href={url("project")}>Projectへ戻る</a>
+    <a href={url("project")}>AI Design Foundations — Projectへ戻る</a>
   </p>
 </Site>

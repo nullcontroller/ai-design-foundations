@@ -13,10 +13,28 @@ const entries = (await getCollection("pages", publicEntry)).filter(
   <p class="lead">用語・数式の定義と、設計知識の参照資料。</p>
   <p>
     初めての方は<a href={url("start-here")}>Start Here</a>
-    からも参照できます。旧README・Wikiの全体像は、移行元の記録として保持しています。
+    から設計体系の原点を参照できます。
   </p>
-  <ContentIndex entries={entries} />
+  <ContentIndex
+    entries={entries.filter(
+      (e) =>
+        ![
+          "foundations/wiki-overview",
+          "foundations/design-system-overview",
+        ].includes(e.id),
+    )}
+  />
   <p>
     <a href={url("authoring")}>Authoring Guide — 執筆と公開の仕様</a>
   </p>
+  <p>
+    <a href={url("search")}>Search — 用語・見出し・本文を検索</a>
+  </p>
+  <h2>Archive / Migration Record</h2>
+  <p>過去のGitHub Wiki構成や移行元情報を確認するための記録。</p>
+  <div data-reference-archive>
+    <ContentIndex
+      entries={entries.filter((e) => e.id === "foundations/wiki-overview")}
+    />
+  </div>
 </Site>

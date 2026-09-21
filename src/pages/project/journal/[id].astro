@@ -1,0 +1,51 @@
+---
+import { getCollection, render } from "astro:content";
+import Site from "../../../layouts/Site.astro";
+import { publicEntry, url } from "../../../lib/site";
+export async function getStaticPaths() {
+  return (await getCollection("journal", publicEntry)).map((entry) => ({
+    params: { id: entry.id },
+    props: { entry },
+  }));
+}
+const { entry } = Astro.props;
+const d = entry.data;
+const { Content, headings } = await render(entry);
+---
+
+<Site title={d.title} summary={d.summary} section="project" headings={headings}>
+  <nav aria-label="パンくず">
+    <a href={url("project")}>Project</a> /{" "}
+    <a href={url("project/journal")}>Project Journal</a>
+  </nav>
+  <article data-pagefind-body>
+    <h1 data-pagefind-meta="title">{d.title}</h1>
+    <p class="lead" data-pagefind-meta="summary">
+      {d.summary}
+    </p>
+    <p class="meta">
+      <time datetime={d.date}>{d.date}</time> · {d.journal_kind} ·{" "}
+      <span data-pagefind-meta="category">Project Journal</span> ·{" "}
+      <span data-pagefind-meta="layer">Project</span> ·{" "}
+      <span data-pagefind-meta="status">{d.status}</span> ·{" "}
+      <span data-pagefind-meta="source">GitHub</span>
+    </p>
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+  <p>
+    <a href={url("project/journal")}>Project Journal一覧へ戻る</a>
+  </p>
+  <p>
+    <a
+      href={
+        "https://github.com/nullcontroller/ai-design-foundations/blob/master/src/content/project/journal/" +
+        entry.id +
+        ".md"
+      }
+    >
+      GitHub上の原文
+    </a>
+  </p>
+</Site>

@@ -173,3 +173,55 @@ for (const id of [
 console.log(
   "Verified Phase 3 navigation, layer separation, related publications, complete Publication Hub and existing URLs.",
 );
+
+// Phase 4: journal order, preserved summaries, reading route and secondary archives.
+assert.equal(design("[data-related-publications]").length, 0);
+assert.equal(page("project")("h1").text(), "AI Design Foundations");
+const journalIndex = page("project/journal");
+const journalIds = journalIndex("[data-journal-id]")
+  .map((_, e) => journalIndex(e).attr("data-journal-id"))
+  .get();
+assert.deepEqual(journalIds, [
+  "2026-09-22-information-architecture",
+  "2026-09-21-initial-web-platform",
+]);
+for (const id of journalIds) {
+  const d = entries.get("project/journal/" + id);
+  const row = journalIndex('[data-journal-id="' + id + '"]');
+  assert.equal(row.find(".content-title").text(), d.title);
+  assert.equal(row.find(".content-summary").text(), d.summary);
+  assert.equal(row.find("time").attr("datetime"), d.date);
+  assert(row.find(".meta").text().includes(d.journal_kind));
+}
+const mathematics = page("ai-mathematics");
+assert.deepEqual(
+  mathematics("[data-mathematics-reading] [data-content-id]")
+    .map((_, e) => mathematics(e).attr("data-content-id"))
+    .get(),
+  [
+    "foundations/llm-as-probabilistic-model",
+    "foundations/conditional-probability",
+    "foundations/temperature-design",
+    "foundations/hallucination-mechanisms",
+    "software-engineering/code-generation-models",
+  ],
+);
+const reference = page("reference");
+assert.equal(
+  reference(
+    '[data-reference-archive] [data-content-id="foundations/wiki-overview"]',
+  ).length,
+  1,
+);
+assert.equal(
+  reference('[data-content-id="foundations/design-system-overview"]').length,
+  0,
+);
+assert.equal(
+  page("start-here")('[data-content-id="foundations/design-system-overview"]')
+    .length,
+  1,
+);
+console.log(
+  "Verified Phase 4 journals, reading order, Reference archive and AI Design top.",
+);
