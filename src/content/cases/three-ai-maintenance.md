@@ -1,6 +1,7 @@
 ---
+summary: "暗号処理と異常系の見直しを、GPT・GitHub Copilot・Microsoft 365 Copilotの役割分担で進めた実務事例。要件整理から仕様化・実装・単体テストまでの工程と、人間が保持した判断責任を示す。"
+layer: publication
 title: 3つのAIをオーケストレーションしたレガシー保守
-summary: ""
 kind: case
 section: cases
 status: evolving

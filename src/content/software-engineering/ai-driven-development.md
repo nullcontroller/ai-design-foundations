@@ -1,4 +1,6 @@
 ---
+summary: "要件整理・既存仕様調査・設計・仕様化・実装・テストを一つのAI活用工程として考える。3つのAIを役割分担させた経験と、成果物を通じた受け渡しを紹介する。"
+layer: publication
 title: 私が考えるAI駆動開発 ― AI・人間・成果物をどうつなぐか
 kind: guide
 section: software-engineering

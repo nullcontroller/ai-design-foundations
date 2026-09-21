@@ -1,4 +1,6 @@
 ---
+summary: "AIが読む情報、使える権限、呼び出すツール、出力先を境界ごとに整理する。Prompt Injectionなどの脅威を想定し、影響の限定・検出・停止・復旧を設計する。"
+layer: design
 title: 生成AIセキュリティと脅威モデリング
 kind: architecture
 section: architecture

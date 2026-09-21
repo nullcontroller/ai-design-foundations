@@ -1,4 +1,6 @@
 ---
+summary: "内部構造の知識をUI操作と結び付け、操作・実行処理・結果の対応を整理する。利用者が機能へ到達し、操作結果を理解できる状態へ知識をつなぐ。"
+layer: publication
 title: 第7章 UIと内部構造の接続 ― 利用可能な状態への変換
 kind: case
 section: cases

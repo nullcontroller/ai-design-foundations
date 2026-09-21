@@ -704,3 +704,80 @@ blockquote {
     gap: 1rem;
   }
 }
+
+/* Shared document index: metadata and summary always come from content. */
+.content-entry {
+  min-width: 0;
+}
+.content-entry .content-title {
+  font-size: 1.08rem;
+  line-height: 1.6;
+  font-weight: 650;
+  margin: 0.35rem 0;
+}
+.content-entry .content-summary {
+  margin: 0.4rem 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.75;
+  font-weight: 400;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.content-entry .meta {
+  font-weight: 400;
+  margin: 0;
+}
+.content-index,
+.related ul {
+  list-style: none;
+  padding: 0;
+}
+.content-index > li,
+.related li,
+.series li,
+.book-list-entry details li {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.pagination > div {
+  flex: 1;
+  min-width: 0;
+}
+.career-flow {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0;
+}
+.career-flow li {
+  border-left: 2px solid var(--line);
+  padding: 0.7rem 1rem;
+  margin-left: 0.4rem;
+}
+.career-flow li + li::before {
+  content: "↓";
+  display: block;
+  color: var(--muted);
+  margin-bottom: 0.6rem;
+}
+.career-flow span,
+.career-flow strong {
+  display: block;
+}
+.search-controls {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+.search-controls input {
+  flex: 1;
+  min-width: 0;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 0.7rem;
+  font: inherit;
+}

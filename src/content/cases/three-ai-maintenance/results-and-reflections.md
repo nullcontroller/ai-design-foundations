@@ -1,4 +1,6 @@
 ---
+summary: "暗号処理の保守を内製化し、当初想定の開発期間を約7割短縮した結果を振り返る。3つのAIの役割、成果物の受け渡し、人間の判断、方法が成立した条件と限界を整理する。"
+layer: publication
 title: 第7章　成果と考察
 kind: case
 section: cases

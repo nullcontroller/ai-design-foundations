@@ -1,4 +1,6 @@
 ---
+summary: "対象・版・根拠・入力条件・行為などの境界を定め、評価可能な領域をAIへ担当させる。回答・拒否・移管を分け、範囲内の品質と境界判定を継続的に測る。"
+layer: design
 title: なぜ回答範囲を制限した方がよいのか
 kind: principle
 section: foundations

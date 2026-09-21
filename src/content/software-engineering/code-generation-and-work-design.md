@@ -1,4 +1,6 @@
 ---
+summary: "コード生成の高速化だけでは残る、業務の設計・責務分割・運用上の判断を考察する。AIを設計の理解・維持・改善に使い、意思決定の負担を減らす視点を示す。"
+layer: publication
 title: コード生成AIはなぜ業務を変えないのか — 設計支援として使うべき理由
 kind: guide
 section: software-engineering

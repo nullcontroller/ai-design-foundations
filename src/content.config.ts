@@ -19,7 +19,8 @@ const pages = defineCollection({
   }),
   schema: z.object({
     title: z.string().min(1),
-    summary: z.string().optional(),
+    summary: z.string().trim().min(1),
+    layer: z.enum(["theory", "design", "practice", "case", "publication"]),
     kind: z.enum(["principle", "architecture", "guide", "case", "essay"]),
     section,
     status: z.enum(["draft", "evolving", "stable", "archived"]),

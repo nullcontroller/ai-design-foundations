@@ -1,4 +1,6 @@
 ---
+summary: "Contextによる誘導、制約付きデコード、検証器、実行認可を異なる制御として整理する。確率的な制約と決定論的な遮断の違いを、数式と期待損失から説明する。"
+layer: design
 title: ガードレールの数学的説明
 kind: principle
 section: foundations

@@ -1,6 +1,7 @@
 ---
+summary: "コードから仕様を復元し、PlantUMLによる可視化と知識の構造化を経てRAG / QAへ展開するシリーズ。仕様書が不足するシステムを、人間が理解・判断し、継続的に保守できる状態へ整える。"
+layer: publication
 title: レガシーシステムを「理解可能な状態」にする設計手法
-summary: ""
 kind: case
 section: cases
 status: evolving

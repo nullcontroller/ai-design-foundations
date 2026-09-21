@@ -1,4 +1,6 @@
 ---
+summary: "モデル・プロンプト・Knowledge・検索・権限などの変更をVersion Bundleで管理する。影響範囲に応じた再評価、リリース条件、監視、切り戻しを整理する。"
+layer: design
 title: AIシステムの変更・再評価設計
 kind: architecture
 section: architecture

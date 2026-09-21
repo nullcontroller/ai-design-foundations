@@ -1,4 +1,6 @@
 ---
+summary: "Temperatureがlogitと次トークンの確率分布へ与える影響を説明する。低い値でも正確性や安全性は保証されないことを踏まえ、用途別の評価と反復実験で設定を選ぶ。"
+layer: theory
 title: Temperature設計指針
 kind: principle
 section: foundations

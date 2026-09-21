@@ -14,3 +14,14 @@ export const url = (p = "") =>
 export const label = (s: string) => sections.find((x) => x[0] === s)?.[1] ?? s;
 export const publicEntry = (e: { data: { status: string } }) =>
   e.data.status !== "draft";
+
+export const layers = {
+  theory: "Theory / 理論",
+  design: "Design / 設計体系",
+  practice: "Practice / 実践",
+  case: "Case / 実務事例",
+  publication: "Publication / 公開物",
+} as const;
+export const layerLabel = (layer: keyof typeof layers) => layers[layer];
+export const sourceLabel = (type?: string) =>
+  type === "zenn" ? "Zenn" : type === "wiki" ? "GitHub Wiki" : "GitHub";

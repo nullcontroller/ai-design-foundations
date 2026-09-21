@@ -1,4 +1,6 @@
 ---
+summary: "分散していた要件・方針・コード調査・試験観点を、Microsoft 365 CopilotでExcel仕様書へ集約する。動的な処理関係の誤りを確認し、構造化した情報を受け渡す必要性を示す。"
+layer: publication
 title: 第4章　Microsoft 365 Copilotでレビュー可能な仕様書へ変換する
 kind: case
 section: cases

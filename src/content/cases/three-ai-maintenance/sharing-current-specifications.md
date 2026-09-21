@@ -1,4 +1,6 @@
 ---
+summary: "Excelの誤りを起点に現在仕様を確認し直し、PlantUMLで構造化して別のAIへ渡す。コードとの照合、Excelへの反映、組織の審議による正式仕様の確定までを示す。"
+layer: publication
 title: 第5章　AI間で現在の仕様を受け渡し、Excel仕様書を修正する
 kind: case
 section: cases

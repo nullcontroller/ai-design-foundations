@@ -1,4 +1,6 @@
 ---
+summary: "プロンプトをRole・Task・制約・Context・出力契約などの責務から設計する。モデルへ渡す情報と、権限・承認・検証などシステム側が担う制御を分離する。"
+layer: design
 title: プロンプト設計の基本構造
 kind: guide
 section: knowledge-context

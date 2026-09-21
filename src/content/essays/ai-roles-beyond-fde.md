@@ -1,4 +1,6 @@
 ---
+summary: "FDEの役割を起点に、AIの社会実装で必要になる専門性を考察する。Architecture・Engineering・Platform・Evaluation・Governanceの責任が分化していくという見通しを述べる。"
+layer: publication
 title: AI人材はFDEだけではない――これから進む専門職の細分化
 kind: essay
 section: essays

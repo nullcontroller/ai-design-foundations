@@ -1,4 +1,6 @@
 ---
+summary: "プロンプトの失敗を、Context不足・情報の混在・指示の競合・検証基準の欠如などに分解する。文章の長短だけで判断せず、失敗原因と変更の影響を追跡する方法を整理する。"
+layer: design
 title: プロンプト設計の失敗モード
 kind: guide
 section: knowledge-context

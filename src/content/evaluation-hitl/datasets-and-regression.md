@@ -1,4 +1,6 @@
 ---
+summary: "通常・曖昧・情報不足・拒否すべき入力と期待動作を評価データセットに記録する。システム全体の版管理、回帰比較、AI採点の確認、本番の失敗を評価へ戻す運用を扱う。"
+layer: design
 title: AI評価データセットと回帰評価設計
 kind: guide
 section: evaluation-hitl

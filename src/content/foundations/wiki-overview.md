@@ -1,4 +1,6 @@
 ---
+summary: "公開Wikiの設計思想と読み進め方を示す。確率・条件・制約・誤りの伝播という見方を、RAG・QA・コード生成・複数AI・HITLの実務設計へつなぐ。"
+layer: design
 title: AI Design Foundations — Wiki概要
 kind: principle
 section: foundations

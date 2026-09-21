@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Site from "../../layouts/Site.astro";
+import ContentLink from "../../components/ContentLink.astro";
 import { sections, url, publicEntry } from "../../lib/site";
 export function getStaticPaths() {
   return sections.map(([section, title, summary]) => ({
@@ -33,13 +34,7 @@ const entries = (await getCollection("pages", publicEntry)).filter(
   <div class="document-list">
     {entries.map((e) => (
       <article>
-        <div class="meta">
-          {e.data.series ? "SERIES / BOOK" : e.data.kind} · {e.data.status}
-        </div>
-        <h2>
-          <a href={url(e.id)}>{e.data.title}</a>
-        </h2>
-        {e.data.summary && <p>{e.data.summary}</p>}
+        <ContentLink entry={e} />
         <p class="tags">{e.data.tags.join(" / ")}</p>
       </article>
     ))}

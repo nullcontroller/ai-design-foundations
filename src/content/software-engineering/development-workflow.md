@@ -1,4 +1,6 @@
 ---
+summary: "AIが受け取る入力、出力成果物、根拠、検証、停止条件、承認者を開発工程として定義する。検証済みの成果物だけを次へ渡すための契約・Gate・記録・手動経路を整理する。"
+layer: practice
 title: AIを開発工程に組み込む
 kind: guide
 section: software-engineering

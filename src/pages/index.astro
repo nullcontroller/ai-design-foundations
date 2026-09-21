@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Site from "../layouts/Site.astro";
+import ContentLink from "../components/ContentLink.astro";
 import { sections, url, publicEntry } from "../lib/site";
 const all = await getCollection("pages", publicEntry);
 const articleCount = all.filter(
@@ -77,27 +78,20 @@ const steps = [
   </section>
   <section class="reading-path">
     <h2>全体設計から読む</h2>
-    <ol>
-      <li>
-        <a href={url("foundations/applicability-and-delegation")}>
-          AI適用可否と委任レベルの設計
-        </a>
-      </li>
-      <li>
-        <a href={url("architecture/reference-architecture")}>
-          AI業務システムの参照アーキテクチャ
-        </a>
-      </li>
-      <li>
-        <a href={url("evaluation-hitl/responsibility-and-hitl")}>
-          AI出力の責任境界とHITL
-        </a>
-      </li>
-      <li>
-        <a href={url("architecture/change-and-reevaluation")}>
-          AIシステムの変更・再評価設計
-        </a>
-      </li>
+    <ol class="content-index">
+      {[
+        "foundations/applicability-and-delegation",
+        "architecture/reference-architecture",
+        "evaluation-hitl/responsibility-and-hitl",
+        "architecture/change-and-reevaluation",
+      ].map((id) => {
+        const entry = all.find((e) => e.id === id)!;
+        return (
+          <li>
+            <ContentLink entry={entry} heading="h3" />
+          </li>
+        );
+      })}
     </ol>
   </section>
 </Site>

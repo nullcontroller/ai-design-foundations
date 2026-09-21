@@ -15,6 +15,7 @@ title: "採否判断の境界"
 summary: "このページが扱う範囲を簡潔に記述する。"
 kind: principle
 section: foundations
+layer: design
 status: draft
 order: 10
 tags:
@@ -27,20 +28,34 @@ updated_at: "2026-09-21"
 
 タイトルは共通レイアウトがH1として表示します。本文の見出しは`##`から始めます。
 新規記事に出典や日付を捏造しません。公開日・更新日は不明なら省略できます。
-`summary`は任意。初回移行で存在しなかった要約は生成していません。
+`summary`は必須です。本文で実際に扱う内容を1〜2文で要約し、タイトルから推測しません。すべての一覧・章目次・前後リンク・検索結果はこの値だけを概要として表示します。本文を変更したら概要も確認してください。
+
+## Layer
+
+`section`はテーマ、`layer`は知識体系での位置付けです。必須の列挙値としてschemaで検証します。
+
+| layer       | 役割                                  |
+| ----------- | ------------------------------------- |
+| theory      | AIの振る舞いを理解する理論・数学      |
+| design      | 業務システムへ組み込む設計体系        |
+| practice    | 組織・開発・運用への適用              |
+| case        | 個別の実務事例                        |
+| publication | 独立した記事・Book・Essayなどの公開物 |
+
+今回、原文を保持して移行したZenn記事・Book・章は`publication`とし、設計体系の正本とは区別します。実務事例のテーマは`section: cases`のままです。出典の有無だけで将来のlayerを自動判定しません。再編集した設計文書や新規事例は、その役割に応じてdesignやcaseを選び、出典とcanonicalは別途管理します。
 
 ## Section / kind / status
 
-| section | 内容 |
-|---|---|
-| foundations | 変わりにくい設計原則 |
-| architecture | 全体構成・権限・Workflow・Lifecycle |
-| knowledge-context | RAG・Context・Evidence・情報更新 |
-| evaluation-hitl | 評価・レビュー・承認・判断条件 |
+| section              | 内容                                      |
+| -------------------- | ----------------------------------------- |
+| foundations          | 変わりにくい設計原則                      |
+| architecture         | 全体構成・権限・Workflow・Lifecycle       |
+| knowledge-context    | RAG・Context・Evidence・情報更新          |
+| evaluation-hitl      | 評価・レビュー・承認・判断条件            |
 | software-engineering | AIを用いたソフトウェア開発・Orchestration |
-| practices | 教育・導入・横展開・適用判断 |
-| cases | 原則を適用した実務事例 |
-| essays | 市場・キャリア・技術に関する論考 |
+| practices            | 教育・導入・横展開・適用判断              |
+| cases                | 原則を適用した実務事例                    |
+| essays               | 市場・キャリア・技術に関する論考          |
 
 `kind`: `principle`, `architecture`, `guide`, `case`, `essay`。
 `status`: `draft`（非公開）、`evolving`（更新中）、`stable`（安定）、`archived`（過去資料）。
@@ -68,10 +83,11 @@ AI出力は中間成果物として扱う。
 :::
 
 :::responsibility{title="責任境界"}
+
 - AI：候補生成
 - 人間：採否判断
 - 既存システム：確定処理
-:::
+  :::
 
 :::evidence{title="根拠"}
 判断に使用した情報や評価結果。

@@ -1,4 +1,6 @@
 ---
+summary: "フォルダ・ファイル・クラスの役割をMarkdownで整理し、調査のための地図を作る。AIが構造の仮説を出し、人間がコードで検証する初動の進め方を示す。"
+layer: publication
 title: 第3章 プロジェクト構造の整理 ― 理解のための地図を作る
 kind: case
 section: cases

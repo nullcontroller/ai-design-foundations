@@ -70,3 +70,9 @@ Zenn41件とWiki30件は、元ファイル・移行先・元metadata・変換後
 
 Mermaidは遅延ロードするローカルbundle。bundleサイズ警告はあるが、図のないページでは読み込まない。
 公開処理の最終状態はGitHub ActionsのDeploy design knowledge to Pagesを参照。
+
+## 追加改修：概要・Layer・Career
+
+全72コンテンツの本文を確認し、front matterにsummaryを追加した。本文・元metadata・canonical・章順は変更していない。Zennの独立公開物41件はpublicationとして設計体系と区別し、テーマは従来のsectionで保持する。Wikiと旧READMEは本文の役割に応じてtheory / design / practiceを設定した。
+
+全一覧・章目次・前後・関連・検索は同じsummaryを使用する。buildで全72ページの検索metadataと一覧の概要一致を検証する。Careerは運営者の実務背景を紹介する独立ページとして追加し、詳細職務経歴は別のCareer Profileへリンクする。

@@ -1,4 +1,6 @@
 ---
+summary: "安全側へ停止する設計方針を、既存コードのどこへ組み込むか具体化する。GitHub Copilotによる関連箇所の探索と人間の確認を通じ、変更対象と影響範囲を絞る。"
+layer: publication
 title: 第3章　GitHub Copilotと人間で実現方法を具体化する
 kind: case
 section: cases

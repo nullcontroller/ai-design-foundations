@@ -1,8 +1,9 @@
 ---
 import { getCollection, render } from "astro:content";
 import Site from "../layouts/Site.astro";
+import ContentLink from "../components/ContentLink.astro";
 import MarkdownBody from "../components/MarkdownBody.astro";
-import { url, label, publicEntry } from "../lib/site";
+import { url, label, layerLabel, sourceLabel, publicEntry } from "../lib/site";
 export async function getStaticPaths() {
   return (await getCollection("pages", publicEntry)).map((entry) => ({
     params: { id: entry.id },
@@ -34,7 +35,7 @@ const sourceFile =
 
 <Site
   title={d.title}
-  summary={d.summary || d.title}
+  summary={d.summary}
   canonical={d.canonical}
   section={d.section}
   headings={headings}
@@ -45,16 +46,20 @@ const sourceFile =
   <article data-pagefind-body>
     <header class="document-header">
       <p class="eyebrow">
-        {label(d.section)} / {d.kind}
+        <span data-pagefind-meta="category">{label(d.section)}</span> /{" "}
+        <span data-pagefind-meta="layer">{layerLabel(d.layer)}</span> / {d.kind}
       </p>
       <h1 data-pagefind-meta="title">{d.title}</h1>
       {d.summary && (
-        <p class="lead" data-pagefind-meta="description">
+        <p class="lead" data-pagefind-meta="summary">
           {d.summary}
         </p>
       )}
       <p class="meta">
-        <span class="status">{d.status}</span>
+        <span class="status" data-pagefind-meta="status">
+          {d.status}
+        </span>
+        <span data-pagefind-meta="source">{sourceLabel(d.source?.type)}</span>
         {d.published_at && (
           <span>
             公開：<time>{d.published_at}</time>
@@ -85,12 +90,7 @@ const sourceFile =
         <ol>
           {series.map((e) => (
             <li>
-              <a
-                href={url(e.id)}
-                aria-current={e.id === entry.id ? "page" : undefined}
-              >
-                {e.data.order === 0 ? "シリーズ概要" : e.data.title}
-              </a>
+              <ContentLink entry={e} heading="p" current={e.id === entry.id} />
             </li>
           ))}
         </ol>
@@ -103,11 +103,19 @@ const sourceFile =
   {series.length > 0 && (
     <nav class="pagination" aria-label="前後の章">
       {previous ? (
-        <a href={url(previous.id)}>← 前：{previous.data.title}</a>
+        <div>
+          <p>← 前のページ</p>
+          <ContentLink entry={previous} heading="p" />
+        </div>
       ) : (
         <span />
       )}
-      {next && <a href={url(next.id)}>次：{next.data.title} →</a>}
+      {next && (
+        <div>
+          <p>次のページ →</p>
+          <ContentLink entry={next} heading="p" />
+        </div>
+      )}
     </nav>
   )}
   <footer class="document-footer">
@@ -131,7 +139,7 @@ const sourceFile =
       <ul>
         {related.map((e) => (
           <li>
-            <a href={url(e.id)}>{e.data.title}</a>
+            <ContentLink entry={e} heading="h3" />
           </li>
         ))}
       </ul>

@@ -1,4 +1,6 @@
 ---
+summary: "AIへ渡す情報を、指示・継続的な知識・今回取得した根拠という役割で整理する。保存場所ではなく責務を分け、更新・検証・障害分析を個別に行える構成を考える。"
+layer: design
 title: Instruction・Knowledge・Evidenceの責務分離
 kind: guide
 section: knowledge-context

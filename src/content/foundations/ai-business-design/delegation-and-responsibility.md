@@ -1,4 +1,6 @@
 ---
+summary: "AIへ作業を移しても残る、判断・承認・例外処理・監査・最終責任を整理する。AI・人間・既存システムを一つの系として、責任が途切れない業務を設計する。"
+layer: publication
 title: 第1章　AIに仕事を任せても、責任は消えない
 kind: principle
 section: foundations

@@ -1,4 +1,6 @@
 ---
+summary: "CNG API / DPAPIへの暗号方式変更を契機に、暗号APIとレジストリの未定義の異常系を整理する。発生位置、情報の重要度、後続処理への影響から、安全な動作を設計する必要性を示す。"
+layer: publication
 title: 第1章　暗号方式の変更によって顕在化した異常系
 kind: case
 section: cases

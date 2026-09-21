@@ -1,4 +1,6 @@
 ---
+summary: "AIで要件をMarkdown化して審議に持ち込み、手戻りが増えた経験を振り返る。生成時間ではなく、理解・変換・レビュー・合意形成までの総工数で導入効果を考える。"
+layer: publication
 title: 第2章　AI導入は効率化とは限らない
 kind: principle
 section: foundations

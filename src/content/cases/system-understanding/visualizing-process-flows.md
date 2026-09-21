@@ -1,4 +1,6 @@
 ---
+summary: "クラスやモジュールの構造に加え、順序・分岐・呼出し関係をPlantUMLで可視化する。代表的なフローを抽出し、動きと変更影響を人間が把握できる状態にする。"
+layer: publication
 title: 第5章 処理フローの可視化 ― PlantUMLによる動きの再構築
 kind: case
 section: cases

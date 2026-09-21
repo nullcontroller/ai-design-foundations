@@ -1,4 +1,6 @@
 ---
+summary: "QAの品質を検索・根拠利用・回答・拒否・人への移管・業務効果に分解して評価する。単一の正答率ではなく、標本数と不確実性、工程別指標、期待損失から改善点を判断する。"
+layer: design
 title: QAチャット評価設計思想
 kind: guide
 section: evaluation-hitl

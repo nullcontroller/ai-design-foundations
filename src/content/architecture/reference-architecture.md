@@ -1,4 +1,6 @@
 ---
+summary: "入力、Context構築、生成、検証、承認、実行、監視を分離したAI業務システムの参照構成を示す。誤生成が業務影響へつながる経路を、責務と権限の境界から制御する。"
+layer: design
 title: AI業務システムの参照アーキテクチャ
 kind: architecture
 section: architecture

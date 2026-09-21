@@ -1,7 +1,8 @@
 ---
 import { getCollection } from "astro:content";
 import Site from "../layouts/Site.astro";
-import { publicEntry, url, label } from "../lib/site";
+import ContentLink from "../components/ContentLink.astro";
+import { publicEntry, url } from "../lib/site";
 const articles = (await getCollection("pages", publicEntry))
   .filter((e) => e.data.source?.original_type === "article")
   .sort((a, b) =>
@@ -24,13 +25,7 @@ const articles = (await getCollection("pages", publicEntry))
   <div class="document-list">
     {articles.map((e) => (
       <article>
-        <div class="meta">
-          <a href={url(e.data.section)}>{label(e.data.section)}</a>
-          {e.data.published_at && <time>{e.data.published_at}</time>}
-        </div>
-        <h2>
-          <a href={url(e.id)}>{e.data.title}</a>
-        </h2>
+        <ContentLink entry={e} />
         <p class="tags">{e.data.tags.join(" / ")}</p>
       </article>
     ))}

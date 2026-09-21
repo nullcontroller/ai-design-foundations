@@ -1,4 +1,6 @@
 ---
+summary: "生成・検証・採用・承認・実行の各段階に、権限と責任主体を定める。HITLを確認画面の追加ではなく、根拠・移管条件・記録・是正まで含む業務構造として設計する。"
+layer: design
 title: AI出力の責任境界とHITL
 kind: guide
 section: evaluation-hitl

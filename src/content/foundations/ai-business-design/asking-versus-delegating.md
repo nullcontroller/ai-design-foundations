@@ -1,4 +1,6 @@
 ---
+summary: "資格学習でAIへ聞くことと、組織固有の仕事を任せることの違いをKnowledgeから考える。必要な情報をAIへ届け、不足する場合は人間へ戻す設計を扱う。"
+layer: publication
 title: 第3章　AIに聞くことと、AIに仕事を任せることは違う
 kind: principle
 section: foundations
