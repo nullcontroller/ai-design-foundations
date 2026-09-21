@@ -1,5 +1,6 @@
 ---
 summary: "自宅PCのストレージ整理を題材に、AIによる判断・ルール設計と既存ツールによる実行を分けて考える。MCPを試した経験から、エージェントの価値を接続先と責務の設計に見いだす。"
+publication_format: article
 layer: publication
 title: 「AIエージェントを0から作る時代」は本当に来るのか？
 kind: architecture

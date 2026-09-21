@@ -1,5 +1,6 @@
 ---
 summary: "AIの出力に対して、根拠を確認し、採否を判断し、責任を持てる人の役割を論じる。単にAIを操作することと、組織で安全に使える状態を作ることを区別する。"
+publication_format: article
 layer: publication
 title: AI時代において「レビューできる人」が価値を持つ理由
 kind: guide

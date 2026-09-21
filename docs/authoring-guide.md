@@ -181,19 +181,22 @@ Zennとの自動双方向同期は行いません。
 元Zennと公開Wikiのcommit、各ファイルのハッシュ、変換先は`migration/`に記録しています。
 catalogは分類根拠、templatesは参考資料として扱い、公開記事として水増ししていません。
 
-## Project Journal
 
-Journalは src/content/project/journal/<semantic-slug>.md で管理します。
-専用の journal Content Collectionを使用し、通常の pages には混ぜません。
+## 個人統合サイトの公開方針
 
-必須項目は title、summary、layer: project、project: ai-design-foundations、
-journal_kind（milestone / decision / reflection）、date（引用符付きYYYY-MM-DD）、
-status（draft / evolving / stable / archived）です。
-本文は目的・課題・設計判断・実装・成果・次にやることを中心に、実装済みの事実を記録します。
+サイトブランドは「立林 裕太朗」。Careerと技術知識・公開物を同じサイト内で閲覧できる構成です。
+Careerは src/content/career の専用Content Collectionで管理します。職歴・条件の事実変更は依頼に基づいて行います。
 
-一覧は日付の降順、同日はslug順です。draft は一覧・個別ページとも公開しません。
-公開URLは /project/journal/<semantic-slug>/ です。
+sourceとcanonicalの移行元情報は内部資料として保持します。公開ページのcanonicalは自サイトです。
+公開UIにはSource表示を追加せず、GitHub・Zenn・旧Careerサイトへのリンクを出しません。
+MarkdownBodyが対応する出典URLを内部リンクへ変換し、未対応のリンクはテキストとして残します。
+技術本文は保持し、変換は公開時に行います。
+
+Project・Tools・Project Journalは公開しません。開発記録は docs/history に保持します。
+移行概要ページは public: false として保存し、一覧・検索・ページ生成から除外します。
 
 ## Bookと連載の表示分類
 
-連載の概要ページには publication_format: series を指定します。元Zennの source.original_type は出典として保持し、サイト上の形式判定は publication_format を優先します。実務BookはCase Studies、連載は /series/、横断索引は /overview/ から参照します。
+publication_format（article / book / series / essay）で公開形式を指定します。
+source.original_typeは元の形式として保持し、サイト上の分類には使用しません。
+実務BookはCase Studies、連載は /series/、横断索引は /overview/ から参照します。

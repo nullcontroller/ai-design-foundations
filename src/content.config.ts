@@ -13,12 +13,13 @@ const section = z.enum([
 ]);
 const pages = defineCollection({
   loader: glob({
-    pattern: ["**/*.md", "!project/**/*.md"],
+    pattern: ["**/*.md", "!career/**/*.md"],
     base: "./src/content",
     generateId: ({ entry }) => entry.replace(/\.md$/, ""),
   }),
   schema: z
     .object({
+      public: z.boolean().default(true),
       title: z.string().min(1),
       summary: z.string().trim().min(1),
       layer: z.enum([
@@ -27,7 +28,6 @@ const pages = defineCollection({
         "practice",
         "case",
         "publication",
-        "project",
         "reference",
       ]),
       design_topic: z
@@ -41,7 +41,9 @@ const pages = defineCollection({
           "lifecycle-operations",
         ])
         .optional(),
-      publication_format: z.enum(["book", "series"]).optional(),
+      publication_format: z
+        .enum(["article", "book", "series", "essay"])
+        .optional(),
       kind: z.enum(["principle", "architecture", "guide", "case", "essay"]),
       section,
       status: z.enum(["draft", "evolving", "stable", "archived"]),
@@ -88,16 +90,18 @@ const pages = defineCollection({
         });
     }),
 });
-const journal = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/project/journal" }),
+const career = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/career" }),
   schema: z.object({
     title: z.string().min(1),
-    summary: z.string().trim().min(1),
-    layer: z.literal("project"),
-    project: z.literal("ai-design-foundations"),
-    journal_kind: z.enum(["milestone", "decision", "reflection"]),
-    date: z.iso.date(),
-    status: z.enum(["draft", "evolving", "stable", "archived"]),
+    summary: z.string().min(1),
+    layer: z.literal("career"),
+    status: z.enum(["draft", "stable", "evolving"]),
+    source: z.object({
+      type: z.literal("repository"),
+      url: z.url(),
+      commit: z.string(),
+    }),
   }),
 });
-export const collections = { pages, journal };
+export const collections = { pages, career };

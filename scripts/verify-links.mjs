@@ -17,7 +17,8 @@ for (const name of ["zenn", "wiki"]) {
   );
   for (const e of manifest.entries) {
     const original = fs.readFileSync(e.destination_file, "utf8");
-    if (/status: draft/.test(original)) continue;
+    const metadata = YAML.parse(original.match(/^---\r?\n([\s\S]*?)\r?\n---/)[1]);
+    if (metadata.status === "draft" || metadata.public === false) continue;
     assert(
       fs.existsSync(
         path.join(root, e.category, e.destination_slug, "index.html"),
@@ -55,7 +56,6 @@ for (const file of files) {
     const u = new URL(raw, current);
     if (u.origin !== "https://nullcontroller.github.io") continue;
     if (!u.pathname.startsWith(base + "/")) {
-      if (u.pathname.startsWith("/career-profile/")) continue;
       errors.push(`${file}: outside base ${raw}`);
       continue;
     }

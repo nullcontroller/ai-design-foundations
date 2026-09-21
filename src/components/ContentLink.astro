@@ -1,7 +1,7 @@
 ---
 import { contentCategory } from "../lib/navigation";
 import type { CollectionEntry } from "astro:content";
-import { url, layerLabel, sourceLabel } from "../lib/site";
+import { url } from "../lib/site";
 interface Props {
   entry: CollectionEntry<"pages">;
   heading?: "h2" | "h3" | "p";
@@ -13,8 +13,7 @@ const d = entry.data;
 
 <div class="content-entry" data-content-id={entry.id}>
   <p class="meta">
-    {contentCategory(entry)} · {layerLabel(d.layer)} · {d.status} ·{" "}
-    {sourceLabel(d.source?.type)}
+    {contentCategory(entry)} · {d.status}
   </p>
   <Heading class="content-title">
     <a href={url(entry.id)} aria-current={current ? "page" : undefined}>

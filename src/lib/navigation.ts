@@ -3,39 +3,44 @@ import { label } from "./site";
 export type Entry = CollectionEntry<"pages">;
 export const navigation = [
   [
+    { path: "", title: "Home", summary: "立林 裕太朗の公開サイト" },
+    { path: "career", title: "Career", summary: "職務経験・希望する役割" },
     {
-      path: "overview",
-      title: "全体目次",
-      summary: "すべての知識・記事を見渡す",
+      path: "career/profile",
+      title: "詳細職務経歴",
+      summary: "経験・実績・希望条件",
     },
   ],
   [
     {
       path: "ai-design",
       title: "AI Design",
-      summary: "業務システムへどう組み込むか",
+      summary: "業務システムへの組込み",
     },
     {
       path: "ai-mathematics",
       title: "AI数学論",
-      summary: "AIがなぜそう振る舞うのか",
+      summary: "AIの性質を理解する",
     },
-    {
-      path: "practices",
-      title: "Practices",
-      summary: "組織・業務・開発への適用",
-    },
-    { path: "cases", title: "Case Studies", summary: "実際の適用と設計判断" },
+    { path: "practices", title: "Practices", summary: "業務・組織への適用" },
+    { path: "cases", title: "Case Studies", summary: "実務事例のBook 2冊" },
   ],
   [
     {
       path: "articles",
-      title: "記事一覧",
+      title: "Articles",
       summary: "単発記事・Book・連載・Essay",
     },
+    { path: "books", title: "Books", summary: "実務事例を章立てで読む" },
+    { path: "series", title: "連載", summary: "設計原則を読み進める" },
+    { path: "essays", title: "Essays", summary: "技術・市場・キャリアの論考" },
   ],
-  [{ path: "career", title: "Career", summary: "運営者の実務背景" }],
-  [{ path: "reference", title: "Reference", summary: "用語・参照資料" }],
+  [
+    { path: "overview", title: "全体目次", summary: "全コンテンツを見渡す" },
+    { path: "reference", title: "Reference", summary: "用語・数式・参照資料" },
+    { path: "about", title: "About", summary: "このサイトについて" },
+    { path: "search", title: "Search", summary: "サイト内を検索" },
+  ],
 ];
 export const designTopics = [
   ["applicability", "AI適用判断", "適用可否と委任レベル"],
@@ -85,22 +90,15 @@ export const layerPath = (layer: string) =>
     practice: "practices",
     case: "cases",
     publication: "articles",
-    project: "project",
+    career: "career",
     reference: "reference",
   })[layer] || "start-here";
 export const publicationType = (e: Entry) =>
-  e.data.publication_format === "series"
-    ? "連載"
-    : e.data.source?.original_type === "book" ||
-        (e.data.series && e.data.order === 0)
-      ? "Book"
-      : e.data.kind === "essay"
-        ? "Essay"
-        : "Article";
-// Publication is a publishing view, independent of knowledge layer and provenance.
+  ({ article: "Article", book: "Book", series: "連載", essay: "Essay" })[
+    e.data.publication_format || "article"
+  ];
 export const isPublication = (e: Entry) =>
-  e.data.source?.original_type === "article" ||
-  e.data.source?.original_type === "book" ||
+  !!e.data.publication_format ||
   (e.data.layer === "publication" && (!e.data.series || e.data.order === 0));
 export const publicationDate = (e: Entry) =>
   e.data.published_at

@@ -1,5 +1,6 @@
 ---
 summary: "業務でAI生成文を使う経験から、文章の信頼を生成主体ではなく理解・検証・レビュー・確定の工程で考える。根拠へ戻り、採用可否を判断する人間の役割を整理する。"
+publication_format: essay
 layer: publication
 title: AI生成コンテンツは、なぜ信頼されにくいのか
 kind: essay

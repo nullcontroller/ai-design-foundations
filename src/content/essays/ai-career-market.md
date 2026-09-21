@@ -1,5 +1,6 @@
 ---
 summary: "採用される側の視点から、AIの経験年数だけでは伝わらない専門性を考察する。RAG・評価・システム統合などの役割と、設計判断や責任範囲を外部へ示す必要性を論じる。"
+publication_format: essay
 layer: publication
 title: 採用される側から見たAI人材の転職概況
 kind: essay

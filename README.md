@@ -1,9 +1,9 @@
-# AI Design Foundations
+# 立林 裕太朗 — Personal Site
 
-AIを業務システムへ組み込むための、個人の設計体系・技術知識・実務事例です。
+立林 裕太朗のCareer・技術知識・設計思想・実務事例・記事を統合した個人サイトです。AI Design Foundationsはサイト内の技術知識・設計体系を表します。
 MarkdownをGitで管理し、レビュー・検証を経てAstroから静的HTMLを生成します。
 
-**[設計体系を読む](https://nullcontroller.github.io/ai-design-foundations/)**
+**[サイトを見る](https://nullcontroller.github.io/ai-design-foundations/)**
 
 中心テーマ：Applied AI / System Architecture / Knowledge・Context / Evaluation・HITL / AI-Assisted Software Engineering / AI System Lifecycle。
 既存システムの改善・モダナイゼーションは、設計原則を適用した実務事例として扱います。
@@ -25,7 +25,7 @@ npm run build
 
 ## Repository
 
-- `src/content/` — 8領域のMarkdown原文
+- `src/content/` — Careerと技術領域のMarkdown原文
 - `src/components/`, `src/layouts/`, `src/styles/` — 文書UIと意味ブロック
 - `src/pages/` — トップ・カテゴリ・本文・検索
 - `public/assets/` — ローカル配信する画像
@@ -33,11 +33,12 @@ npm run build
 - `scripts/` — 移行・完全性・リンク検証
 - `.github/workflows/` — `master`用Pages CI/CD
 
-## Sources / Author
+## Provenance
 
-[Zenn](https://zenn.dev/nullcontroller)は独立した公開チャネルとして継続します。移行Zennページのcanonicalは当面Zennです。
-[既存Wiki](https://github.com/nullcontroller/ai-design-foundations/wiki)と旧READMEの本文は、内容を統合せずサイトへ移行しています。
+出典と移行時の本文ハッシュはmigration台帳・source metadataで保持します。
+公開HTMLのcanonicalは自サイトを指し、GitHub・Zenn・旧Careerサイトへのリンクは公開しません。
 
-著者の経歴・希望条件は別サイトの[Career Profile](https://nullcontroller.github.io/career-profile/)に掲載しています。
+[Career](https://nullcontroller.github.io/ai-design-foundations/career/) /
+[詳細職務経歴](https://nullcontroller.github.io/ai-design-foundations/career/profile/)
 
-[移行報告](migration/report.md) / [Zenn URL対応表](migration/zenn-migration-map.md)
+開発記録はdocs/historyへ保存し、Project・Tools・Journalは公開しません。

@@ -12,7 +12,7 @@ interface Props {
 }
 const {
   title,
-  summary = "AIを業務システムへ組み込むための設計体系",
+  summary = "立林 裕太朗のキャリア、AI・システム設計の知識、実務事例と記事。",
   canonical,
   section,
   headings = [],
@@ -26,11 +26,8 @@ const {
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={summary} />
     <meta name="color-scheme" content="light dark" />
-    <title>{title} | AI Design Foundations</title>
-    <link
-      rel="canonical"
-      href={canonical || new URL(Astro.url.pathname, Astro.site)}
-    />
+    <title>{title} | 立林 裕太朗</title>
+    <link rel="canonical" href={canonical?.startsWith("https://nullcontroller.github.io/ai-design-foundations/") ? canonical : new URL(Astro.url.pathname, Astro.site)} />
   </head>
   <body>
     <a class="skip" href="#main">
@@ -38,7 +35,7 @@ const {
     </a>
     <header class="masthead">
       <a class="brand" href={url()}>
-        AI Design Foundations<span>DESIGN KNOWLEDGE / 実務と原則</span>
+        立林 裕太朗<span>Applied AI / System Architecture</span>
       </a>
       <div class="header-links">
         <a href={url("overview")}>全体目次</a>
@@ -92,11 +89,12 @@ const {
       </aside>
     </div>
     <footer class="site-footer">
-      AI Design Foundations ·{" "}
-      <a href="https://github.com/nullcontroller/ai-design-foundations">
-        GitHub
-      </a>{" "}
-      · Markdownで管理する設計知識
+      立林 裕太朗 · Applied AI / System Architecture
+      <nav aria-label="フッター">
+        <a href={url("career")}>Career</a> ·{" "}
+        <a href={url("articles")}>Articles</a> ·{" "}
+        <a href={url("about")}>About</a>
+      </nav>
     </footer>
     <script>
       const navigationViewport = matchMedia("(max-width: 760px)");

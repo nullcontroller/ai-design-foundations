@@ -1,5 +1,6 @@
 ---
 summary: "コード生成と設計判断の性質の違いから、設計支援AIの役割を考察する。実装時間の短縮に加え、選択肢や責務を整理して人間の意思決定を支援する価値を論じる。"
+publication_format: article
 layer: publication
 title: 設計支援AIは消えない。コード生成の次に残る領域
 kind: guide

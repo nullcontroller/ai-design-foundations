@@ -58,9 +58,7 @@ import Site from "../layouts/Site.astro";
         entry.append(
           element(
             "p",
-            [r.meta.category, r.meta.layer, r.meta.status, r.meta.source]
-              .filter(Boolean)
-              .join(" · "),
+            [r.meta.category, r.meta.status].filter(Boolean).join(" · "),
             "meta",
           ),
         );

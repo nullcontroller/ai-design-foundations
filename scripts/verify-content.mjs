@@ -65,3 +65,12 @@ if (source) {
 console.log(
   `Verified: 16 articles, 3 books, 22 chapters, ${w.entries.length} Wiki pages, ${z.assets.length} assets; metadata, body hashes, order and slugs.`,
 );
+
+// Career source is copied read-only; verify approved mechanical conversion.
+const career = JSON.parse(read("migration/career-integration-manifest.json"));
+for (const entry of career.entries) {
+ const { body, data } = parse(read(entry.destination_file));
+ assert.equal(hash(body), entry.destination_body_sha256, entry.destination_file);
+ assert.equal(data.source.commit, career.source_commit);
+}
+console.log("Verified 2 integrated Career pages and source commit.");

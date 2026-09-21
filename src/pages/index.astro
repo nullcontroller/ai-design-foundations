@@ -1,99 +1,65 @@
 ---
-import { getCollection } from "astro:content";
 import Site from "../layouts/Site.astro";
-import ContentLink from "../components/ContentLink.astro";
-import { url, publicEntry } from "../lib/site";
-const all = await getCollection("pages", publicEntry);
-const route = [
-  ["ai-mathematics", "AI数学論", "AIがなぜそう振る舞うのか"],
-  ["ai-design", "AI Design", "その性質を前提にどう設計するか"],
-  ["practices", "Practices", "業務・組織・開発でどう使うか"],
-  ["cases", "Case Studies", "実際にどう適用したか"],
-];
-const steps = [
-  "業務目的",
-  "AI適用判断",
-  "Knowledge / Context",
-  "生成",
-  "検証",
-  "Human Review",
-  "既存システムによる確定処理",
-  "運用・評価・改善",
+import { url } from "../lib/site";
+const entries = [
+  [
+    "career",
+    "Career",
+    "技術・実務経験と今後の方向性。詳細な職務経歴、希望する役割・働き方。",
+  ],
+  [
+    "ai-design",
+    "AI Design",
+    "AI・人間・既存システムの責任境界から、業務システムへの組込みを設計する。",
+  ],
+  [
+    "ai-mathematics",
+    "AI数学論",
+    "確率・モデル・生成条件から、AIがなぜそのように振る舞うかを理解する。",
+  ],
+  ["practices", "Practices", "設計原則を業務・組織・開発へ適用する。"],
+  [
+    "cases",
+    "Case Studies",
+    "Knowledge再構築・QA / RAGと、複数AIを用いたソフトウェア改善の実務事例。",
+  ],
+  [
+    "articles",
+    "Articles",
+    "これまで執筆した単発記事・Book・連載・Essayを読む。",
+  ],
 ];
 ---
 
-<Site title="AIを業務システムへ組み込むための設計体系">
+<Site title="Home" section="">
   <section class="hero">
-    <p class="eyebrow">APPLIED AI / SYSTEM ARCHITECTURE</p>
-    <h1>
-      AI Design
-      <br />
-      Foundations
-    </h1>
-    <p class="lead">AIを業務システムへ組み込むための設計体系</p>
+    <h1>立林 裕太朗</h1>
+    <p class="lead">Applied AI × システム企画・アーキテクチャ</p>
     <p>
-      AI・人間・既存システムの責任境界から、Knowledge、評価、運用まで。
-      <br />
-      設計原則・技術知識・実務事例を、継続的に管理する場所です。
+      ソフトウェア開発、プロジェクトマネジメント、生成AI / RAG、Knowledge /
+      Context設計等の経験を背景に、AI・人間・既存システムを含むシステム設計に取り組んでいます。
     </p>
+    <nav class="library-links" aria-label="最初の入口">
+      <a href={url("career")}>キャリア概要を見る</a>
+      <a href={url("overview")}>全体目次から探す</a>
+    </nav>
   </section>
-  <nav class="library-links" aria-label="全体を見る">
-    <a href={url("overview")}>
-      全体目次 — 設計文書・Book・連載・記事を一覧する
-    </a>
-    <a href={url("cases")}>実務事例のBook 2冊</a>
-    <a href={url("series")}>設計原則の連載</a>
-  </nav>
-  <section aria-labelledby="reading-route-title">
-    <h2 id="reading-route-title">理解から、設計・実践へ</h2>
-    <ol class="reading-route">
-      {route.map(([key, name, desc]) => (
-        <li>
-          <a href={url(key)}>{name}</a>
-          <span>{desc}</span>
-        </li>
-      ))}
-    </ol>
+  <div class="document-list">
+    {entries.map(([path, title, summary]) => (
+      <section class="content-entry">
+        <h2 class="content-title">
+          <a href={url(path)}>{title}</a>
+        </h2>
+        <p class="content-summary">{summary}</p>
+      </section>
+    ))}
+  </div>
+  <section>
+    <h2>AI Design Foundations</h2>
     <p>
-      おすすめの流れです。AI Designから直接読み始めても構いません。
-      <a href={url("start-here")}>Start Here</a>
+      AI Design・AI数学論・Practices・Case
+      Studiesを通じて、AIを業務システムへ組み込むための技術知識と設計体系を整理しています。
     </p>
-  </section>
-  <section class="architecture-map" aria-labelledby="map-title">
-    <div class="section-heading">
-      <span>01 / SYSTEM VIEW</span>
-      <h2 id="map-title">生成の前後まで、設計する。</h2>
-    </div>
-    <ol>
-      {steps.map((step, i) => (
-        <li>
-          <span>{String(i + 1).padStart(2, "0")}</span>
-          <strong>{step}</strong>
-        </li>
-      ))}
-    </ol>
-    <p>生成・検証・採否判断・確定処理を分離し、運用から次の設計へ戻します。</p>
-  </section>
-  <nav class="library-links" aria-label="その他の入口">
-    <a href={url("articles")}>記事一覧 — 単発記事・Book・連載・Essay</a>
-    <a href={url("reference")}>Reference — 用語・参照資料</a>
-  </nav>
-  <section class="reading-path">
-    <h2>全体設計から読む</h2>
-    <ol class="content-index">
-      {[
-        "foundations/applicability-and-delegation",
-        "architecture/reference-architecture",
-        "evaluation-hitl/responsibility-and-hitl",
-        "architecture/change-and-reevaluation",
-      ].map((id) => {
-        const entry = all.find((e) => e.id === id)!;
-        return (
-          <li>
-            <ContentLink entry={entry} heading="h3" />
-          </li>
-        );
-      })}
-    </ol>
+    <a href={url("ai-design")}>設計知識から読む →</a>
   </section>
 </Site>

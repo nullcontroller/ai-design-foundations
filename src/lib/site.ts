@@ -12,18 +12,17 @@ export const base = "/ai-design-foundations";
 export const url = (p = "") =>
   base + "/" + p.replace(/^\/+|\/+$/g, "") + (p ? "/" : "");
 export const label = (s: string) => sections.find((x) => x[0] === s)?.[1] ?? s;
-export const publicEntry = (e: { data: { status: string } }) =>
-  e.data.status !== "draft";
+export const publicEntry = (e: {
+  data: { status: string; public?: boolean };
+}) => e.data.status !== "draft" && e.data.public !== false;
 
 export const layers = {
   "ai-mathematics": "AI数学論",
   "ai-design": "AI Design",
-  project: "Project",
+  career: "Career",
   reference: "Reference",
   practice: "Practice / 実践",
   case: "Case / 実務事例",
   publication: "Publication / 公開物",
 } as const;
 export const layerLabel = (layer: keyof typeof layers) => layers[layer];
-export const sourceLabel = (type?: string) =>
-  type === "zenn" ? "Zenn" : type === "wiki" ? "GitHub Wiki" : "GitHub";

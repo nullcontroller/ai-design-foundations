@@ -1,5 +1,6 @@
 ---
 summary: "複数AIを実務で使った経験から、モデル性能とともに情報へアクセスできる条件を重視する。必要なContextを特定し、適切なAIへ渡し、役割を分担させる考え方を整理する。"
+publication_format: article
 layer: publication
 title: AIを使い分ける基準は、モデル性能よりコンテキストではないか
 kind: guide

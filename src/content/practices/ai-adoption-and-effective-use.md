@@ -1,5 +1,6 @@
 ---
 summary: "個人の効率化と企業の責任・制御という観点から、AI利用の認識のずれを考える。出力の検証、制約、不明点の扱い、業務フローへの組込みを含めた活用を論じる。"
+publication_format: article
 layer: publication
 title: AIは使われている。でも使いこなされていない
 kind: guide

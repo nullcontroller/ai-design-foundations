@@ -1,9 +1,6 @@
 ---
-import { getCollection } from "astro:content";
 import Site from "../layouts/Site.astro";
-import ContentIndex from "../components/ContentIndex.astro";
-import { publicEntry, url } from "../lib/site";
-const all = await getCollection("pages", publicEntry);
+import { url } from "../lib/site";
 ---
 
 <Site title="Start Here">
@@ -28,10 +25,8 @@ const all = await getCollection("pages", publicEntry);
     これは読み方の一例です。業務の設計課題がある場合は、AI
     Designから直接読めます。
   </p>
-  <h2>全体像の参照資料</h2>
-  <ContentIndex
-    entries={all.filter((e) =>
-      ["foundations/design-system-overview"].includes(e.id),
-    )}
-  />
+  <p>
+    <a href={url("overview")}>全体目次で探す</a> ·{" "}
+    <a href={url("career")}>Career</a>
+  </p>
 </Site>

@@ -22,16 +22,16 @@ const oldFoundations = Astro.params.section === "foundations";
 ---
 
 <Site
-  title={oldFoundations ? "Start Here — 旧Foundations" : title}
+  title={oldFoundations ? "AI Design Foundations" : title}
   section={essays ? "articles" : "ai-design"}
 >
-  <h1>{oldFoundations ? "Start Here — 旧Foundations" : title}</h1>
+  <h1>{oldFoundations ? "AI Design Foundations" : title}</h1>
   <p class="lead">{summary}</p>
   {oldFoundations ? (
     <>
       <p>
         主要な入口は<a href={url("start-here")}>Start Here</a>
-        へ整理しました。既存の文書URLは引き続き利用できます。
+        から選べます。
       </p>
       <nav class="topic-navigation">
         <a href={url("ai-design")}>AI Design</a>

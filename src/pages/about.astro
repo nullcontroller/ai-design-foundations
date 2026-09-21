@@ -1,33 +1,44 @@
 ---
 import Site from "../layouts/Site.astro";
+import { url } from "../lib/site";
 ---
 
-<Site title="About">
-  <h1>About</h1>
+<Site title="このサイトについて" section="about">
+  <h1>このサイトについて</h1>
   <p class="lead">
-    AIを業務システムへ組み込むための、個人の設計知識と実務事例。
+    立林
+    裕太朗の公開プロフィール・技術知識・実務事例・記事を、一つの場所で閲覧できる個人サイトです。
+  </p>
+  <ul>
+    <li>
+      <a href={url("career")}>Career</a>
+      ：職務経験、専門領域、今後の方向性と希望条件。
+    </li>
+    <li>
+      <a href={url("ai-design")}>AI Design</a>
+      ：AIを業務システムへ組み込むための設計。
+    </li>
+    <li>
+      <a href={url("ai-mathematics")}>AI数学論</a>
+      ：AIの振る舞いを数学・確率・モデルから理解する。
+    </li>
+    <li>
+      <a href={url("practices")}>Practices</a>：業務・組織・開発への適用。
+    </li>
+    <li>
+      <a href={url("cases")}>Case Studies</a>
+      ：実務での課題、設計判断、実装と結果。
+    </li>
+    <li>
+      <a href={url("articles")}>Articles</a>：単発記事・Book・連載・Essay。
+    </li>
+  </ul>
+  <h2>AI Design Foundations</h2>
+  <p>
+    この名称は、AI Design・AI数学論・Practices・Case
+    Studiesにまたがる技術知識・設計体系を表します。実務や学習から得た知見を整理し、継続的に更新しています。
   </p>
   <p>
-    Applied AI、システム企画・アーキテクチャ、Knowledge /
-    Context、評価と責任境界を中心に整理しています。
-  </p>
-  <p>
-    運営者の実務背景は
-    <a href="/ai-design-foundations/career/">Career / Author</a>をご覧ください。
-  </p>
-  <h2>公開チャネル</h2>
-  <p>
-    GitHubを技術体系の正本とし、Zennは独立した公開チャネルとして継続します。移行記事のcanonicalは当面Zennを指します。
-  </p>
-  <p>
-    <a href="https://zenn.dev/nullcontroller">Zenn</a> ·{" "}
-    <a href="https://github.com/nullcontroller/ai-design-foundations/wiki">
-      既存Wiki
-    </a>
-  </p>
-  <p>
-    <a href="/ai-design-foundations/authoring/">
-      Authoring Guide — 執筆と公開の仕様
-    </a>
+    <a href={url("overview")}>全体目次</a>から各領域へ進めます。
   </p>
 </Site>

@@ -7,11 +7,13 @@ import {
   contentCategory,
   relatedPublications,
   topicLabel,
+  designTopics,
+  topicPublications,
   publicationType,
 } from "../lib/navigation";
 import ContentLink from "../components/ContentLink.astro";
 import MarkdownBody from "../components/MarkdownBody.astro";
-import { url, layerLabel, sourceLabel, publicEntry } from "../lib/site";
+import { url, layerLabel, publicEntry } from "../lib/site";
 export async function getStaticPaths() {
   return (await getCollection("pages", publicEntry)).map((entry) => ({
     params: { id: entry.id },
@@ -41,10 +43,6 @@ const related = all
         : e.data.section === d.section),
   )
   .slice(0, 3);
-const sourceFile =
-  "https://github.com/nullcontroller/ai-design-foundations/blob/master/src/content/" +
-  entry.id +
-  ".md";
 ---
 
 <Site
@@ -83,7 +81,6 @@ const sourceFile =
         <span class="status" data-pagefind-meta="status">
           {d.status}
         </span>
-        <span data-pagefind-meta="source">{sourceLabel(d.source?.type)}</span>
         {d.published_at && (
           <span>
             公開：<time>{d.published_at}</time>
@@ -161,21 +158,24 @@ const sourceFile =
       <a href={url("cases")}>Case Studies — 適用テーマ・設計原則から読む</a>
     </p>
   )}
-  <footer class="document-footer">
-    {d.source && (
-      <p>
-        {d.source.type === "zenn" ? "Originally published on Zenn" : "移行元"}：
-        <a href={d.source.url}>
-          {d.source.type === "zenn"
-            ? "Zennの原文"
-            : d.source.type === "wiki"
-              ? "GitHub Wiki"
-              : "Repository"}
-        </a>
-      </p>
-    )}
-    <a href={sourceFile}>GitHub上のMarkdown原文</a>
-  </footer>
+  {designTopics.some(([key]) =>
+    topicPublications[key]?.includes(series[0]?.id || entry.id),
+  ) && (
+    <section>
+      <h2>関連する設計テーマ</h2>
+      <ul>
+        {designTopics
+          .filter(([key]) =>
+            topicPublications[key]?.includes(series[0]?.id || entry.id),
+          )
+          .map(([key, title, summary]) => (
+            <li>
+              <a href={url("ai-design/" + key)}>{title}</a> — {summary}
+            </li>
+          ))}
+      </ul>
+    </section>
+  )}
   {related.length > 0 && (
     <section class="related">
       <h2>同じ領域のコンテンツ</h2>

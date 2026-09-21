@@ -1,5 +1,6 @@
 ---
 summary: "AIが質問表へ自動入力した値が、確認済みの値と同じように扱われた事例を考える。候補・根拠・人間の確認・明示的な確定を分離し、判断を追跡できる入力工程を提案する。"
+publication_format: article
 layer: publication
 title: AIは自動化できる。しかし、その出力を確定値として扱ってはいけない
 kind: principle
