@@ -1,0 +1,37 @@
+---
+import { load } from "cheerio";
+import Principle from "./Principle.astro";
+import Decision from "./Decision.astro";
+import Risk from "./Risk.astro";
+import Responsibility from "./Responsibility.astro";
+import Evidence from "./Evidence.astro";
+import Case from "./Case.astro";
+import Note from "./Note.astro";
+interface Props {
+  html: string;
+}
+const components = {
+  principle: Principle,
+  decision: Decision,
+  risk: Risk,
+  responsibility: Responsibility,
+  evidence: Evidence,
+  case: Case,
+  note: Note,
+};
+const $ = load(Astro.props.html, null, false);
+const nodes = $.root().contents().toArray();
+---
+
+{nodes.map((node) => {
+  const el = $(node);
+  const kind = el.attr("data-kind") as keyof typeof components;
+  const Block = components[kind];
+  return Block ? (
+    <Block title={el.attr("data-title")}>
+      <Astro.self html={el.html() || ""} />
+    </Block>
+  ) : (
+    <Fragment set:html={$.html(node)} />
+  );
+})}

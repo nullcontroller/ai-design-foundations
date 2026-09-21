@@ -1,0 +1,26 @@
+---
+import guide from "../../docs/authoring-guide.md?raw";
+import { createMarkdownProcessor } from "@astrojs/markdown-remark";
+import directive from "remark-directive";
+import { semanticDirectives, localUrls } from "../lib/markdown.mjs";
+import Site from "../layouts/Site.astro";
+import MarkdownBody from "../components/MarkdownBody.astro";
+const processor = await createMarkdownProcessor({
+  remarkPlugins: [directive, semanticDirectives],
+  rehypePlugins: [localUrls],
+});
+const body = guide.replace(/^# Authoring Guide\r?\n/, "");
+const rendered = await processor.render(body);
+const examples =
+  guide.match(/```markdown\r?\n(:::principle[\s\S]*?)\r?\n```/)?.[1] || "";
+const sample = await processor.render(examples);
+---
+
+<Site title="Authoring Guide">
+  <h1>Authoring Guide</h1>
+  <div class="prose">
+    <MarkdownBody html={rendered.code} />
+    <h2>Directiveの表示例</h2>
+    <MarkdownBody html={sample.code} />
+  </div>
+</Site>

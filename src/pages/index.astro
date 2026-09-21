@@ -1,0 +1,89 @@
+---
+import Site from "../layouts/Site.astro";
+import { sections, url } from "../lib/site";
+const steps = [
+  "業務目的",
+  "AI適用判断",
+  "Knowledge / Context",
+  "生成",
+  "検証",
+  "Human Review",
+  "既存システムによる確定処理",
+  "運用・評価・改善",
+];
+---
+
+<Site title="AIを業務システムへ組み込むための設計体系">
+  <section class="hero">
+    <p class="eyebrow">APPLIED AI / SYSTEM ARCHITECTURE</p>
+    <h1>
+      AI Design
+      <br />
+      Foundations
+    </h1>
+    <p class="lead">AIを業務システムへ組み込むための設計体系</p>
+    <p>
+      AI・人間・既存システムの責任境界から、Knowledge、評価、運用まで。
+      <br />
+      設計原則・技術知識・実務事例を、継続的に管理する場所です。
+    </p>
+  </section>
+  <section class="architecture-map" aria-labelledby="map-title">
+    <div class="section-heading">
+      <span>01 / SYSTEM VIEW</span>
+      <h2 id="map-title">生成の前後まで、設計する。</h2>
+    </div>
+    <ol>
+      {steps.map((step, i) => (
+        <li>
+          <span>{String(i + 1).padStart(2, "0")}</span>
+          <strong>{step}</strong>
+        </li>
+      ))}
+    </ol>
+    <p>生成・検証・採否判断・確定処理を分離し、運用から次の設計へ戻します。</p>
+  </section>
+  <section>
+    <div class="section-heading">
+      <span>02 / KNOWLEDGE INDEX</span>
+      <h2>設計体系を読む</h2>
+    </div>
+    <div class="section-index">
+      {sections.map(([key, name, desc], i) => (
+        <a href={url(key)}>
+          <span class="index-number">{String(i + 1).padStart(2, "0")}</span>
+          <div>
+            <h3>{name}</h3>
+            <p>{desc}</p>
+          </div>
+          <span aria-hidden="true">↗</span>
+        </a>
+      ))}
+    </div>
+  </section>
+  <section class="reading-path">
+    <h2>全体設計から読む</h2>
+    <ol>
+      <li>
+        <a href={url("foundations/applicability-and-delegation")}>
+          AI適用可否と委任レベルの設計
+        </a>
+      </li>
+      <li>
+        <a href={url("architecture/reference-architecture")}>
+          AI業務システムの参照アーキテクチャ
+        </a>
+      </li>
+      <li>
+        <a href={url("evaluation-hitl/responsibility-and-hitl")}>
+          AI出力の責任境界とHITL
+        </a>
+      </li>
+      <li>
+        <a href={url("architecture/change-and-reevaluation")}>
+          AIシステムの変更・再評価設計
+        </a>
+      </li>
+    </ol>
+  </section>
+</Site>

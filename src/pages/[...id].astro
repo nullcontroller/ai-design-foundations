@@ -1,0 +1,140 @@
+---
+import { getCollection, render } from "astro:content";
+import Site from "../layouts/Site.astro";
+import MarkdownBody from "../components/MarkdownBody.astro";
+import { url, label, publicEntry } from "../lib/site";
+export async function getStaticPaths() {
+  return (await getCollection("pages", publicEntry)).map((entry) => ({
+    params: { id: entry.id },
+    props: { entry },
+  }));
+}
+const { entry } = Astro.props;
+const d = entry.data;
+const { headings } = await render(entry);
+const all = await getCollection("pages", publicEntry);
+const series = d.series
+  ? all
+      .filter((e) => e.data.series === d.series)
+      .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0))
+  : [];
+const position = series.findIndex((e) => e.id === entry.id);
+const previous = series[position - 1],
+  next = series[position + 1];
+const related = all
+  .filter(
+    (e) => e.id !== entry.id && !e.data.series && e.data.section === d.section,
+  )
+  .slice(0, 3);
+const sourceFile =
+  "https://github.com/nullcontroller/ai-design-foundations/blob/master/src/content/" +
+  entry.id +
+  ".md";
+---
+
+<Site
+  title={d.title}
+  summary={d.summary || d.title}
+  canonical={d.canonical}
+  section={d.section}
+  headings={headings}
+>
+  <nav class="breadcrumb">
+    <a href={url()}>Home</a> / <a href={url(d.section)}>{label(d.section)}</a>
+  </nav>
+  <article data-pagefind-body>
+    <header class="document-header">
+      <p class="eyebrow">
+        {label(d.section)} / {d.kind}
+      </p>
+      <h1 data-pagefind-meta="title">{d.title}</h1>
+      {d.summary && (
+        <p class="lead" data-pagefind-meta="description">
+          {d.summary}
+        </p>
+      )}
+      <p class="meta">
+        <span class="status">{d.status}</span>
+        {d.published_at && (
+          <span>
+            公開：<time>{d.published_at}</time>
+          </span>
+        )}
+        {d.updated_at && (
+          <span>
+            更新：<time>{d.updated_at}</time>
+          </span>
+        )}
+      </p>
+      <p class="tags" data-pagefind-meta="tags">
+        {d.tags.join(" / ")}
+      </p>
+    </header>
+    {d.cover && (
+      <img
+        class="book-cover"
+        src={"/ai-design-foundations" + d.cover}
+        alt={d.title + " 表紙"}
+        width="180"
+        loading="lazy"
+      />
+    )}
+    {series.length > 0 && (
+      <nav class="series" aria-label="シリーズ目次" data-pagefind-ignore>
+        <p>{d.series_title}</p>
+        <ol>
+          {series.map((e) => (
+            <li>
+              <a
+                href={url(e.id)}
+                aria-current={e.id === entry.id ? "page" : undefined}
+              >
+                {e.data.order === 0 ? "シリーズ概要" : e.data.title}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    )}
+    <div class="prose">
+      <MarkdownBody html={entry.rendered?.html || ""} />
+    </div>
+  </article>
+  {series.length > 0 && (
+    <nav class="pagination" aria-label="前後の章">
+      {previous ? (
+        <a href={url(previous.id)}>← 前：{previous.data.title}</a>
+      ) : (
+        <span />
+      )}
+      {next && <a href={url(next.id)}>次：{next.data.title} →</a>}
+    </nav>
+  )}
+  <footer class="document-footer">
+    {d.source && (
+      <p>
+        {d.source.type === "zenn" ? "Originally published on Zenn" : "移行元"}：
+        <a href={d.source.url}>
+          {d.source.type === "zenn"
+            ? "Zennの原文"
+            : d.source.type === "wiki"
+              ? "GitHub Wiki"
+              : "Repository"}
+        </a>
+      </p>
+    )}
+    <a href={sourceFile}>GitHub上のMarkdown原文</a>
+  </footer>
+  {related.length > 0 && (
+    <section class="related">
+      <h2>同じ領域のコンテンツ</h2>
+      <ul>
+        {related.map((e) => (
+          <li>
+            <a href={url(e.id)}>{e.data.title}</a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+</Site>

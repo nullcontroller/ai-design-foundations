@@ -1,0 +1,39 @@
+---
+import { getCollection } from "astro:content";
+import Site from "../../layouts/Site.astro";
+import { sections, url, publicEntry } from "../../lib/site";
+export function getStaticPaths() {
+  return sections.map(([section, title, summary]) => ({
+    params: { section },
+    props: { title, summary },
+  }));
+}
+const { title, summary } = Astro.props;
+const entries = (await getCollection("pages", publicEntry)).filter(
+  (e) =>
+    e.data.section === Astro.params.section &&
+    (!e.data.series || e.data.order === 0),
+);
+---
+
+<Site title={title} summary={summary} section={Astro.params.section}>
+  <nav class="breadcrumb">
+    <a href={url()}>Home</a> / {title}
+  </nav>
+  <h1>{title}</h1>
+  <p class="lead">{summary}</p>
+  <div class="document-list">
+    {entries.map((e) => (
+      <article>
+        <div class="meta">
+          {e.data.series ? "SERIES / BOOK" : e.data.kind} · {e.data.status}
+        </div>
+        <h2>
+          <a href={url(e.id)}>{e.data.title}</a>
+        </h2>
+        {e.data.summary && <p>{e.data.summary}</p>}
+        <p class="tags">{e.data.tags.join(" / ")}</p>
+      </article>
+    ))}
+  </div>
+</Site>

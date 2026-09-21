@@ -1,0 +1,30 @@
+---
+import Site from "../layouts/Site.astro";
+import "@pagefind/default-ui/css/ui.css";
+---
+
+<Site title="検索">
+  <h1>設計知識を検索</h1>
+  <p>タイトル・見出し・本文・タグから検索できます。</p>
+  <div id="search"></div>
+  <noscript>
+    検索にはJavaScriptが必要です。左のカテゴリ一覧からも各文書を閲覧できます。
+  </noscript>
+</Site>
+<script>
+  import { PagefindUI } from "@pagefind/default-ui";
+  new PagefindUI({
+    element: "#search",
+    bundlePath: "/ai-design-foundations/pagefind/",
+    showSubResults: true,
+    translations: {
+      placeholder: "キーワードを入力",
+      clear_search: "クリア",
+      load_more: "さらに表示",
+      search_label: "サイト内検索",
+      zero_results: "「[SEARCH_TERM]」の検索結果はありません",
+      one_result: "「[SEARCH_TERM]」の検索結果：1件",
+      many_results: "「[SEARCH_TERM]」の検索結果：[COUNT]件",
+    },
+  });
+</script>
