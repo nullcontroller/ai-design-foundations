@@ -1,0 +1,36 @@
+---
+import { getCollection } from "astro:content";
+import Site from "../../layouts/Site.astro";
+import ContentIndex from "../../components/ContentIndex.astro";
+import RelatedPublications from "../../components/RelatedPublications.astro";
+import { designTopics, relatedPublications } from "../../lib/navigation";
+import { publicEntry, url } from "../../lib/site";
+const all = await getCollection("pages", publicEntry);
+---
+
+<Site title="AI Design" section="ai-design">
+  <h1>AI Design</h1>
+  <p class="lead">AIの性質を前提として、業務システムへどう組み込むか。</p>
+  <p>
+    適用判断から責任境界、評価、運用までを扱う現在の設計知識です。数学の章を先に読まなくても、必要なテーマから参照できます。
+  </p>
+  <nav class="topic-navigation" aria-label="AI Designのテーマ">
+    {designTopics.map(([key, title]) => (
+      <a href={url("ai-design/" + key)}>{title}</a>
+    ))}
+  </nav>
+  {designTopics.map(([key, title, summary]) => (
+    <section>
+      <h2>
+        <a href={url("ai-design/" + key)}>{title}</a>
+      </h2>
+      <p>{summary}</p>
+      <ContentIndex
+        entries={all.filter(
+          (e) => e.data.layer === "ai-design" && e.data.design_topic === key,
+        )}
+      />
+    </section>
+  ))}
+  <RelatedPublications entries={relatedPublications(all, "applicability")} />
+</Site>

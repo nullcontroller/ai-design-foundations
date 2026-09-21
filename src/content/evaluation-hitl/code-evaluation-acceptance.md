@@ -1,6 +1,7 @@
 ---
 summary: "コード生成を変更候補の生成として扱い、Compiler・テスト・静的解析・レビューで採否を決める。独立した根拠と実行制御を組み合わせ、未確認の変更を本番へ流さない工程を設計する。"
-layer: design
+layer: ai-design
+design_topic: evaluation-hitl
 title: コード生成AIの評価と採用設計
 kind: guide
 section: evaluation-hitl

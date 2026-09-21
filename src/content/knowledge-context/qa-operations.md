@@ -1,6 +1,7 @@
 ---
 summary: "QAチャットをKnowledgeへの対話型インターフェースとして捉える。検索・回答・拒否・移管・記録・知識更新の循環を、責務と変更手順を持つ運用システムとして設計する。"
-layer: practice
+layer: ai-design
+design_topic: lifecycle-operations
 title: QAチャット運用思想
 kind: guide
 section: knowledge-context

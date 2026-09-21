@@ -1,6 +1,7 @@
 ---
 summary: "誤りの影響、検証可能性、取消し可能性、情報、権限からAIの適用可否を判断する。AIを使わない選択も含む委任レベルを整理し、価値が得られる最小の委任範囲を選ぶ。"
-layer: design
+layer: ai-design
+design_topic: applicability
 title: AI適用可否と委任レベルの設計
 kind: principle
 section: foundations

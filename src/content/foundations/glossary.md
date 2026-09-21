@@ -1,6 +1,6 @@
 ---
 summary: "設計体系で使う用語と数式の意味を揃える索引。数学的定義、評価指標、説明モデル、設計仮説を区別し、各ページの前提と記号定義を確認するために使う。"
-layer: theory
+layer: reference
 title: 用語・数式索引
 kind: principle
 section: foundations

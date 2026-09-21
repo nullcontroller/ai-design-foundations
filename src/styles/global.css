@@ -781,3 +781,88 @@ blockquote {
   padding: 0.7rem;
   font: inherit;
 }
+
+/* Phase 3: keep the document layout; separate navigation and index roles. */
+.nav-divider {
+  border-top: 1px solid var(--line);
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+}
+.topic-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem 1.5rem;
+  margin: 1.5rem 0;
+}
+.related-publications {
+  margin-top: 3rem;
+  border-top: 1px solid var(--line);
+  padding-top: 1rem;
+}
+.related-publications > p,
+.publication-date {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.case-study-index {
+  margin-top: 2.5rem;
+  border-top: 1px solid var(--line);
+  padding-top: 1rem;
+}
+.publication-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 1rem;
+  margin: 2rem 0 1rem;
+}
+.publication-filters label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.85rem;
+}
+.publication-filters select {
+  max-width: 100%;
+  padding: 0.5rem;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  font: inherit;
+}
+.publication-list > [hidden] {
+  display: none;
+}
+.reading-route {
+  list-style: none;
+  padding: 0;
+}
+.reading-route li {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.reading-route li + li::before {
+  content: "↓";
+  color: var(--muted);
+  display: block;
+}
+.reading-route span {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+@media (min-width: 761px) {
+  .sidebar > details > summary {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .sidebar nav {
+    display: block;
+  }
+  .sidebar .nav-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}

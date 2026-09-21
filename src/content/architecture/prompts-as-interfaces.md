@@ -1,6 +1,7 @@
 ---
 summary: "複数AI間で成果物・根拠・状態・版を受け渡す契約としてプロンプトを捉える。型と意味の検証、権限、重複実行、誤りの伝播を含む接続設計を扱う。"
-layer: design
+layer: ai-design
+design_topic: architecture
 title: AI間インターフェースとしてのプロンプト
 kind: architecture
 section: architecture

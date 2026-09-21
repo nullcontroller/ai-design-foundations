@@ -1,6 +1,6 @@
 ---
 summary: "移行前READMEにまとめられていた設計体系の全体像。確率的な生成、Knowledge、評価、責任境界、開発工程、Lifecycleの関係と、各テーマへの入口を示す。"
-layer: design
+layer: reference
 title: AI Design Foundations — 設計体系の原点
 kind: guide
 section: foundations

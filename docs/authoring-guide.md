@@ -15,7 +15,8 @@ title: "採否判断の境界"
 summary: "このページが扱う範囲を簡潔に記述する。"
 kind: principle
 section: foundations
-layer: design
+layer: ai-design
+design_topic: applicability
 status: draft
 order: 10
 tags:
@@ -30,19 +31,27 @@ updated_at: "2026-09-21"
 新規記事に出典や日付を捏造しません。公開日・更新日は不明なら省略できます。
 `summary`は必須です。本文で実際に扱う内容を1〜2文で要約し、タイトルから推測しません。すべての一覧・章目次・前後リンク・検索結果はこの値だけを概要として表示します。本文を変更したら概要も確認してください。
 
-## Layer
+## Layer / Topic / Source
 
-`section`はテーマ、`layer`は知識体系での位置付けです。必須の列挙値としてschemaで検証します。
+layerは知識の役割、sectionは既存のテーマとURL用分類、source.typeは出典です。これらを混同しません。
 
-| layer       | 役割                                  |
-| ----------- | ------------------------------------- |
-| theory      | AIの振る舞いを理解する理論・数学      |
-| design      | 業務システムへ組み込む設計体系        |
-| practice    | 組織・開発・運用への適用              |
-| case        | 個別の実務事例                        |
-| publication | 独立した記事・Book・Essayなどの公開物 |
+| layer | 役割 |
+|---|---|
+| ai-design | 現在の設計知識の正本 |
+| ai-mathematics | AIの振る舞いを説明する数学・モデル基礎 |
+| practice | 組織・業務・開発への適用 |
+| case | 実務事例 |
+| publication | 独立した記事・Book・Essay |
+| project | プロジェクトの記録 |
+| reference | 用語・参照資料 |
 
-今回、原文を保持して移行したZenn記事・Book・章は`publication`とし、設計体系の正本とは区別します。実務事例のテーマは`section: cases`のままです。出典の有無だけで将来のlayerを自動判定しません。再編集した設計文書や新規事例は、その役割に応じてdesignやcaseを選び、出典とcanonicalは別途管理します。
+AI Designはdesign_topicも必須です。applicability / responsibility-control / architecture / knowledge-context / evaluation-hitl / software-engineering / lifecycle-operationsから選びます。
+既存URLはlayerに合わせて移動しません。旧foundationsの文書も同じURLを維持します。新規本文の物理配置と公開URLは編集時に決め、公開後は維持します。
+
+記事一覧は出版物の横断ビューです。Zenn由来のLLM確率モデル記事のように、layerがai-mathematicsでも出版元情報を保持したまま掲載できます。出典だけでlayerを自動判定しません。
+PublicationのTypeはBook、kindがessayならEssay、それ以外はArticle。sourceの元typeは保持し、章はBookの目次から辿ります。未確認の公開日は捏造せず、判明している月と未確認の旨を表示します。
+
+AI Designの正本一覧にはZennを混在させません。Related Publicationsはsrc/lib/navigation.tsの明示的な文書ID対応表で管理します。Case Studiesも同ファイルでBook・注目章・関連原則を接続し、本文は複製しません。
 
 ## Section / kind / status
 

@@ -1,0 +1,21 @@
+---
+import { getCollection } from "astro:content";
+import Site from "../layouts/Site.astro";
+import ContentIndex from "../components/ContentIndex.astro";
+import { publicEntry, url } from "../lib/site";
+const entries = (await getCollection("pages", publicEntry)).filter(
+  (e) => e.data.layer === "ai-mathematics",
+);
+---
+
+<Site title="AI数学論" section="ai-mathematics">
+  <h1>AI数学論</h1>
+  <p class="lead">
+    AIがなぜそう振る舞うのかを、数学・確率・モデルから理解する。
+  </p>
+  <p>
+    出力の揺らぎ、条件付き確率、Temperature、Hallucination、コード生成モデルの仕組みを扱います。業務への組込みは
+    <a href={url("ai-design")}>AI Design</a>から直接読むこともできます。
+  </p>
+  <ContentIndex entries={entries} />
+</Site>

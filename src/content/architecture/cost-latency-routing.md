@@ -1,6 +1,7 @@
 ---
 summary: "モデルの単価だけでなく、検証・再試行・人間修正まで含む総費用で処理経路を選ぶ。品質・Latency・リスクを踏まえたルーティングと評価を整理する。"
-layer: design
+layer: ai-design
+design_topic: architecture
 title: AIコスト・Latency・モデルルーティング設計
 kind: architecture
 section: architecture

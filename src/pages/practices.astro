@@ -1,0 +1,23 @@
+---
+import { getCollection } from "astro:content";
+import Site from "../layouts/Site.astro";
+import ContentIndex from "../components/ContentIndex.astro";
+import RelatedPublications from "../components/RelatedPublications.astro";
+import { publicEntry } from "../lib/site";
+const all = await getCollection("pages", publicEntry);
+---
+
+<Site title="Practices" section="practices">
+  <h1>Practices</h1>
+  <p class="lead">設計原則を組織・業務・開発へ適用する。</p>
+  <h2>業務・開発プロセスへの組込み</h2>
+  <ContentIndex entries={all.filter((e) => e.data.layer === "practice")} />
+  <p>AI導入・教育・横展開については、現在は下記の公開記事で扱っています。</p>
+  <RelatedPublications
+    entries={all.filter(
+      (e) =>
+        e.data.section === "practices" &&
+        e.data.source?.original_type === "article",
+    )}
+  />
+</Site>

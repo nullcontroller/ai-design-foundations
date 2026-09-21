@@ -1,6 +1,7 @@
 ---
 summary: "完了条件、Context、検証、影響範囲、復旧、人間レビューの費用からコード生成の適用を判断する。生成量ではなく、安全に採用できた変更と従来手段に対する期待効用で評価する。"
-layer: design
+layer: ai-design
+design_topic: software-engineering
 title: コード生成を使うべき場所
 kind: guide
 section: software-engineering

@@ -1,0 +1,22 @@
+---
+import { getCollection } from "astro:content";
+import Site from "../layouts/Site.astro";
+import ContentIndex from "../components/ContentIndex.astro";
+import { publicEntry, url } from "../lib/site";
+const entries = (await getCollection("pages", publicEntry)).filter(
+  (e) => e.data.layer === "reference",
+);
+---
+
+<Site title="Reference" section="reference">
+  <h1>Reference</h1>
+  <p class="lead">用語・数式の定義と、設計知識の参照資料。</p>
+  <p>
+    初めての方は<a href={url("start-here")}>Start Here</a>
+    からも参照できます。旧README・Wikiの全体像は、移行元の記録として保持しています。
+  </p>
+  <ContentIndex entries={entries} />
+  <p>
+    <a href={url("authoring")}>Authoring Guide — 執筆と公開の仕様</a>
+  </p>
+</Site>

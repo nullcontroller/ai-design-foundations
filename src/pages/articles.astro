@@ -1,33 +1,119 @@
 ---
 import { getCollection } from "astro:content";
 import Site from "../layouts/Site.astro";
-import ContentLink from "../components/ContentLink.astro";
-import { publicEntry, url } from "../lib/site";
-const articles = (await getCollection("pages", publicEntry))
-  .filter((e) => e.data.source?.original_type === "article")
+import PublicationLink from "../components/PublicationLink.astro";
+import {
+  isPublication,
+  publicationType,
+  publicationTopics,
+} from "../lib/navigation";
+import { publicEntry, url, sourceLabel } from "../lib/site";
+const entries = (await getCollection("pages", publicEntry))
+  .filter(isPublication)
   .sort((a, b) =>
-    (b.data.published_at || "").localeCompare(a.data.published_at || ""),
+    (
+      b.data.published_at ||
+      b.data.source?.publication_month ||
+      ""
+    ).localeCompare(
+      a.data.published_at || a.data.source?.publication_month || "",
+    ),
   );
+const sources = [
+  ...new Set(entries.map((e) => sourceLabel(e.data.source?.type))),
+];
+const topics = [...new Set(entries.flatMap(publicationTopics))];
 ---
 
 <Site title="記事一覧" section="articles">
-  <nav class="breadcrumb">
-    <a href={url()}>Home</a> / 記事一覧
-  </nav>
   <h1>記事一覧</h1>
-  <p class="lead">
-    技術記事・論考をカテゴリ横断で読む。全{articles.length}本。
-  </p>
+  <p class="lead">Articles・Books・Essaysを横断して読むPublication Hub。</p>
   <p>
-    市場・キャリア等の論考は<a href={url("essays")}>Essays</a>
-    、章構成で読むコンテンツは<a href={url("books")}>Books</a>にまとめています。
+    独立した公開物を、形式・出典・テーマから探せます。設計知識の正本は
+    <a href={url("ai-design")}>AI Design</a>、事例の適用過程は
+    <a href={url("cases")}>Case Studies</a>へ。
   </p>
-  <div class="document-list">
-    {articles.map((e) => (
-      <article>
-        <ContentLink entry={e} />
-        <p class="tags">{e.data.tags.join(" / ")}</p>
+  <nav class="topic-navigation" aria-label="出版形式">
+    <a href={url("books")}>Zenn Books / シリーズ</a>
+    <a href={url("essays")}>Essays</a>
+  </nav>
+  <form
+    class="publication-filters"
+    id="publication-filters"
+    aria-label="記事の絞り込み"
+  >
+    <label>
+      Type
+      <select name="type">
+        <option value="">すべて</option>
+        <option>Article</option>
+        <option>Book</option>
+        <option>Essay</option>
+      </select>
+    </label>
+    <label>
+      Source
+      <select name="source">
+        <option value="">すべて</option>
+        {sources.map((x) => (
+          <option>{x}</option>
+        ))}
+      </select>
+    </label>
+    <label>
+      Topic
+      <select name="topic">
+        <option value="">すべて</option>
+        {topics.map((x) => (
+          <option>{x}</option>
+        ))}
+      </select>
+    </label>
+    <button type="reset">解除</button>
+  </form>
+  <p id="publication-count" role="status" aria-live="polite">
+    {entries.length}件
+  </p>
+  <noscript>JavaScriptが無効の場合は全件を表示します。</noscript>
+  <div class="document-list publication-list">
+    {entries.map((entry) => (
+      <article
+        data-publication
+        data-type={publicationType(entry)}
+        data-source={sourceLabel(entry.data.source?.type)}
+        data-topic={JSON.stringify(publicationTopics(entry))}
+      >
+        <PublicationLink entry={entry} heading="h2" />
       </article>
     ))}
   </div>
 </Site>
+<script>
+  const form = document.querySelector<HTMLFormElement>("#publication-filters")!;
+  const items = [
+    ...document.querySelectorAll<HTMLElement>("[data-publication]"),
+  ];
+  function filter() {
+    const data = new FormData(form);
+    let count = 0;
+    for (const item of items) {
+      const show = ["type", "source", "topic"].every(
+        (key) =>
+          !data.get(key) ||
+          (key === "topic"
+            ? JSON.parse(item.dataset.topic || "[]").includes(data.get(key))
+            : data.get(key) === item.dataset[key]),
+      );
+      item.hidden = !show;
+      if (show) count++;
+    }
+    document.querySelector("#publication-count")!.textContent = count
+      ? count + "件"
+      : "該当する公開物はありません";
+  }
+  form.addEventListener("change", filter);
+  form.addEventListener("reset", () => {
+    for (const select of form.querySelectorAll("select")) select.value = "";
+    filter();
+  });
+</script>

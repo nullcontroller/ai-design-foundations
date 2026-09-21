@@ -1,7 +1,8 @@
 ---
 import "../styles/global.css";
 import "katex/dist/katex.min.css";
-import { sections, url } from "../lib/site";
+import { url } from "../lib/site";
+import { navigation } from "../lib/navigation";
 interface Props {
   title: string;
   summary?: string;
@@ -51,32 +52,21 @@ const {
     <div class="shell">
       <aside class="sidebar" aria-label="主要ナビゲーション">
         <details open>
-          <summary>設計体系</summary>
+          <summary>ナビゲーション</summary>
           <nav>
-            {sections.map(([key, name, desc]) => (
-              <a
-                class:list={[key === "essays" && "secondary"]}
-                href={url(key)}
-                aria-current={section === key ? "page" : undefined}
-              >
-                <span>{name}</span>
-                <small>{desc}</small>
-              </a>
+            {navigation.map((group, i) => (
+              <div class:list={["nav-group", i > 0 && "nav-divider"]}>
+                {group.map((item) => (
+                  <a
+                    href={url(item.path)}
+                    aria-current={section === item.path ? "page" : undefined}
+                  >
+                    <span>{item.title}</span>
+                    <small>{item.summary}</small>
+                  </a>
+                ))}
+              </div>
             ))}
-            <a
-              href={url("articles")}
-              aria-current={section === "articles" ? "page" : undefined}
-            >
-              <span>記事一覧</span>
-              <small>技術記事・論考を横断して読む</small>
-            </a>
-            <a
-              href={url("books")}
-              aria-current={section === "books" ? "page" : undefined}
-            >
-              <span>Books / シリーズ</span>
-              <small>章構成で読む設計原則と実務事例</small>
-            </a>
           </nav>
         </details>
         <p class="sidebar-note">
@@ -113,8 +103,13 @@ const {
       · Markdownで管理する設計知識
     </footer>
     <script>
-      if (matchMedia("(max-width: 760px)").matches)
-        document.querySelector(".sidebar details")?.removeAttribute("open");
+      const navigationViewport = matchMedia("(max-width: 760px)");
+      const syncNavigation = () =>
+        document
+          .querySelector(".sidebar details")
+          ?.toggleAttribute("open", !navigationViewport.matches);
+      syncNavigation();
+      navigationViewport.addEventListener("change", syncNavigation);
       const theme = document.querySelector("#theme");
       try {
         const saved = localStorage.getItem("adf-theme");

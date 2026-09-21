@@ -1,6 +1,6 @@
 ---
 summary: "LLMを次トークンの確率モデルとして捉え、出力の揺らぎと制約を整理する。プロンプトやRAGを小技ではなく、不確実性を前提とした出力分布の設計として考える。"
-layer: publication
+layer: ai-mathematics
 title: LLMを確率モデルとして設計するという立場
 kind: principle
 section: foundations

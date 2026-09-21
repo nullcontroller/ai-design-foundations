@@ -1,9 +1,16 @@
 ---
 import { getCollection, render } from "astro:content";
 import Site from "../layouts/Site.astro";
+import RelatedPublications from "../components/RelatedPublications.astro";
+import {
+  layerPath,
+  contentCategory,
+  relatedPublications,
+  topicLabel,
+} from "../lib/navigation";
 import ContentLink from "../components/ContentLink.astro";
 import MarkdownBody from "../components/MarkdownBody.astro";
-import { url, label, layerLabel, sourceLabel, publicEntry } from "../lib/site";
+import { url, layerLabel, sourceLabel, publicEntry } from "../lib/site";
 export async function getStaticPaths() {
   return (await getCollection("pages", publicEntry)).map((entry) => ({
     params: { id: entry.id },
@@ -24,7 +31,13 @@ const previous = series[position - 1],
   next = series[position + 1];
 const related = all
   .filter(
-    (e) => e.id !== entry.id && !e.data.series && e.data.section === d.section,
+    (e) =>
+      e.id !== entry.id &&
+      !e.data.series &&
+      e.data.layer === d.layer &&
+      (d.design_topic
+        ? e.data.design_topic === d.design_topic
+        : e.data.section === d.section),
   )
   .slice(0, 3);
 const sourceFile =
@@ -37,16 +50,26 @@ const sourceFile =
   title={d.title}
   summary={d.summary}
   canonical={d.canonical}
-  section={d.section}
+  section={layerPath(d.layer)}
   headings={headings}
 >
   <nav class="breadcrumb">
-    <a href={url()}>Home</a> / <a href={url(d.section)}>{label(d.section)}</a>
+    <a href={url()}>Home</a> /{" "}
+    <a href={url(layerPath(d.layer))}>{layerLabel(d.layer)}</a>
+    {d.design_topic && (
+      <>
+        {" "}
+        /{" "}
+        <a href={url("ai-design/" + d.design_topic)}>
+          {topicLabel(d.design_topic)}
+        </a>
+      </>
+    )}
   </nav>
   <article data-pagefind-body>
     <header class="document-header">
       <p class="eyebrow">
-        <span data-pagefind-meta="category">{label(d.section)}</span> /{" "}
+        <span data-pagefind-meta="category">{contentCategory(entry)}</span> /{" "}
         <span data-pagefind-meta="layer">{layerLabel(d.layer)}</span> / {d.kind}
       </p>
       <h1 data-pagefind-meta="title">{d.title}</h1>
@@ -117,6 +140,14 @@ const sourceFile =
         </div>
       )}
     </nav>
+  )}
+  {d.layer === "ai-design" && (
+    <RelatedPublications entries={relatedPublications(all, d.design_topic)} />
+  )}
+  {d.source?.type === "zenn" && d.section === "cases" && (
+    <p>
+      <a href={url("cases")}>Case Studies — 適用テーマ・設計原則から読む</a>
+    </p>
   )}
   <footer class="document-footer">
     {d.source && (

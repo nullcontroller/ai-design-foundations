@@ -1,6 +1,7 @@
 ---
 summary: "質問から検索・生成・検証・承認・実行までを記録し、誤回答の原因を追跡できる運用を考える。技術指標と品質指標を分け、SLOと異常時の対応を設計する。"
-layer: practice
+layer: ai-design
+design_topic: lifecycle-operations
 title: AIシステムのオブザーバビリティとSLO設計
 kind: architecture
 section: architecture

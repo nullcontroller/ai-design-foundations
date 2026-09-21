@@ -1,0 +1,40 @@
+---
+import { getCollection } from "astro:content";
+import Site from "../layouts/Site.astro";
+import ContentIndex from "../components/ContentIndex.astro";
+import { publicEntry, url } from "../lib/site";
+const all = await getCollection("pages", publicEntry);
+---
+
+<Site title="Start Here">
+  <h1>Start Here</h1>
+  <p class="lead">仕組みの理解から、設計・実践・事例へ。</p>
+  <ol class="reading-route">
+    <li>
+      <a href={url("ai-mathematics")}>AI数学論</a> — なぜそう振る舞うか
+    </li>
+    <li>
+      <a href={url("ai-design")}>AI Design</a> — その性質を前提にどう設計するか
+    </li>
+    <li>
+      <a href={url("practices")}>Practices</a> —
+      業務・組織・開発へどう適用するか
+    </li>
+    <li>
+      <a href={url("cases")}>Case Studies</a> — 実際にどう適用したか
+    </li>
+  </ol>
+  <p>
+    これは読み方の一例です。業務の設計課題がある場合は、AI
+    Designから直接読めます。
+  </p>
+  <h2>全体像の参照資料</h2>
+  <ContentIndex
+    entries={all.filter((e) =>
+      [
+        "foundations/design-system-overview",
+        "foundations/wiki-overview",
+      ].includes(e.id),
+    )}
+  />
+</Site>

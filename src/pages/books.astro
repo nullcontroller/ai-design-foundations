@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Site from "../layouts/Site.astro";
+import PublicationLink from "../components/PublicationLink.astro";
 import ContentLink from "../components/ContentLink.astro";
 import { publicEntry, url, base } from "../lib/site";
 const all = await getCollection("pages", publicEntry);
@@ -11,11 +12,14 @@ const chapters = (series: string) =>
     .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0));
 ---
 
-<Site title="Books / シリーズ" section="books">
+<Site title="Books / シリーズ" section="articles">
   <nav class="breadcrumb">
     <a href={url()}>Home</a> / Books
   </nav>
   <h1>Books / シリーズ</h1>
+  <p>
+    <a href={url("articles")}>記事一覧 / Publication Hubへ</a>
+  </p>
   <p class="lead">
     設計原則と実務事例を、章の流れに沿って読む。全{books.length}冊。
   </p>
@@ -33,7 +37,7 @@ const chapters = (series: string) =>
           </a>
         )}
         <div>
-          <ContentLink entry={book} />
+          <PublicationLink entry={book} heading="h2" />
           <p class="meta">{chapters(book.data.series!).length}章</p>
           <details>
             <summary>全章目次</summary>

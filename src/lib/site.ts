@@ -1,5 +1,5 @@
 export const sections = [
-  ["foundations", "Foundations", "変わりにくい設計原則"],
+  ["foundations", "AI設計原則", "新しい入口はStart Hereから"],
   ["architecture", "Architecture", "業務システムの全体設計"],
   ["knowledge-context", "Knowledge / Context", "知識・根拠・情報環境"],
   ["evaluation-hitl", "Evaluation / HITL", "検証・レビュー・採否判断"],
@@ -16,8 +16,10 @@ export const publicEntry = (e: { data: { status: string } }) =>
   e.data.status !== "draft";
 
 export const layers = {
-  theory: "Theory / 理論",
-  design: "Design / 設計体系",
+  "ai-mathematics": "AI数学論",
+  "ai-design": "AI Design",
+  project: "Project",
+  reference: "Reference",
   practice: "Practice / 実践",
   case: "Case / 実務事例",
   publication: "Publication / 公開物",

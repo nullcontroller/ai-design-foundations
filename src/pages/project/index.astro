@@ -1,0 +1,13 @@
+---
+import Site from "../../layouts/Site.astro";
+import { url } from "../../lib/site";
+---
+
+<Site title="Project" section="project">
+  <h1>Project</h1>
+  <p class="lead">プロジェクトと、その過程の記録。</p>
+  <p>現在、このサイトに掲載しているプロジェクトはありません。</p>
+  <p>
+    <a href={url("project/journal")}>Project Journal — 検討・実装の記録</a>
+  </p>
+</Site>

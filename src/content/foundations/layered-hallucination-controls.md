@@ -1,6 +1,7 @@
 ---
 summary: "誤答の生成、見逃し、採用・実行を分け、業務への流出リスクを多層で制御する。根拠取得・検証・回答拒否・人への移管・実行権限を組み合わせた設計を示す。"
-layer: design
+layer: ai-design
+design_topic: responsibility-control
 title: ハルシネーションの多層制御設計
 kind: principle
 section: foundations

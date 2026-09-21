@@ -1,0 +1,45 @@
+---
+import { getCollection } from "astro:content";
+import Site from "../layouts/Site.astro";
+import ContentLink from "../components/ContentLink.astro";
+import PublicationLink from "../components/PublicationLink.astro";
+import { caseStudies } from "../lib/navigation";
+import { publicEntry } from "../lib/site";
+const all = await getCollection("pages", publicEntry);
+---
+
+<Site title="Case Studies" section="cases">
+  <h1>Case Studies</h1>
+  <p class="lead">実際に何へ適用し、どこで判断したか。</p>
+  <p>
+    実務事例を適用テーマと設計原則から読むための索引です。本文は元のBook・章へつなぎ、同じ内容を複製しません。
+  </p>
+  {caseStudies.map((study) => {
+    const book = all.find((e) => e.id === study.book)!;
+    return (
+      <section class="case-study-index">
+        <p class="eyebrow">{study.topics.join(" / ")}</p>
+        <h2>{book.data.title}</h2>
+        <p>{book.data.summary}</p>
+        <h3>適用・判断の過程を読む</h3>
+        <ol class="content-index">
+          {study.chapters.map((id) => (
+            <li>
+              <ContentLink entry={all.find((e) => e.id === id)!} heading="p" />
+            </li>
+          ))}
+        </ol>
+        <h3>接続する設計原則</h3>
+        <ul class="content-index">
+          {study.design.map((id) => (
+            <li>
+              <ContentLink entry={all.find((e) => e.id === id)!} heading="p" />
+            </li>
+          ))}
+        </ul>
+        <h3>Publicationとして読む</h3>
+        <PublicationLink entry={book} heading="p" />
+      </section>
+    );
+  })}
+</Site>

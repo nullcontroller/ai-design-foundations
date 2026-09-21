@@ -1,42 +1,91 @@
 ---
 import { getCollection } from "astro:content";
 import Site from "../../layouts/Site.astro";
-import ContentLink from "../../components/ContentLink.astro";
-import { sections, url, publicEntry } from "../../lib/site";
+import ContentIndex from "../../components/ContentIndex.astro";
+import RelatedPublications from "../../components/RelatedPublications.astro";
+import PublicationLink from "../../components/PublicationLink.astro";
+import { sections, publicEntry, url } from "../../lib/site";
+import { isPublication } from "../../lib/navigation";
 export function getStaticPaths() {
-  return sections.map(([section, title, summary]) => ({
-    params: { section },
-    props: { title, summary },
-  }));
+  return sections
+    .filter(([key]) => !["cases", "practices"].includes(key))
+    .map(([section, title, summary]) => ({
+      params: { section },
+      props: { title, summary },
+    }));
 }
 const { title, summary } = Astro.props;
-const entries = (await getCollection("pages", publicEntry)).filter(
-  (e) =>
-    e.data.section === Astro.params.section &&
-    (!e.data.series || e.data.order === 0),
-);
+const all = await getCollection("pages", publicEntry);
+const entries = all.filter((e) => e.data.section === Astro.params.section);
+const essays = Astro.params.section === "essays";
+const oldFoundations = Astro.params.section === "foundations";
 ---
 
-<Site title={title} summary={summary} section={Astro.params.section}>
-  <nav class="breadcrumb">
-    <a href={url()}>Home</a> / {title}
-  </nav>
-  <h1>{title}</h1>
+<Site
+  title={oldFoundations ? "Start Here — 旧Foundations" : title}
+  section={essays ? "articles" : "ai-design"}
+>
+  <h1>{oldFoundations ? "Start Here — 旧Foundations" : title}</h1>
   <p class="lead">{summary}</p>
-  {Astro.params.section === "essays" && (
+  {oldFoundations ? (
+    <>
+      <p>
+        主要な入口は<a href={url("start-here")}>Start Here</a>
+        へ整理しました。既存の文書URLは引き続き利用できます。
+      </p>
+      <nav class="topic-navigation">
+        <a href={url("ai-design")}>AI Design</a>
+        <a href={url("ai-mathematics")}>AI数学論</a>
+        <a href={url("reference")}>Reference</a>
+      </nav>
+    </>
+  ) : essays ? (
     <p>
-      ここでは市場・キャリア・技術への考察{entries.length}
-      本を掲載しています。設計原則や実務に関する記事も含めて読む場合は、
-      <a href={url("articles")}>記事一覧</a>をご覧ください。
-      <a href={url("books")}>Books / シリーズ</a>も別に掲載しています。
+      <a href={url("articles")}>記事一覧</a>
+      のうち、市場・キャリア・技術への論考を読む入口です。
+    </p>
+  ) : (
+    <p>
+      設計知識の入口は
+      <a href={url("ai-design/" + Astro.params.section)}>AI Design / {title}</a>
+      です。
     </p>
   )}
-  <div class="document-list">
-    {entries.map((e) => (
-      <article>
-        <ContentLink entry={e} />
-        <p class="tags">{e.data.tags.join(" / ")}</p>
-      </article>
-    ))}
-  </div>
+  {essays ? (
+    <div class="document-list">
+      {entries.filter(isPublication).map((entry) => (
+        <article>
+          <PublicationLink entry={entry} heading="h2" />
+        </article>
+      ))}
+    </div>
+  ) : (
+    <>
+      <h2>AI Design</h2>
+      <ContentIndex
+        entries={entries.filter((e) => e.data.layer === "ai-design")}
+      />
+      {entries.some((e) => e.data.layer === "ai-mathematics") && (
+        <section>
+          <h2>
+            <a href={url("ai-mathematics")}>AI数学論へ</a>
+          </h2>
+          <ContentIndex
+            entries={entries.filter((e) => e.data.layer === "ai-mathematics")}
+          />
+        </section>
+      )}
+      {entries.some((e) => e.data.layer === "practice") && (
+        <section>
+          <h2>
+            <a href={url("practices")}>Practicesへ</a>
+          </h2>
+          <ContentIndex
+            entries={entries.filter((e) => e.data.layer === "practice")}
+          />
+        </section>
+      )}
+      <RelatedPublications entries={entries.filter(isPublication)} />
+    </>
+  )}
 </Site>

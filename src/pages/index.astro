@@ -2,12 +2,14 @@
 import { getCollection } from "astro:content";
 import Site from "../layouts/Site.astro";
 import ContentLink from "../components/ContentLink.astro";
-import { sections, url, publicEntry } from "../lib/site";
+import { url, publicEntry } from "../lib/site";
 const all = await getCollection("pages", publicEntry);
-const articleCount = all.filter(
-  (e) => e.data.source?.original_type === "article",
-).length;
-const bookCount = all.filter((e) => e.data.series && e.data.order === 0).length;
+const route = [
+  ["ai-mathematics", "AI数学論", "AIがなぜそう振る舞うのか"],
+  ["ai-design", "AI Design", "その性質を前提にどう設計するか"],
+  ["practices", "Practices", "業務・組織・開発でどう使うか"],
+  ["cases", "Case Studies", "実際にどう適用したか"],
+];
 const steps = [
   "業務目的",
   "AI適用判断",
@@ -35,14 +37,21 @@ const steps = [
       設計原則・技術知識・実務事例を、継続的に管理する場所です。
     </p>
   </section>
-  <nav class="library-links" aria-label="形式から読む">
-    <a href={url("articles")}>
-      記事一覧 <strong>{articleCount}本</strong>
-    </a>
-    <a href={url("books")}>
-      Books / シリーズ <strong>{bookCount}冊</strong>
-    </a>
-  </nav>
+  <section aria-labelledby="reading-route-title">
+    <h2 id="reading-route-title">理解から、設計・実践へ</h2>
+    <ol class="reading-route">
+      {route.map(([key, name, desc]) => (
+        <li>
+          <a href={url(key)}>{name}</a>
+          <span>{desc}</span>
+        </li>
+      ))}
+    </ol>
+    <p>
+      おすすめの流れです。AI Designから直接読み始めても構いません。
+      <a href={url("start-here")}>Start Here</a>
+    </p>
+  </section>
   <section class="architecture-map" aria-labelledby="map-title">
     <div class="section-heading">
       <span>01 / SYSTEM VIEW</span>
@@ -58,24 +67,10 @@ const steps = [
     </ol>
     <p>生成・検証・採否判断・確定処理を分離し、運用から次の設計へ戻します。</p>
   </section>
-  <section>
-    <div class="section-heading">
-      <span>02 / KNOWLEDGE INDEX</span>
-      <h2>設計体系を読む</h2>
-    </div>
-    <div class="section-index">
-      {sections.map(([key, name, desc], i) => (
-        <a href={url(key)}>
-          <span class="index-number">{String(i + 1).padStart(2, "0")}</span>
-          <div>
-            <h3>{name}</h3>
-            <p>{desc}</p>
-          </div>
-          <span aria-hidden="true">↗</span>
-        </a>
-      ))}
-    </div>
-  </section>
+  <nav class="library-links" aria-label="その他の入口">
+    <a href={url("articles")}>記事一覧 — Articles / Books / Essays</a>
+    <a href={url("reference")}>Reference — 用語・参照資料</a>
+  </nav>
   <section class="reading-path">
     <h2>全体設計から読む</h2>
     <ol class="content-index">

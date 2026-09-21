@@ -1,6 +1,7 @@
 ---
 summary: "Knowledgeの正本を一つに保ち、人向けの表示とAI向けの取得単位を分ける。識別子・条件・例外・版・根拠を共有しながら、理解と検索に適した表現を設計する。"
-layer: design
+layer: ai-design
+design_topic: knowledge-context
 title: 人向け資料とAI向け資料の分離設計
 kind: guide
 section: knowledge-context
