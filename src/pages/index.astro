@@ -1,6 +1,12 @@
 ---
+import { getCollection } from "astro:content";
 import Site from "../layouts/Site.astro";
-import { sections, url } from "../lib/site";
+import { sections, url, publicEntry } from "../lib/site";
+const all = await getCollection("pages", publicEntry);
+const articleCount = all.filter(
+  (e) => e.data.source?.original_type === "article",
+).length;
+const bookCount = all.filter((e) => e.data.series && e.data.order === 0).length;
 const steps = [
   "業務目的",
   "AI適用判断",
@@ -28,6 +34,14 @@ const steps = [
       設計原則・技術知識・実務事例を、継続的に管理する場所です。
     </p>
   </section>
+  <nav class="library-links" aria-label="形式から読む">
+    <a href={url("articles")}>
+      記事一覧 <strong>{articleCount}本</strong>
+    </a>
+    <a href={url("books")}>
+      Books / シリーズ <strong>{bookCount}冊</strong>
+    </a>
+  </nav>
   <section class="architecture-map" aria-labelledby="map-title">
     <div class="section-heading">
       <span>01 / SYSTEM VIEW</span>

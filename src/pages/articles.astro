@@ -1,0 +1,38 @@
+---
+import { getCollection } from "astro:content";
+import Site from "../layouts/Site.astro";
+import { publicEntry, url, label } from "../lib/site";
+const articles = (await getCollection("pages", publicEntry))
+  .filter((e) => e.data.source?.original_type === "article")
+  .sort((a, b) =>
+    (b.data.published_at || "").localeCompare(a.data.published_at || ""),
+  );
+---
+
+<Site title="記事一覧" section="articles">
+  <nav class="breadcrumb">
+    <a href={url()}>Home</a> / 記事一覧
+  </nav>
+  <h1>記事一覧</h1>
+  <p class="lead">
+    技術記事・論考をカテゴリ横断で読む。全{articles.length}本。
+  </p>
+  <p>
+    市場・キャリア等の論考は<a href={url("essays")}>Essays</a>
+    、章構成で読むコンテンツは<a href={url("books")}>Books</a>にまとめています。
+  </p>
+  <div class="document-list">
+    {articles.map((e) => (
+      <article>
+        <div class="meta">
+          <a href={url(e.data.section)}>{label(e.data.section)}</a>
+          {e.data.published_at && <time>{e.data.published_at}</time>}
+        </div>
+        <h2>
+          <a href={url(e.id)}>{e.data.title}</a>
+        </h2>
+        <p class="tags">{e.data.tags.join(" / ")}</p>
+      </article>
+    ))}
+  </div>
+</Site>

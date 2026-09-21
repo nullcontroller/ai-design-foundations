@@ -672,3 +672,35 @@ blockquote {
 .architecture-map li:last-child::after {
   content: "↺";
 }
+
+.library-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  border-block: 1px solid var(--line);
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+}
+.library-links a {
+  text-decoration: none;
+}
+.library-links strong {
+  margin-left: 0.5rem;
+}
+.book-list-entry {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 1.5rem;
+}
+.book-list-entry details {
+  font-size: 0.85rem;
+}
+.book-list-entry summary {
+  cursor: pointer;
+}
+@media (max-width: 500px) {
+  .book-list-entry {
+    grid-template-columns: 70px minmax(0, 1fr);
+    gap: 1rem;
+  }
+}

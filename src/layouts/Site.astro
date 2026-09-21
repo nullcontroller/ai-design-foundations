@@ -62,6 +62,20 @@ const {
                 <small>{desc}</small>
               </a>
             ))}
+            <a
+              href={url("articles")}
+              aria-current={section === "articles" ? "page" : undefined}
+            >
+              <span>記事一覧</span>
+              <small>技術記事・論考を横断して読む</small>
+            </a>
+            <a
+              href={url("books")}
+              aria-current={section === "books" ? "page" : undefined}
+            >
+              <span>Books / シリーズ</span>
+              <small>章構成で読む設計原則と実務事例</small>
+            </a>
           </nav>
         </details>
         <p class="sidebar-note">

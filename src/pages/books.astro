@@ -1,0 +1,59 @@
+---
+import { getCollection } from "astro:content";
+import Site from "../layouts/Site.astro";
+import { publicEntry, url, label, base } from "../lib/site";
+const all = await getCollection("pages", publicEntry);
+const books = all.filter((e) => e.data.series && e.data.order === 0);
+const chapters = (series: string) =>
+  all
+    .filter((e) => e.data.series === series && (e.data.order ?? 0) > 0)
+    .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0));
+---
+
+<Site title="Books / シリーズ" section="books">
+  <nav class="breadcrumb">
+    <a href={url()}>Home</a> / Books
+  </nav>
+  <h1>Books / シリーズ</h1>
+  <p class="lead">
+    設計原則と実務事例を、章の流れに沿って読む。全{books.length}冊。
+  </p>
+  <div class="document-list">
+    {books.map((book) => (
+      <article class="book-list-entry">
+        {book.data.cover && (
+          <a href={url(book.id)} tabindex="-1" aria-hidden="true">
+            <img
+              src={base + book.data.cover}
+              alt=""
+              width="120"
+              loading="lazy"
+            />
+          </a>
+        )}
+        <div>
+          <div class="meta">
+            <a href={url(book.data.section)}>{label(book.data.section)}</a> ·{" "}
+            {chapters(book.data.series!).length}章
+          </div>
+          <h2>
+            <a href={url(book.id)}>{book.data.title}</a>
+          </h2>
+          <details>
+            <summary>全章目次</summary>
+            <ol>
+              {chapters(book.data.series!).map((e) => (
+                <li>
+                  <a href={url(e.id)}>{e.data.title}</a>
+                </li>
+              ))}
+            </ol>
+          </details>
+          <p>
+            <a href={url(book.id)}>シリーズ概要から読む →</a>
+          </p>
+        </div>
+      </article>
+    ))}
+  </div>
+</Site>

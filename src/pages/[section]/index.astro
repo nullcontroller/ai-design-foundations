@@ -22,6 +22,14 @@ const entries = (await getCollection("pages", publicEntry)).filter(
   </nav>
   <h1>{title}</h1>
   <p class="lead">{summary}</p>
+  {Astro.params.section === "essays" && (
+    <p>
+      ここでは市場・キャリア・技術への考察{entries.length}
+      本を掲載しています。設計原則や実務に関する記事も含めて読む場合は、
+      <a href={url("articles")}>記事一覧</a>をご覧ください。
+      <a href={url("books")}>Books / シリーズ</a>も別に掲載しています。
+    </p>
+  )}
   <div class="document-list">
     {entries.map((e) => (
       <article>
