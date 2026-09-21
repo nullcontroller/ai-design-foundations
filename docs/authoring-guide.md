@@ -193,3 +193,7 @@ status（draft / evolving / stable / archived）です。
 
 一覧は日付の降順、同日はslug順です。draft は一覧・個別ページとも公開しません。
 公開URLは /project/journal/<semantic-slug>/ です。
+
+## Bookと連載の表示分類
+
+連載の概要ページには publication_format: series を指定します。元Zennの source.original_type は出典として保持し、サイト上の形式判定は publication_format を優先します。実務BookはCase Studies、連載は /series/、横断索引は /overview/ から参照します。

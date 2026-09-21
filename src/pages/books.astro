@@ -1,59 +1,21 @@
 ---
 import { getCollection } from "astro:content";
 import Site from "../layouts/Site.astro";
-import PublicationLink from "../components/PublicationLink.astro";
-import ContentLink from "../components/ContentLink.astro";
-import { publicEntry, url, base } from "../lib/site";
+import SeriesIndex from "../components/SeriesIndex.astro";
+import { caseStudies } from "../lib/navigation";
+import { publicEntry, url } from "../lib/site";
 const all = await getCollection("pages", publicEntry);
-const books = all.filter((e) => e.data.series && e.data.order === 0);
-const chapters = (series: string) =>
-  all
-    .filter((e) => e.data.series === series && (e.data.order ?? 0) > 0)
-    .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0));
 ---
 
-<Site title="Books / シリーズ" section="articles">
-  <nav class="breadcrumb">
-    <a href={url()}>Home</a> / Books
-  </nav>
-  <h1>Books / シリーズ</h1>
+<Site title="Books — 実務事例" section="cases">
+  <h1>Books — 実務事例</h1>
+  <p class="lead">実務への適用を章立てで追う、2冊のBook。</p>
   <p>
-    <a href={url("articles")}>記事一覧 / Publication Hubへ</a>
+    <a href={url("cases")}>Case Studies</a> ·{" "}
+    <a href={url("series")}>設計原則の連載</a> ·{" "}
+    <a href={url("overview")}>全体目次</a>
   </p>
-  <p class="lead">
-    設計原則と実務事例を、章の流れに沿って読む。全{books.length}冊。
-  </p>
-  <div class="document-list">
-    {books.map((book) => (
-      <article class="book-list-entry">
-        {book.data.cover && (
-          <a href={url(book.id)} tabindex="-1" aria-hidden="true">
-            <img
-              src={base + book.data.cover}
-              alt=""
-              width="120"
-              loading="lazy"
-            />
-          </a>
-        )}
-        <div>
-          <PublicationLink entry={book} heading="h2" />
-          <p class="meta">{chapters(book.data.series!).length}章</p>
-          <details>
-            <summary>全章目次</summary>
-            <ol>
-              {chapters(book.data.series!).map((e) => (
-                <li>
-                  <ContentLink entry={e} heading="p" />
-                </li>
-              ))}
-            </ol>
-          </details>
-          <p>
-            <a href={url(book.id)}>シリーズ概要から読む →</a>
-          </p>
-        </div>
-      </article>
-    ))}
-  </div>
+  {caseStudies.map((study) => (
+    <SeriesIndex entry={all.find((e) => e.id === study.book)!} all={all} />
+  ))}
 </Site>

@@ -41,6 +41,7 @@ const pages = defineCollection({
           "lifecycle-operations",
         ])
         .optional(),
+      publication_format: z.enum(["book", "series"]).optional(),
       kind: z.enum(["principle", "architecture", "guide", "case", "essay"]),
       section,
       status: z.enum(["draft", "evolving", "stable", "archived"]),

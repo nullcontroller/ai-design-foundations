@@ -7,6 +7,7 @@ import {
   contentCategory,
   relatedPublications,
   topicLabel,
+  publicationType,
 } from "../lib/navigation";
 import ContentLink from "../components/ContentLink.astro";
 import MarkdownBody from "../components/MarkdownBody.astro";
@@ -109,7 +110,18 @@ const sourceFile =
     )}
     {series.length > 0 && (
       <nav class="series" aria-label="シリーズ目次" data-pagefind-ignore>
-        <p>{d.series_title}</p>
+        <p>
+          <a
+            href={url(
+              series[0].data.publication_format === "series"
+                ? "series"
+                : "cases",
+            )}
+          >
+            {publicationType(series[0])}一覧
+          </a>{" "}
+          / <a href={url(series[0].id)}>{d.series_title} — 全体構成</a>
+        </p>
         <ol>
           {series.map((e) => (
             <li>

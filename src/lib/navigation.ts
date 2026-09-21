@@ -4,6 +4,13 @@ export type Entry = CollectionEntry<"pages">;
 export const navigation = [
   [
     {
+      path: "overview",
+      title: "全体目次",
+      summary: "すべての知識・記事を見渡す",
+    },
+  ],
+  [
+    {
       path: "ai-design",
       title: "AI Design",
       summary: "業務システムへどう組み込むか",
@@ -24,14 +31,10 @@ export const navigation = [
     {
       path: "articles",
       title: "記事一覧",
-      summary: "Articles / Books / Essays",
+      summary: "単発記事・Book・連載・Essay",
     },
   ],
-  [
-    { path: "project", title: "Project", summary: "プロジェクトとJournal" },
-    { path: "tools", title: "Tools", summary: "公開ツール" },
-    { path: "career", title: "Career", summary: "運営者の実務背景" },
-  ],
+  [{ path: "career", title: "Career", summary: "運営者の実務背景" }],
   [{ path: "reference", title: "Reference", summary: "用語・参照資料" }],
 ];
 export const designTopics = [
@@ -86,12 +89,14 @@ export const layerPath = (layer: string) =>
     reference: "reference",
   })[layer] || "start-here";
 export const publicationType = (e: Entry) =>
-  e.data.source?.original_type === "book" ||
-  (e.data.series && e.data.order === 0)
-    ? "Book"
-    : e.data.kind === "essay"
-      ? "Essay"
-      : "Article";
+  e.data.publication_format === "series"
+    ? "連載"
+    : e.data.source?.original_type === "book" ||
+        (e.data.series && e.data.order === 0)
+      ? "Book"
+      : e.data.kind === "essay"
+        ? "Essay"
+        : "Article";
 // Publication is a publishing view, independent of knowledge layer and provenance.
 export const isPublication = (e: Entry) =>
   e.data.source?.original_type === "article" ||

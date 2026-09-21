@@ -71,13 +71,12 @@ assert.deepEqual(
     .map((_, e) => top(e).text())
     .get(),
   [
+    "全体目次",
     "AI Design",
     "AI数学論",
     "Practices",
     "Case Studies",
     "記事一覧",
-    "Project",
-    "Tools",
     "Career",
     "Reference",
   ],
@@ -145,7 +144,7 @@ for (const id of publicationIds) {
     node
       .find(".meta")
       .text()
-      .match(/Article|Book|Essay/),
+      .match(/Article|Book|Essay|連載/),
   );
 }
 assert.equal(page("cases")(".case-study-index").length, 2);
@@ -224,4 +223,44 @@ assert.equal(
 );
 console.log(
   "Verified Phase 4 journals, reading order, Reference archive and AI Design top.",
+);
+
+const expectedBooks = [
+  "cases/system-understanding",
+  "cases/three-ai-maintenance",
+];
+for (const route of ["cases", "books"]) {
+  const $ = page(route);
+  assert.deepEqual(
+    $("[data-series-index]")
+      .map((_, e) => $(e).attr("data-series-index"))
+      .get(),
+    expectedBooks,
+  );
+  assert.equal($("[data-series-index] details").length, 2);
+}
+assert.equal(
+  page("series")('[data-series-index="foundations/ai-business-design"]').length,
+  1,
+);
+assert.equal(
+  pubs('[data-type="連載"] [data-content-id="foundations/ai-business-design"]')
+    .length,
+  1,
+);
+const overview = page("overview");
+for (const [id, d] of entries) {
+  if (
+    d.layer === "project" ||
+    d.status === "draft" ||
+    id === "foundations/wiki-overview"
+  )
+    continue;
+  assert(
+    overview('[data-content-id="' + id + '"]').length,
+    "Overview missing " + id,
+  );
+}
+console.log(
+  "Verified full overview, two case books, independent series and simplified navigation.",
 );
