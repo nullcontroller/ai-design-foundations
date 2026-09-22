@@ -11,7 +11,7 @@ export const GET: APIRoute = () =>
       description: "立林 裕太朗のキャリア、AI・システム設計の知識、実務事例と記事。",
       start_url: url(),
       scope: url(),
-      display: "standalone",
+      display: "browser",
       background_color: "#17383b",
       theme_color: "#17383b",
       icons: [
