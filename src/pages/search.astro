@@ -1,14 +1,15 @@
 ---
 import Site from "../layouts/Site.astro";
+import { url } from "../lib/site";
 ---
 
-<Site title="検索">
+<Site title="検索" noindex>
   <h1>設計知識を検索</h1>
   <p>タイトル・概要・見出し・本文・タグから検索できます。</p>
-  <form id="search-form" role="search">
+  <form id="search-form" role="search" action={url("search")} method="get">
     <label for="search-input">キーワード</label>
     <div class="search-controls">
-      <input id="search-input" type="search" autocomplete="off" />
+      <input id="search-input" name="q" type="search" autocomplete="off" />
       <button type="submit">検索</button>
     </div>
   </form>
@@ -91,6 +92,9 @@ import Site from "../layouts/Site.astro";
       status.textContent = "キーワードを入力してください。";
       return;
     }
+    const current = new URL(location.href);
+    current.searchParams.set("q", query);
+    history.replaceState(null, "", current);
     status.textContent = "検索中…";
     try {
       index ??= import(/* @vite-ignore */ moduleUrl) as Promise<Index>;
@@ -117,4 +121,9 @@ import Site from "../layouts/Site.astro";
     timer = setTimeout(() => void search(), 250);
   });
   more.addEventListener("click", () => void append(generation));
+  const initialQuery = new URLSearchParams(location.search).get("q");
+  if (initialQuery) {
+    input.value = initialQuery;
+    void search();
+  }
 </script>

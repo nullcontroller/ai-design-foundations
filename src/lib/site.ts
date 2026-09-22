@@ -11,8 +11,9 @@ export const sections = [
 export const base = "/ai-design-foundations";
 export const url = (p = "") =>
   base + "/" + p.replace(/^\/+|\/+$/g, "") + (p ? "/" : "");
-export const assetUrl = (p: string) =>
-  base + "/" + p.replace(/^\/+|\/+$/g, "");
+export const assetUrl = (p: string) => base + "/" + p.replace(/^\/+|\/+$/g, "");
+export const absoluteUrl = (site: URL, p = "") =>
+  new URL(/\.[a-z0-9]+$/i.test(p) ? assetUrl(p) : url(p), site).toString();
 export const label = (s: string) => sections.find((x) => x[0] === s)?.[1] ?? s;
 export const publicEntry = (e: {
   data: { status: string; public?: boolean };

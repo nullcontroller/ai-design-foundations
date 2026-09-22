@@ -3,6 +3,7 @@ import { load } from "cheerio";
 import { getCollection } from "astro:content";
 import { publicEntry, url } from "../lib/site";
 import { publicHtml, normalizeSourceUrl } from "../lib/public-html.mjs";
+import { imageDimensions } from "../lib/image-metadata";
 const sourceLinks = new Map<string, string>([
   ["https://zenn.dev/nullcontroller", url("articles")],
   ["https://github.com/nullcontroller/ai-design-foundations", url("ai-design")],
@@ -36,6 +37,16 @@ const components = {
   note: Note,
 };
 const $ = load(publicHtml(Astro.props.html, sourceLinks), null, false);
+$("img").each((_, element) => {
+  const image = $(element);
+  image.attr("loading", "lazy");
+  image.attr("decoding", "async");
+  const dimensions = imageDimensions(image.attr("src"));
+  if (dimensions) {
+    image.attr("width", String(dimensions.width));
+    image.attr("height", String(dimensions.height));
+  }
+});
 const nodes = $.root().contents().toArray();
 ---
 

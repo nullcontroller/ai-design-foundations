@@ -3,6 +3,7 @@ import type { Entry } from "../lib/navigation";
 import PublicationLink from "./PublicationLink.astro";
 import ContentLink from "./ContentLink.astro";
 import { url, base } from "../lib/site";
+import { imageDimensions } from "../lib/image-metadata";
 interface Props {
   entry: Entry;
   all: Entry[];
@@ -11,12 +12,22 @@ const { entry, all } = Astro.props;
 const chapters = all
   .filter((e) => e.data.series === entry.data.series && (e.data.order ?? 0) > 0)
   .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0));
+const coverDimensions = imageDimensions(
+  entry.data.cover ? base + entry.data.cover : undefined,
+);
 ---
 
 <article class="book-list-entry" data-series-index={entry.id}>
   {entry.data.cover && (
     <a href={url(entry.id)} tabindex="-1" aria-hidden="true">
-      <img src={base + entry.data.cover} alt="" width="120" loading="lazy" />
+      <img
+        src={base + entry.data.cover}
+        alt=""
+        width={coverDimensions?.width || 120}
+        height={coverDimensions?.height}
+        loading="lazy"
+        decoding="async"
+      />
     </a>
   )}
   <div>

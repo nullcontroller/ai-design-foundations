@@ -19,6 +19,13 @@ const d = entry.data;
   ogType="profile"
   section={Astro.props.id === "profile" ? "career/profile" : "career"}
   headings={headings}
+  breadcrumbs={[
+    { name: "Home", path: "" },
+    { name: "Career", path: "career" },
+    ...(Astro.props.id === "profile"
+      ? [{ name: d.title, path: "career/profile" }]
+      : []),
+  ]}
 >
   <nav class="breadcrumb">
     <a href={url()}>Home</a> / <a href={url("career")}>Career</a>

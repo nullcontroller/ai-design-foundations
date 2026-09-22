@@ -5,10 +5,12 @@
   "scripts": {
     "dev": "astro dev",
     "check": "astro check && node scripts/verify-content.mjs && node scripts/verify-content-health.mjs",
-    "build": "astro build && pagefind --site dist && node scripts/verify-links.mjs && node scripts/verify-index.mjs && node scripts/verify-public-site.mjs && node scripts/verify-brand-assets.mjs && npm run seo:check",
+    "build": "astro build && pagefind --site dist && node scripts/verify-links.mjs && node scripts/verify-index.mjs && node scripts/verify-public-site.mjs && node scripts/verify-brand-assets.mjs && npm run accessibility:check && npm run performance:check && npm run seo:check",
     "preview": "astro preview",
     "test": "node --test scripts/*.test.mjs",
-    "seo:check": "node scripts/verify-seo.mjs"
+    "seo:check": "node scripts/verify-seo.mjs",
+    "accessibility:check": "node scripts/verify-accessibility.mjs",
+    "performance:check": "node scripts/verify-performance-budget.mjs"
   },
   "engines": {
     "node": ">=22.12.0"

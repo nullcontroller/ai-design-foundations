@@ -7,7 +7,7 @@ import {
   publicationType,
   publicationTopics,
 } from "../lib/navigation";
-import { publicEntry, url } from "../lib/site";
+import { assetUrl, publicEntry, url } from "../lib/site";
 const entries = (await getCollection("pages", publicEntry))
   .filter(isPublication)
   .sort((a, b) =>
@@ -35,6 +35,7 @@ const topics = [...new Set(entries.flatMap(publicationTopics))];
     <a href={url("books")}>実務事例のBook 2冊</a>
     <a href={url("series")}>連載</a>
     <a href={url("essays")}>Essays</a>
+    <a href={assetUrl("feed.xml")}>RSSで購読</a>
   </nav>
   <form
     class="publication-filters"

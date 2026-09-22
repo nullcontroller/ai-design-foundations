@@ -169,6 +169,14 @@ export const caseStudies = [
   },
 ];
 
+export const mathematicsReadingIds = [
+  "foundations/llm-as-probabilistic-model",
+  "foundations/conditional-probability",
+  "foundations/temperature-design",
+  "foundations/hallucination-mechanisms",
+  "software-engineering/code-generation-models",
+] as const;
+
 export const publicationTopic = (e: Entry) =>
   e.data.layer === "ai-mathematics" ? "AI数学論" : label(e.data.section);
 

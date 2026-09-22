@@ -1,14 +1,16 @@
 ---
 import Site from "../layouts/Site.astro";
-import { url } from "../lib/site";
+import { assetUrl, url } from "../lib/site";
+if (!Astro.site) throw new Error("Astro.site is required for 404 metadata");
+const canonical = new URL(assetUrl("404.html"), Astro.site).toString();
 ---
 
-<Site
-  title="ページが見つかりません"
-  canonical="https://nullcontroller.github.io/ai-design-foundations/404.html"
->
+<Site title="ページが見つかりません" canonical={canonical} noindex>
   <h1>ページが見つかりません</h1>
-  <p>
+  <p>お探しのページは移動または削除された可能性があります。</p>
+  <nav class="topic-navigation" aria-label="復帰先">
     <a href={url()}>Homeへ戻る</a>
-  </p>
+    <a href={url("search")}>サイト内を検索</a>
+    <a href={url("overview")}>全体目次を見る</a>
+  </nav>
 </Site>

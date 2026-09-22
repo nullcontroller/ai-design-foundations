@@ -13,6 +13,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      PUBLIC_GOOGLE_SITE_VERIFICATION: ${{ vars.PUBLIC_GOOGLE_SITE_VERIFICATION }}
+      PUBLIC_BING_SITE_VERIFICATION: ${{ vars.PUBLIC_BING_SITE_VERIFICATION }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

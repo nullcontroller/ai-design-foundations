@@ -4,17 +4,11 @@ import Site from "../layouts/Site.astro";
 import ContentLink from "../components/ContentLink.astro";
 import ContentIndex from "../components/ContentIndex.astro";
 import { publicEntry, url } from "../lib/site";
+import { mathematicsReadingIds } from "../lib/navigation";
 const entries = (await getCollection("pages", publicEntry)).filter(
   (e) => e.data.layer === "ai-mathematics",
 );
-const readingIds = [
-  "foundations/llm-as-probabilistic-model",
-  "foundations/conditional-probability",
-  "foundations/temperature-design",
-  "foundations/hallucination-mechanisms",
-  "software-engineering/code-generation-models",
-];
-const reading = readingIds.map((id) => {
+const reading = mathematicsReadingIds.map((id) => {
   const entry = entries.find((e) => e.id === id);
   if (!entry) throw new Error("Missing mathematics reading: " + id);
   return entry;

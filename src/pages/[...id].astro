@@ -10,9 +10,12 @@ import {
   designTopics,
   topicPublications,
   publicationType,
+  mathematicsReadingIds,
 } from "../lib/navigation";
 import ContentLink from "../components/ContentLink.astro";
 import MarkdownBody from "../components/MarkdownBody.astro";
+import AuthorBox from "../components/AuthorBox.astro";
+import { imageDimensions } from "../lib/image-metadata";
 import { url, layerLabel, publicEntry } from "../lib/site";
 export async function getStaticPaths() {
   return (await getCollection("pages", publicEntry)).map((entry) => ({
@@ -23,7 +26,8 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const d = entry.data;
 const primaryPath = d.section === "cases" ? "cases" : layerPath(d.layer);
-const primaryLabel = d.section === "cases" ? "Case Studies" : layerLabel(d.layer);
+const primaryLabel =
+  d.section === "cases" ? "Case Studies" : layerLabel(d.layer);
 const { headings } = await render(entry);
 const all = await getCollection("pages", publicEntry);
 const series = d.series
@@ -31,9 +35,19 @@ const series = d.series
       .filter((e) => e.data.series === d.series)
       .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0))
   : [];
-const position = series.findIndex((e) => e.id === entry.id);
-const previous = series[position - 1],
-  next = series[position + 1];
+const readingSequence = series.length
+  ? series
+  : d.layer === "ai-mathematics"
+    ? mathematicsReadingIds
+        .map((id) => all.find((item) => item.id === id))
+        .filter((item): item is (typeof all)[number] => Boolean(item))
+    : [];
+const position = readingSequence.findIndex((e) => e.id === entry.id);
+const previous = readingSequence[position - 1],
+  next = readingSequence[position + 1];
+const coverDimensions = imageDimensions(
+  d.cover ? "/ai-design-foundations" + d.cover : undefined,
+);
 const related = all
   .filter(
     (e) =>
@@ -51,12 +65,27 @@ const related = all
   title={d.title}
   summary={d.summary}
   canonical={d.canonical}
+  ogType="article"
+  publishedAt={d.published_at}
+  updatedAt={d.updated_at}
   section={primaryPath}
   headings={headings}
+  breadcrumbs={[
+    { name: "Home", path: "" },
+    { name: primaryLabel, path: primaryPath },
+    ...(d.design_topic
+      ? [
+          {
+            name: topicLabel(d.design_topic) || d.design_topic,
+            path: "ai-design/" + d.design_topic,
+          },
+        ]
+      : []),
+    { name: d.title, path: entry.id },
+  ]}
 >
   <nav class="breadcrumb">
-    <a href={url()}>Home</a> /{" "}
-    <a href={url(primaryPath)}>{primaryLabel}</a>
+    <a href={url()}>Home</a> / <a href={url(primaryPath)}>{primaryLabel}</a>
     {d.design_topic && (
       <>
         {" "}
@@ -85,12 +114,12 @@ const related = all
         </span>
         {d.published_at && (
           <span>
-            公開：<time>{d.published_at}</time>
+            公開：<time datetime={d.published_at}>{d.published_at}</time>
           </span>
         )}
         {d.updated_at && (
           <span>
-            更新：<time>{d.updated_at}</time>
+            更新：<time datetime={d.updated_at}>{d.updated_at}</time>
           </span>
         )}
       </p>
@@ -103,8 +132,10 @@ const related = all
         class="book-cover"
         src={"/ai-design-foundations" + d.cover}
         alt={d.title + " 表紙"}
-        width="180"
+        width={coverDimensions?.width || 180}
+        height={coverDimensions?.height}
         loading="lazy"
+        decoding="async"
       />
     )}
     {series.length > 0 && (
@@ -134,8 +165,12 @@ const related = all
       <MarkdownBody html={entry.rendered?.html || ""} />
     </div>
   </article>
-  {series.length > 0 && (
-    <nav class="pagination" aria-label="前後の章">
+  <AuthorBox />
+  {readingSequence.length > 0 && (
+    <nav
+      class="pagination"
+      aria-label={series.length ? "前後の章" : "AI数学論の前後ページ"}
+    >
       {previous ? (
         <div>
           <p>← 前のページ</p>
