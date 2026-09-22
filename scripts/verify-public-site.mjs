@@ -50,6 +50,7 @@ for (const file of walk("dist").filter((p) => p.endsWith(".html"))) {
       .match(/GitHub Wiki|Originally published|Repository-native|移行元/),
     file,
   );
+  assert($(".brand").text().includes("Rosarium"), file);
   assert($(".brand").text().includes("立林 裕太朗"), file);
   const canonical = $('link[rel="canonical"]').attr("href");
   assert(canonical?.startsWith("https://nullcontroller.github.io/ai-design-foundations/"), file);
@@ -68,7 +69,7 @@ for (const file of walk("dist").filter((p) => p.endsWith(".html"))) {
 }
 assert.equal(repositoryLinks, 1, "About must contain one Repository link");
 const homepage = load(fs.readFileSync("dist/index.html", "utf8"));
-assert.equal(homepage("h1").text(), "立林 裕太朗");
+assert.equal(homepage("h1").text(), "Rosarium");
 const profile = load(fs.readFileSync("dist/career/profile/index.html", "utf8"));
 for (const text of [
   "2016–2021",

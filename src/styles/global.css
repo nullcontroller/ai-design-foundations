@@ -168,19 +168,29 @@ blockquote {
   gap: 1rem;
 }
 .brand {
-  font-size: 1.15rem;
-  line-height: 1.3;
-  font-weight: 700;
+  line-height: 1.2;
   color: var(--ink);
   text-decoration: none;
-  letter-spacing: -0.03em;
 }
-.brand span {
+.brand-name {
   display: block;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.brand-author {
+  display: inline-block;
+  margin-top: 5px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.brand-domain {
+  display: inline-block;
+  margin-left: 0.55rem;
   font-size: 0.6rem;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.1em;
   color: var(--muted);
-  margin-top: 7px;
 }
 .header-links {
   display: flex;
@@ -286,6 +296,21 @@ blockquote {
   color: var(--muted);
   font-size: 0.72rem;
   text-align: center;
+}
+.footer-brand strong,
+.footer-brand span {
+  display: block;
+}
+.footer-brand span {
+  color: var(--muted);
+  font-size: 0.75rem;
+  margin-top: 0.2rem;
+}
+.hero-author {
+  color: var(--muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
 }
 .eyebrow {
   font-size: 0.68rem;
@@ -569,11 +594,14 @@ blockquote {
     position: relative;
     align-items: flex-start;
   }
-  .brand {
-    font-size: 0.95rem;
+  .brand-name {
+    font-size: 1rem;
   }
-  .brand span {
-    font-size: 0.5rem;
+  .brand-author {
+    font-size: 0.62rem;
+  }
+  .brand-domain {
+    display: none;
   }
   .header-links {
     gap: 0.65rem;

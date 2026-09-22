@@ -40,8 +40,7 @@ export const GET: APIRoute = async ({ site }) => {
     .join("\n");
 
   return new Response(
-    `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel>\n    <title>立林 裕太朗 | Articles</title>\n    <description>Applied AI、システム設計、実務事例と論考</description>\n    <link>${escapeXml(channelUrl)}</link>\n${items}\n  </channel></rss>\n`,
+    `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel>\n    <title>Rosarium | Articles</title>\n    <description>Applied AI、システム設計、実務事例と論考</description>\n    <link>${escapeXml(channelUrl)}</link>\n${items}\n  </channel></rss>\n`,
     { headers: { "Content-Type": "application/rss+xml; charset=utf-8" } },
   );
 };
-

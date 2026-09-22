@@ -155,6 +155,6 @@ Save-SquareIcon (Join-Path $iconDir "apple-touch-icon.png") 180 0.9
 Save-SquareIcon (Join-Path $iconDir "icon-maskable-192.png") 192 0.78
 Save-SquareIcon (Join-Path $iconDir "icon-maskable-512.png") 512 0.78
 
-Save-Ogp (Join-Path $ogDir "site.png") "PERSONAL SITE" "立林 裕太朗" "Applied AI × システム企画・アーキテクチャ" "AI Design / AI数学論 / Practices / Case Studies"
+Save-Ogp (Join-Path $ogDir "site.png") "PERSONAL TECHNICAL SITE" "Rosarium" "立林 裕太朗 · Applied AI / System Architecture" "AI Design Foundations / Articles / Career"
 Save-Ogp (Join-Path $ogDir "career.png") "立林 裕太朗" "Career Profile" "Applied AI × システム企画・アーキテクチャ" "CAREER"
 Save-Ogp (Join-Path $ogDir "ai-design-foundations.png") "TECHNICAL KNOWLEDGE" "AI Design Foundations" "AIを業務システムへ組み込むための設計知識" "AI Design / AI数学論 / Practices / Case Studies"

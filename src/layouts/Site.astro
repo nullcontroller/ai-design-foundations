@@ -14,14 +14,15 @@ interface Props {
 }
 const {
   title,
-  summary = "立林 裕太朗のキャリア、AI・システム設計の知識、実務事例と記事。",
+  summary = "Rosariumは、立林 裕太朗がApplied AI・システム設計・実務事例・文章を継続的に育てる個人技術サイトです。",
   canonical,
   ogImage = "og/site.png",
   ogType = "website",
   section,
   headings = [],
 } = Astro.props;
-const documentTitle = `${title} | 立林 裕太朗`;
+const documentTitle =
+  title === "Home" ? "Rosarium | 立林 裕太朗" : `${title} | Rosarium`;
 const canonicalUrl = canonical?.startsWith(
   "https://nullcontroller.github.io/ai-design-foundations/",
 )
@@ -40,7 +41,7 @@ const structuredData = {
       "@type": "WebSite",
       "@id": websiteId,
       url: siteUrl,
-      name: "立林 裕太朗 | Applied AI / System Architecture",
+      name: "Rosarium",
       inLanguage: "ja",
       publisher: { "@id": personId },
     },
@@ -95,7 +96,7 @@ const structuredData = {
     <link rel="icon" type="image/png" sizes="32x32" href={assetUrl("icons/favicon-32x32.png")} />
     <link rel="apple-touch-icon" sizes="180x180" href={assetUrl("icons/apple-touch-icon.png")} />
     <link rel="manifest" href={assetUrl("site.webmanifest")} />
-    <link rel="alternate" type="application/rss+xml" title="立林 裕太朗 | Articles" href={assetUrl("rss.xml")} />
+    <link rel="alternate" type="application/rss+xml" title="Rosarium | Articles" href={assetUrl("rss.xml")} />
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
   </head>
   <body>
@@ -104,7 +105,9 @@ const structuredData = {
     </a>
     <header class="masthead">
       <a class="brand" href={url()}>
-        立林 裕太朗<span>Applied AI / System Architecture</span>
+        <span class="brand-name">Rosarium</span>
+        <span class="brand-author">立林 裕太朗</span>
+        <span class="brand-domain">Applied AI / System Architecture</span>
       </a>
       <div class="header-links">
         <a href={url("overview")}>全体目次</a>
@@ -158,7 +161,10 @@ const structuredData = {
       </aside>
     </div>
     <footer class="site-footer">
-      立林 裕太朗 · Applied AI / System Architecture
+      <div class="footer-brand">
+        <strong>Rosarium</strong>
+        <span>立林 裕太朗 · Applied AI / System Architecture</span>
+      </div>
       <nav aria-label="フッター">
         <a href={url("career")}>Career</a> ·{" "}
         <a href={url("articles")}>Articles</a> ·{" "}

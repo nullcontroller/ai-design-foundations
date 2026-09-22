@@ -3,7 +3,7 @@ import { label } from "./site";
 export type Entry = CollectionEntry<"pages">;
 export const navigation = [
   [
-    { path: "", title: "Home", summary: "立林 裕太朗の公開サイト" },
+    { path: "", title: "Home", summary: "Rosariumの入口" },
     { path: "career", title: "Career", summary: "職務経験・希望する役割" },
   ],
   [
@@ -30,7 +30,7 @@ export const navigation = [
   [
     { path: "overview", title: "全体目次", summary: "全コンテンツを見渡す" },
     { path: "reference", title: "Reference", summary: "用語・数式・参照資料" },
-    { path: "about", title: "About", summary: "このサイトについて" },
+    { path: "about", title: "About", summary: "Rosariumについて" },
     { path: "search", title: "Search", summary: "サイト内を検索" },
   ],
 ];

@@ -6,9 +6,9 @@ export const prerender = true;
 export const GET: APIRoute = () =>
   new Response(
     JSON.stringify({
-      name: "立林 裕太朗 | Applied AI / System Architecture",
-      short_name: "立林 裕太朗",
-      description: "立林 裕太朗のキャリア、AI・システム設計の知識、実務事例と記事。",
+      name: "Rosarium — 立林 裕太朗",
+      short_name: "Rosarium",
+      description: "立林 裕太朗がApplied AI・System Architecture・設計知識・実務事例を育てる個人技術サイト。",
       start_url: url(),
       scope: url(),
       display: "browser",

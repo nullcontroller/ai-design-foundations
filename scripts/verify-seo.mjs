@@ -22,7 +22,7 @@ for (const file of walk("dist").filter((name) => name.endsWith(".html"))) {
   assert.equal(scripts.length, 1, `Expected one JSON-LD graph: ${file}`);
   const graph = JSON.parse(scripts.text());
   assert.equal(graph["@context"], "https://schema.org", `Invalid JSON-LD context: ${file}`);
-  assert.ok(graph["@graph"].some((item) => item["@type"] === "WebSite"), `WebSite JSON-LD missing: ${file}`);
+  assert.ok(graph["@graph"].some((item) => item["@type"] === "WebSite" && item.name === "Rosarium"), `Rosarium WebSite JSON-LD missing: ${file}`);
   assert.ok(graph["@graph"].some((item) => item.url === canonical), `Page JSON-LD missing: ${file}`);
 }
 

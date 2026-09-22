@@ -1,6 +1,8 @@
-# 立林 裕太朗 — Personal Site
+# Rosarium
 
-立林 裕太朗のCareer・技術知識・設計思想・実務事例・記事を統合した個人サイトです。AI Design Foundationsはサイト内の技術知識・設計体系を表します。
+立林 裕太朗 — Personal Technical Site
+
+Rosariumは、立林 裕太朗のCareer・技術知識・設計思想・実務事例・記事を統合した個人サイトです。AI Design FoundationsはRosarium内の技術知識・設計体系を表します。
 MarkdownをGitで管理し、レビュー・検証を経てAstroから静的HTMLを生成します。
 
 **[サイトを見る](https://nullcontroller.github.io/ai-design-foundations/)**
