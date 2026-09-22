@@ -1,24 +1,25 @@
+import type { APIRoute } from "astro";
+import { assetUrl, url } from "../lib/site";
+
 export const prerender = true;
 
-export function GET({ site }: { site: URL }) {
-  const base = import.meta.env.BASE_URL;
-  const absolute = (path: string) => new URL(`${base}${path}`, site).pathname;
-  return new Response(
+export const GET: APIRoute = () =>
+  new Response(
     JSON.stringify({
-      name: "立林 裕太朗",
+      name: "立林 裕太朗 | Applied AI / System Architecture",
       short_name: "立林 裕太朗",
-      start_url: base,
-      scope: base,
+      description: "立林 裕太朗のキャリア、AI・システム設計の知識、実務事例と記事。",
+      start_url: url(),
+      scope: url(),
       display: "standalone",
-      theme_color: "#243439",
-      background_color: "#f4f5f0",
+      background_color: "#17383b",
+      theme_color: "#17383b",
       icons: [
-        { src: absolute("icons/icon-192.png"), sizes: "192x192", type: "image/png", purpose: "any" },
-        { src: absolute("icons/icon-512.png"), sizes: "512x512", type: "image/png", purpose: "any" },
-        { src: absolute("icons/icon-maskable-192.png"), sizes: "192x192", type: "image/png", purpose: "maskable" },
-        { src: absolute("icons/icon-maskable-512.png"), sizes: "512x512", type: "image/png", purpose: "maskable" },
+        { src: assetUrl("icons/icon-192.png"), sizes: "192x192", type: "image/png", purpose: "any" },
+        { src: assetUrl("icons/icon-512.png"), sizes: "512x512", type: "image/png", purpose: "any" },
+        { src: assetUrl("icons/icon-maskable-192.png"), sizes: "192x192", type: "image/png", purpose: "maskable" },
+        { src: assetUrl("icons/icon-maskable-512.png"), sizes: "512x512", type: "image/png", purpose: "maskable" },
       ],
     }),
-    { headers: { "Content-Type": "application/manifest+json; charset=utf-8" } },
+    { headers: { "Content-Type": "application/manifest+json" } },
   );
-}

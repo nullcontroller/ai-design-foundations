@@ -41,4 +41,22 @@ import { url } from "../lib/site";
   <p>
     <a href={url("overview")}>全体目次</a>から各領域へ進めます。
   </p>
+  <h2>このサイトの設計</h2>
+  <p>
+    Markdownを知識の正本として管理し、Gitで変更履歴を残しています。AIは編集・レビュー・情報構造の整理に利用し、AstroとContent
+    Collectionsで静的サイトを生成しています。Content ModelとValidationはTypeScriptで管理し、GitHub
+    ActionsでBuild・検証・Deployを行い、GitHub Pagesで公開しています。
+  </p>
+  <p>
+    本文ではMermaidによる図を利用でき、生成後の静的HTMLはサイト内検索の対象になります。こうした仕組みにより、文章・図・分類・公開工程を同じRepositoryで追跡できます。
+  </p>
+  <h3>Knowledge / Publishing as Code</h3>
+  <p>
+    知識をMarkdownとして記述し、変更を差分として確認しながら、検証と公開を自動化する考え方です。このサイトは一度完成させて終わる成果物ではなく、実務・学習・検証・発信から得た知見を継続的に取り込み、情報構造・設計原則・実装を更新するための知識基盤として運用しています。
+  </p>
+  <p>
+    <a href="https://github.com/nullcontroller/ai-design-foundations">
+      このサイトのRepositoryを見る
+    </a>
+  </p>
 </Site>

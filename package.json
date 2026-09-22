@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "check": "astro check && node scripts/verify-content.mjs",
-    "build": "astro build && pagefind --site dist && node scripts/verify-links.mjs && node scripts/verify-index.mjs && node scripts/verify-public-site.mjs",
+    "build": "astro build && pagefind --site dist && node scripts/verify-links.mjs && node scripts/verify-index.mjs && node scripts/verify-public-site.mjs && node scripts/verify-brand-assets.mjs",
     "preview": "astro preview",
     "test": "node --test scripts/*.test.mjs"
   },

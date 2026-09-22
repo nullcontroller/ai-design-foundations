@@ -15,7 +15,12 @@ const { title, summary } = Astro.props;
 const all = await getCollection("pages", publicEntry);
 ---
 
-<Site title={title} section="ai-design" summary={summary}>
+<Site
+  title={title}
+  section="ai-design"
+  summary={summary}
+  ogImage="og/ai-design-foundations.png"
+>
   <nav class="breadcrumb">
     <a href={url("ai-design")}>AI Design</a> / {title}
   </nav>

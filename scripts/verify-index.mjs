@@ -72,15 +72,11 @@ assert.deepEqual(
   [
     "Home",
     "Career",
-    "詳細職務経歴",
     "AI Design",
     "AI数学論",
     "Practices",
     "Case Studies",
     "Articles",
-    "Books",
-    "連載",
-    "Essays",
     "全体目次",
     "Reference",
     "About",
@@ -88,6 +84,9 @@ assert.deepEqual(
   ],
 );
 assert(!top(".sidebar summary").text().includes("設計体系"));
+for (const secondary of ["詳細職務経歴", "Books", "連載", "Essays"])
+  assert(!top(".sidebar nav a span").text().includes(secondary), secondary);
+assert(career('a[href="/ai-design-foundations/career/profile/"]').length);
 const primaryIds = ($) =>
   $("[data-primary-index] [data-content-id]")
     .map((_, e) => $(e).attr("data-content-id"))
@@ -135,6 +134,8 @@ for (const [route, layer] of [
   for (const id of primaryIds($)) assert.equal(entries.get(id).layer, layer);
 }
 const pubs = page("articles");
+for (const route of ["books", "series", "essays"])
+  assert(pubs(`a[href="/ai-design-foundations/${route}/"]`).length, route);
 const publicationIds = pubs("[data-publication] [data-content-id]")
   .map((_, e) => pubs(e).attr("data-content-id"))
   .get();

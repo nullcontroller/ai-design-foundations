@@ -11,6 +11,8 @@ export const sections = [
 export const base = "/ai-design-foundations";
 export const url = (p = "") =>
   base + "/" + p.replace(/^\/+|\/+$/g, "") + (p ? "/" : "");
+export const assetUrl = (p: string) =>
+  base + "/" + p.replace(/^\/+|\/+$/g, "");
 export const label = (s: string) => sections.find((x) => x[0] === s)?.[1] ?? s;
 export const publicEntry = (e: {
   data: { status: string; public?: boolean };

@@ -5,11 +5,6 @@ export const navigation = [
   [
     { path: "", title: "Home", summary: "立林 裕太朗の公開サイト" },
     { path: "career", title: "Career", summary: "職務経験・希望する役割" },
-    {
-      path: "career/profile",
-      title: "詳細職務経歴",
-      summary: "経験・実績・希望条件",
-    },
   ],
   [
     {
@@ -31,9 +26,6 @@ export const navigation = [
       title: "Articles",
       summary: "単発記事・Book・連載・Essay",
     },
-    { path: "books", title: "Books", summary: "実務事例を章立てで読む" },
-    { path: "series", title: "連載", summary: "設計原則を読み進める" },
-    { path: "essays", title: "Essays", summary: "技術・市場・キャリアの論考" },
   ],
   [
     { path: "overview", title: "全体目次", summary: "全コンテンツを見渡す" },

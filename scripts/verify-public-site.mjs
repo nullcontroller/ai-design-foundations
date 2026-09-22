@@ -21,15 +21,19 @@ for (const id of removed)
     "Unwanted public route " + id,
   );
 let htmlCount = 0;
+let repositoryLinks = 0;
 for (const file of walk("dist").filter((p) => p.endsWith(".html"))) {
   const $ = load(fs.readFileSync(file, "utf8"));
   htmlCount++;
   for (const element of $("[href]").toArray()) {
     const href = $(element).attr("href");
+    const allowedRepository =
+      file.endsWith(path.join("about", "index.html")) &&
+      href === "https://github.com/nullcontroller/ai-design-foundations";
+    if (allowedRepository) repositoryLinks++;
     assert(
-      !/github\.com|zenn\.dev|nullcontroller\.github\.io\/career-profile/i.test(
-        href,
-      ),
+      allowedRepository ||
+        !/github\.com|zenn\.dev|nullcontroller\.github\.io\/career-profile/i.test(href),
       file + " " + href,
     );
     for (const id of removed)
@@ -47,7 +51,22 @@ for (const file of walk("dist").filter((p) => p.endsWith(".html"))) {
     file,
   );
   assert($(".brand").text().includes("立林 裕太朗"), file);
+  const canonical = $('link[rel="canonical"]').attr("href");
+  assert(canonical?.startsWith("https://nullcontroller.github.io/ai-design-foundations/"), file);
+  assert.equal($('meta[property="og:url"]').attr("content"), canonical, file);
+  for (const selector of [
+    'meta[property="og:title"]',
+    'meta[property="og:description"]',
+    'meta[property="og:type"]',
+    'meta[property="og:image"]',
+    'meta[name="twitter:card"]',
+    'meta[name="twitter:title"]',
+    'meta[name="twitter:description"]',
+    'meta[name="twitter:image"]',
+  ]) assert($(selector).attr("content"), file + " " + selector);
+  assert.equal($('meta[name="twitter:card"]').attr("content"), "summary_large_image", file);
 }
+assert.equal(repositoryLinks, 1, "About must contain one Repository link");
 const homepage = load(fs.readFileSync("dist/index.html", "utf8"));
 assert.equal(homepage("h1").text(), "立林 裕太朗");
 const profile = load(fs.readFileSync("dist/career/profile/index.html", "utf8"));
@@ -68,6 +87,6 @@ const baseline = JSON.parse(
 console.log(
   "Public HTML audit: " +
     htmlCount +
-    " pages; GitHub=0, external Career=0, Zenn=0; removed routes absent.",
+    " pages; GitHub Repository=1 (About only), external Career=0, Zenn=0; removed routes absent.",
 );
 console.log("Before integration: " + JSON.stringify(baseline));

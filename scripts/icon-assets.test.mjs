@@ -24,9 +24,9 @@ test("site icon assets have valid SVG and expected PNG dimensions", async () => 
 
 test("manifest endpoint keeps GitHub Pages base and required metadata", async () => {
   const source = await readFile("src/pages/site.webmanifest.ts", "utf8");
-  for (const value of ['name: "立林 裕太朗"', 'short_name: "立林 裕太朗"', 'display: "standalone"', 'theme_color: "#243439"', 'background_color: "#f4f5f0"', "start_url: base", "scope: base"]) {
+  for (const value of ['name: "立林 裕太朗 | Applied AI / System Architecture"', 'short_name: "立林 裕太朗"', 'display: "standalone"', 'theme_color: "#17383b"', 'background_color: "#17383b"', "start_url: url()", "scope: url()"]) {
     assert(source.includes(value), value);
   }
-  assert(source.includes("import.meta.env.BASE_URL"));
+  assert(source.includes("assetUrl"));
   assert(source.includes('purpose: "maskable"'));
 });
