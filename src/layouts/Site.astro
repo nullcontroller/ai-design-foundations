@@ -30,6 +30,44 @@ const canonicalUrl = canonical?.startsWith(
 const ogImageUrl = ogImage.startsWith("http")
   ? ogImage
   : new URL(assetUrl(ogImage), Astro.site).toString();
+const siteUrl = new URL(assetUrl(""), Astro.site).toString();
+const personId = `${siteUrl}#person`;
+const websiteId = `${siteUrl}#website`;
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": websiteId,
+      url: siteUrl,
+      name: "立林 裕太朗 | Applied AI / System Architecture",
+      inLanguage: "ja",
+      publisher: { "@id": personId },
+    },
+    {
+      "@type": "Person",
+      "@id": personId,
+      name: "立林 裕太朗",
+      url: new URL(url("career"), Astro.site).toString(),
+    },
+    {
+      "@type":
+        ogType === "article"
+          ? "Article"
+          : ogType === "profile"
+            ? "ProfilePage"
+            : "WebPage",
+      "@id": `${canonicalUrl}#webpage`,
+      url: canonicalUrl,
+      name: documentTitle,
+      description: summary,
+      inLanguage: "ja",
+      isPartOf: { "@id": websiteId },
+      author: { "@id": personId },
+      primaryImageOfPage: { "@type": "ImageObject", url: ogImageUrl },
+    },
+  ],
+};
 ---
 
 <!doctype html>
@@ -57,6 +95,8 @@ const ogImageUrl = ogImage.startsWith("http")
     <link rel="icon" type="image/png" sizes="32x32" href={assetUrl("icons/favicon-32x32.png")} />
     <link rel="apple-touch-icon" sizes="180x180" href={assetUrl("icons/apple-touch-icon.png")} />
     <link rel="manifest" href={assetUrl("site.webmanifest")} />
+    <link rel="alternate" type="application/rss+xml" title="立林 裕太朗 | Articles" href={assetUrl("rss.xml")} />
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
   </head>
   <body>
     <a class="skip" href="#main">

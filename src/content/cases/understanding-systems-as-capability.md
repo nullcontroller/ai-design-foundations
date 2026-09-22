@@ -13,6 +13,7 @@ tags: &a1
   - レガシー
   - rag
 published_at: 2026-04-12 19:01
+updated_at: "2026-09-22"
 canonical: https://zenn.dev/nullcontroller/articles/f5c1a1276d2191
 source:
   type: zenn
@@ -102,6 +103,6 @@ source:
 * RAGをどのように組み合わせるか
 * 継続的に保守できる状態へ変えるか
 
-については、以下のZenn Bookで詳しく整理しています。
+については、以下のCase Studyで詳しく整理しています。
 
 👉 [レガシーシステムを「理解可能な状態」にする設計手法](/cases/system-understanding/)

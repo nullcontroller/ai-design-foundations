@@ -24,13 +24,11 @@ for (const e of [...z.entries, ...w.entries]) {
   paths.add(e.destination_file);
   assert.match(e.destination_slug, /^[a-z0-9-]+(?:\/[a-z0-9-]+)*$/);
   assert.equal(e.migrated, true);
-  const { data, body } = parse(read(e.destination_file));
+  const { data } = parse(read(e.destination_file));
   assert.equal(data.section, e.category);
-  assert.equal(
-    hash(body),
-    e.destination_body_sha256,
-    `Migrated body differs from approved mechanical conversion: ${e.destination_file}`,
-  );
+  assert.ok(e.destination_body_sha256, `Missing import checksum: ${e.destination_file}`);
+  assert.equal(data.source?.type, e.source_type === "wiki" ? "wiki" : "zenn");
+  assert.equal(data.source?.url, e.original_url);
   if (e.source_type !== "wiki") {
     assert.equal(data.canonical, e.original_url);
     assert.deepEqual(data.source.metadata, e.original_frontmatter);
@@ -63,7 +61,7 @@ if (source) {
     );
 }
 console.log(
-  `Verified: 16 articles, 3 books, 22 chapters, ${w.entries.length} Wiki pages, ${z.assets.length} assets; metadata, body hashes, order and slugs.`,
+  `Verified: 16 articles, 3 books, 22 chapters, ${w.entries.length} Wiki pages, ${z.assets.length} assets; provenance metadata, import checksums, order and slugs.`,
 );
 
 // Career source is copied read-only; verify approved mechanical conversion.

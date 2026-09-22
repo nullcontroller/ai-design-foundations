@@ -11,6 +11,7 @@ tags: &a1
   - ai活用
   - ai設計
 published_at: 2026-08-27 22:58
+updated_at: "2026-09-22"
 canonical: https://zenn.dev/nullcontroller/articles/3a18f3f15b840a
 source:
   type: zenn
@@ -62,7 +63,7 @@ source:
 
 そのとき私は、便利なプロンプトや特定のAIツールの使い方を中心にはしませんでした。
 
-代わりに、これまでZennで書いてきた内容を、かなり簡単にして説明しました。
+代わりに、これまで公開してきた設計知識を、かなり簡単にして説明しました。
 
 考え方は次のようなものです。
 

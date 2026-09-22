@@ -619,6 +619,13 @@ blockquote {
   }
   .shell > main {
     padding: 2rem 1.15rem 3rem;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+  .shell > main p {
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
   .hero {
     padding: 0 0 1.5rem;
@@ -699,6 +706,15 @@ blockquote {
   cursor: pointer;
 }
 @media (max-width: 500px) {
+  .masthead {
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+  .header-links {
+    width: 100%;
+    max-width: none;
+    justify-content: flex-start;
+  }
   .book-list-entry {
     grid-template-columns: 70px minmax(0, 1fr);
     gap: 1rem;

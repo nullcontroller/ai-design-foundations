@@ -9,6 +9,7 @@ status: evolving
 tags:
   - evaluation-hitl
 published_at: null
+updated_at: "2026-09-22"
 source:
   type: wiki
   url: https://github.com/nullcontroller/ai-design-foundations/wiki/%E3%82%B3%E3%83%BC%E3%83%89%E7%94%9F%E6%88%90AI%E3%81%AE%E8%A9%95%E4%BE%A1%E3%81%A8%E6%8E%A1%E7%94%A8%E8%A8%AD%E8%A8%88
@@ -148,7 +149,7 @@ $$
 
 Modelが学習した分布上で自然であることと、今回のSystemで正しいことは別だからです。
 
-このWikiでは、コード生成を次の概念モデルとして扱います。
+このサイトでは、コード生成を次の概念モデルとして扱います。
 
 > 条件付き分布から変更候補を生成し、外部検証器によって受入可能集合へ絞り込む工程。
 

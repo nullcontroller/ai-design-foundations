@@ -9,6 +9,7 @@ status: evolving
 tags:
   - knowledge-context
 published_at: null
+updated_at: "2026-09-22"
 source:
   type: wiki
   url: https://github.com/nullcontroller/ai-design-foundations/wiki/%E3%83%97%E3%83%AD%E3%83%B3%E3%83%97%E3%83%88%E8%A8%AD%E8%A8%88%E3%81%AE%E5%9F%BA%E6%9C%AC%E6%A7%8B%E9%80%A0
@@ -198,7 +199,7 @@ Contextは、モデルが今回の出力を生成するときに利用できる�
 
 Knowledge、RAG、Contextは同義ではありません。
 
-| 用語 | このWikiでの意味 |
+| 用語 | このサイトでの意味 |
 | --- | --- |
 | Knowledge | モデル外部で管理される事実、規則、関係 |
 | RAG | 質問に関連するKnowledgeを検索して渡す構成 |
@@ -640,4 +641,4 @@ KnowledgeとRAGは同義ではありません。
 
 AIを「使う」のではなく、実務システムの中でどう設計するかを整理しています。
 
-[Zenn](https://zenn.dev/nullcontroller)
+[AI Designを読む](/ai-design-foundations/ai-design/)

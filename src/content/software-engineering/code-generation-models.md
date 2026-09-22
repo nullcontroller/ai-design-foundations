@@ -8,6 +8,7 @@ status: evolving
 tags:
   - software-engineering
 published_at: null
+updated_at: "2026-09-22"
 source:
   type: wiki
   url: https://github.com/nullcontroller/ai-design-foundations/wiki/%E3%82%B3%E3%83%BC%E3%83%89%E7%94%9F%E6%88%90AI%E3%81%AE%E6%AD%A3%E4%BD%93
@@ -458,7 +459,7 @@ AIへ渡すContextをSource Codeだけに限定すると、局所的には正し
 
 Legacy保守では、AIの最初の役割をCode生成ではなく、Evidence収集と影響範囲の候補作成に置く方が有効な場合があります。
 
-これは一般的な性能保証ではなく、このWikiの設計仮説です。
+これは一般的な性能保証ではなく、このサイトで採用する設計仮説です。
 
 ---
 
@@ -518,7 +519,7 @@ Coding支援製品は継続的に更新されます。
 - 組織Policy
 - 利用Plan
 
-したがって、公開Wikiでは「製品Aは常にRepository全体を理解する」「製品Bはこの方式で検索する」と固定的に断定しません。
+したがって、このサイトでは「製品Aは常にRepository全体を理解する」「製品Bはこの方式で検索する」と固定的に断定しません。
 
 製品固有の説明を行う場合は、対象Version、利用Surface、確認日、公式資料を示します。
 

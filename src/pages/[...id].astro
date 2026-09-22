@@ -22,6 +22,8 @@ export async function getStaticPaths() {
 }
 const { entry } = Astro.props;
 const d = entry.data;
+const primaryPath = d.section === "cases" ? "cases" : layerPath(d.layer);
+const primaryLabel = d.section === "cases" ? "Case Studies" : layerLabel(d.layer);
 const { headings } = await render(entry);
 const all = await getCollection("pages", publicEntry);
 const series = d.series
@@ -49,12 +51,12 @@ const related = all
   title={d.title}
   summary={d.summary}
   canonical={d.canonical}
-  section={layerPath(d.layer)}
+  section={primaryPath}
   headings={headings}
 >
   <nav class="breadcrumb">
     <a href={url()}>Home</a> /{" "}
-    <a href={url(layerPath(d.layer))}>{layerLabel(d.layer)}</a>
+    <a href={url(primaryPath)}>{primaryLabel}</a>
     {d.design_topic && (
       <>
         {" "}

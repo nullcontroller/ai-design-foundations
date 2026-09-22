@@ -9,6 +9,7 @@ status: evolving
 tags:
   - architecture
 published_at: null
+updated_at: "2026-09-22"
 source:
   type: wiki
   url: https://github.com/nullcontroller/ai-design-foundations/wiki/AI%E6%A5%AD%E5%8B%99%E3%82%B7%E3%82%B9%E3%83%86%E3%83%A0%E3%81%AE%E5%8F%82%E7%85%A7%E3%82%A2%E3%83%BC%E3%82%AD%E3%83%86%E3%82%AF%E3%83%81%E3%83%A3
@@ -41,7 +42,7 @@ AI業務システムは、モデルへ入力を渡して回答を受け取るだ
 
 > 生成できること、受理できること、実行してよいことを、別の境界で判定する。
 
-このページは特定Cloud、Framework、Model製品の構成図ではない。100〜600章の設計原則を、一つの業務Systemへ接続するための論理Architectureである。
+このページは特定Cloud、Framework、Model製品の構成図ではない。AI適用判断からLifecycle / Operationsまでの設計原則を、一つの業務Systemへ接続するための論理Architectureである。
 
 ---
 

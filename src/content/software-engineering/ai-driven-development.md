@@ -13,6 +13,7 @@ tags: &a1
   - hitl
   - aiガバナンス
 published_at: 2026-08-15 08:42
+updated_at: "2026-09-22"
 canonical: https://zenn.dev/nullcontroller/articles/fccbf170ead145
 source:
   type: zenn
@@ -212,9 +213,9 @@ AIによってコード生成速度は大きく向上します。
 
 ### 今回の実務事例
 
-詳細はZenn Bookで整理しています。
+詳細はCase Studyとして整理しています。
 
-Bookでは、実際の工程に沿って次の内容を整理しています。
+Case Studyでは、実際の工程に沿って次の内容を整理しています。
 
 1. 暗号方式の変更によって顕在化した異常系
 2. 異常系の構造整理と設計方針
