@@ -11,7 +11,7 @@ export const GET: APIRoute = ({ site }) => {
     "Rosariumは、立林 裕太朗が趣味で構築しているサイトです。Applied AI、自然言語、システム設計、AI数学論、実務で得た知見などを公開しています。",
     "",
     link("Home", ""),
-    link("Career", "career"),
+    link("Own Career", "career"),
     link("AI Design", "ai-design"),
     link("AI数学論", "ai-mathematics"),
     link("Practices", "practices"),

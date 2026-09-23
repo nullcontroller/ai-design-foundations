@@ -3,11 +3,11 @@ import type { Entry } from "../lib/navigation";
 import {
   publicationType,
   publicationTiming,
-  publicationTopic,
-  publicationTopics,
 } from "../lib/navigation";
+import { iconForEntry } from "../lib/icons";
 import { url } from "../lib/site";
 import { contentUseCases } from "../lib/use-cases";
+import Icon from "./Icon.astro";
 interface Props {
   entry: Entry;
   heading?: "h2" | "h3" | "p";
@@ -18,27 +18,25 @@ const purposes = contentUseCases(entry);
 const timing = publicationTiming(entry);
 ---
 
-<div class="content-entry publication-entry" data-content-id={entry.id}>
-  <p class="meta">
-    {publicationType(entry)} · {publicationTopic(entry)}
-  </p>
-  <Heading class="content-title">
-    <a href={url(entry.id)}>{d.title}</a>
-  </Heading>
-  <p class="content-summary">{d.summary}</p>
-  {purposes.length > 0 && (
-    <p class="meta publication-purpose">
-      読む目的：{purposes.map((purpose) => purpose.shortTitle).join(" / ")}
-    </p>
-  )}
-  <p class="meta publication-date">
-    {timing.label}：{timing.datetime ? (
-      <time datetime={timing.datetime}>{timing.value}</time>
-    ) : (
-      timing.value
+<div class="content-entry publication-entry icon-entry" data-content-id={entry.id}>
+  <Icon name={iconForEntry(entry)} size="list" />
+  <div>
+    <Heading class="content-title">
+      <a href={url(entry.id)}>{d.title}</a>
+    </Heading>
+    <p class="content-summary">{d.summary}</p>
+    {purposes.length > 0 && (
+      <p class="meta publication-purpose publication-topics">
+        {purposes.map((purpose) => purpose.shortTitle).join(" / ")}
+      </p>
     )}
-  </p>
-  <p class="tags publication-topics">
-    Topics：{publicationTopics(entry).join(" / ")}
-  </p>
+    <p class="meta publication-date">
+      <span>{timing.label}：{timing.datetime ? (
+        <time datetime={timing.datetime}>{timing.value}</time>
+      ) : (
+        timing.value
+      )}</span>
+      <span>{publicationType(entry)}</span>
+    </p>
+  </div>
 </div>

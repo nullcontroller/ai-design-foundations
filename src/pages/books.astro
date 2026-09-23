@@ -4,12 +4,12 @@ import Site from "../layouts/Site.astro";
 import SeriesIndex from "../components/SeriesIndex.astro";
 import { caseStudies } from "../lib/navigation";
 import { publicEntry, url } from "../lib/site";
+import PageHeader from "../components/PageHeader.astro";
 const all = await getCollection("pages", publicEntry);
 ---
 
 <Site title="Books — 実務事例" section="cases">
-  <h1>Books — 実務事例</h1>
-  <p class="lead">実務への適用を章立てで追う、2冊のBook。</p>
+  <PageHeader icon="cases" title="Books — 実務事例" summary="実務への適用を章立てで追う、2冊のBook。" />
   <p>
     <a href={url("cases")}>Case Studies</a> ·{" "}
     <a href={url("series")}>設計原則の連載</a> ·{" "}

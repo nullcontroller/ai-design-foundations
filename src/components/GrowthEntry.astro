@@ -3,6 +3,9 @@ import type { Entry } from "../lib/navigation";
 import { contentCategory } from "../lib/navigation";
 import { activityDate, updateLabels, updateType } from "../lib/growth";
 import { url } from "../lib/site";
+import { contentUseCases } from "../lib/use-cases";
+import { iconForEntry } from "../lib/icons";
+import Icon from "./Icon.astro";
 
 interface Props {
   entry: Entry;
@@ -11,14 +14,22 @@ interface Props {
 const { entry } = Astro.props;
 const date = activityDate(entry)!;
 const type = updateType(entry);
+const purpose = contentUseCases(entry)[0];
 ---
 
-<article class="growth-entry" data-content-id={entry.id}>
-  <p class="meta growth-meta">
-    <span class={`update-badge update-${type}`}>{updateLabels[type]}</span>
-    <time datetime={date}>{date}</time>
-    <span>{contentCategory(entry)}</span>
-  </p>
-  <h3 class="content-title"><a href={url(entry.id)}>{entry.data.title}</a></h3>
-  <p class="content-summary">{entry.data.update_note ?? entry.data.summary}</p>
+<article class="growth-entry icon-entry" data-content-id={entry.id}>
+  <Icon name={iconForEntry(entry)} size="list" />
+  <div>
+    <p class="meta growth-meta">
+      <span class={`update-badge update-${type}`}>{updateLabels[type]}</span>
+      <time datetime={date}>{date}</time>
+      <span>{contentCategory(entry)}</span>
+    </p>
+    <h3 class="content-title"><a href={url(entry.id)}>{entry.data.title}</a></h3>
+    <p class="content-summary">{entry.data.update_note ?? entry.data.summary}</p>
+    {purpose && <p class="meta growth-purpose">{purpose.shortTitle}</p>}
+    {entry.data.publication_status === "ongoing" && (
+      <p class="meta">連載中 · 最終更新 {date}</p>
+    )}
+  </div>
 </article>

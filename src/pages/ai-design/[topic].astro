@@ -6,6 +6,8 @@ import RelatedPublications from "../../components/RelatedPublications.astro";
 import SectionVisual from "../../components/SectionVisual.astro";
 import { designTopics, relatedPublications } from "../../lib/navigation";
 import { publicEntry, url } from "../../lib/site";
+import PageHeader from "../../components/PageHeader.astro";
+import { iconForTopic } from "../../lib/icons";
 export function getStaticPaths() {
   return designTopics.map(([topic, title, summary]) => ({
     params: { topic },
@@ -44,7 +46,7 @@ const visual = visuals[Astro.params.topic || ""];
   <nav class="breadcrumb">
     <a href={url("ai-design")}>AI Design</a> / {title}
   </nav>
-  <h1>{title}</h1>
+  <PageHeader icon={iconForTopic(Astro.params.topic)} title={title} />
   {visual && <SectionVisual name={visual[0]} alt={visual[1]} />}
   <p class="lead">{summary}</p>
   <ContentIndex

@@ -1,11 +1,11 @@
 ---
 import Site from "../layouts/Site.astro";
 import { url } from "../lib/site";
+import PageHeader from "../components/PageHeader.astro";
 ---
 
 <Site title="Start Here">
-  <h1>Start Here</h1>
-  <p class="lead">仕組みの理解から、設計・実践・事例へ。</p>
+  <PageHeader icon="overview" title="Start Here" summary="仕組みの理解から、設計・実践・事例へ。" />
   <ol class="reading-route">
     <li>
       <a href={url("ai-mathematics")}>AI数学論</a> — なぜそう振る舞うか
@@ -27,6 +27,6 @@ import { url } from "../lib/site";
   </p>
   <p>
     <a href={url("overview")}>全体目次で探す</a> ·{" "}
-    <a href={url("career")}>Career</a>
+    <a href={url("career")}>Own Career</a>
   </p>
 </Site>

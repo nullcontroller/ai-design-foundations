@@ -6,6 +6,9 @@ import RelatedPublications from "../../components/RelatedPublications.astro";
 import PublicationLink from "../../components/PublicationLink.astro";
 import { sections, publicEntry, url } from "../../lib/site";
 import { isPublication } from "../../lib/navigation";
+import PageHeader from "../../components/PageHeader.astro";
+import SectionHeading from "../../components/SectionHeading.astro";
+import { iconForSection } from "../../lib/icons";
 export function getStaticPaths() {
   return sections
     .filter(([key]) => !["cases", "practices"].includes(key))
@@ -32,8 +35,7 @@ const oldFoundations = Astro.params.section === "foundations";
   section={essays ? "articles" : "ai-design"}
   noindex={!essays}
 >
-  <h1>{oldFoundations ? "設計資料アーカイブ" : title}</h1>
-  <p class="lead">{summary}</p>
+  <PageHeader icon={iconForSection(essays ? "articles" : Astro.params.section)} title={oldFoundations ? "設計資料アーカイブ" : title} summary={summary} />
   {oldFoundations ? (
     <>
       <p>
@@ -68,15 +70,14 @@ const oldFoundations = Astro.params.section === "foundations";
     </div>
   ) : (
     <>
-      <h2>AI Design</h2>
+      <SectionHeading icon="ai-design" title="AI Design" />
       <ContentIndex
         entries={entries.filter((e) => e.data.layer === "ai-design")}
       />
       {entries.some((e) => e.data.layer === "ai-mathematics") && (
         <section>
-          <h2>
-            <a href={url("ai-mathematics")}>AI数学論へ</a>
-          </h2>
+          <SectionHeading icon="ai-mathematics" title="AI数学論" />
+          <p><a href={url("ai-mathematics")}>AI数学論を見る →</a></p>
           <ContentIndex
             entries={entries.filter((e) => e.data.layer === "ai-mathematics")}
           />
@@ -84,9 +85,8 @@ const oldFoundations = Astro.params.section === "foundations";
       )}
       {entries.some((e) => e.data.layer === "practice") && (
         <section>
-          <h2>
-            <a href={url("practices")}>Practicesへ</a>
-          </h2>
+          <SectionHeading icon="practices" title="Practices" />
+          <p><a href={url("practices")}>Practicesを見る →</a></p>
           <ContentIndex
             entries={entries.filter((e) => e.data.layer === "practice")}
           />

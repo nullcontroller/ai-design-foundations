@@ -1,0 +1,12 @@
+---
+import type { IconName } from "../lib/icons";
+
+interface Props {
+  name: IconName;
+  size?: "meta" | "list" | "nav" | "section" | "page";
+}
+
+const { name, size = "list" } = Astro.props;
+---
+
+<span class:list={["icon", `icon-${name}`, `icon-${size}`]} aria-hidden="true"></span>

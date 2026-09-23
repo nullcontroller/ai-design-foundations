@@ -5,11 +5,12 @@ import SeriesIndex from "../components/SeriesIndex.astro";
 import SectionVisual from "../components/SectionVisual.astro";
 import { caseStudies } from "../lib/navigation";
 import { publicEntry, url } from "../lib/site";
+import PageHeader from "../components/PageHeader.astro";
 const all = await getCollection("pages", publicEntry);
 ---
 
 <Site title="Case Studies" section="cases">
-  <h1>Case Studies</h1>
+  <PageHeader icon="cases" title="Case Studies" />
   <SectionVisual
     name="practice-case-study"
     alt="実務データと知見の関係を表すCase Studiesのシンボル"

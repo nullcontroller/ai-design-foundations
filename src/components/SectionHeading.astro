@@ -1,0 +1,20 @@
+---
+import Icon from "./Icon.astro";
+import type { IconName } from "../lib/icons";
+interface Props {
+  icon: IconName;
+  title: string;
+  eyebrow?: string;
+  id?: string;
+  level?: "h2" | "h3";
+}
+const { icon, title, eyebrow, id, level: Heading = "h2" } = Astro.props;
+---
+
+<div class="icon-heading section-heading">
+  <Icon name={icon} size="section" />
+  <div>
+    {eyebrow && <span>{eyebrow}</span>}
+    <Heading id={id}>{title}</Heading>
+  </div>
+</div>

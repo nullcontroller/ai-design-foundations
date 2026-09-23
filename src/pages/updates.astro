@@ -4,21 +4,45 @@ import GrowthEntry from "../components/GrowthEntry.astro";
 import Site from "../layouts/Site.astro";
 import { recentGrowth } from "../lib/growth";
 import { publicEntry } from "../lib/site";
+import { assetUrl } from "../lib/site";
+import PageHeader from "../components/PageHeader.astro";
+import ActionLink from "../components/ActionLink.astro";
 
 const entries = recentGrowth(await getCollection("pages", publicEntry));
+const groups = Object.entries(
+  entries.reduce<Record<string, typeof entries>>((result, entry) => {
+    const date = entry.data.updated_at?.slice(0, 10) ?? entry.data.published_at?.slice(0, 10)!;
+    const [year, month] = date.split("-");
+    const key = `${year}年${Number(month)}月`;
+    (result[key] ??= []).push(entry);
+    return result;
+  }, {}),
+);
 ---
 
 <Site
-  title="Rosariumの更新"
-  summary="新規公開だけでなく、追記・改訂・接続を含むRosariumの知識の変化を日付順に確認できます。"
+  title="最近育ったもの"
+  summary="Rosariumで最近追加・更新・改訂された技術知識、実務事例、AI数学論の一覧。"
   section="updates"
+  breadcrumbs={[
+    { name: "Home", path: "" },
+    { name: "最近育ったもの", path: "updates" },
+  ]}
 >
-  <p class="eyebrow">GROWTH HISTORY</p>
-  <h1>Rosariumの更新</h1>
-  <p class="lead">
-    新しく生まれた文書と、既存の知識を追記・改訂した記録です。開発作業の履歴ではなく、公開している内容の変化を示します。
-  </p>
-  <div class="growth-list">
-    {entries.map((entry) => <GrowthEntry entry={entry} />)}
-  </div>
+  <PageHeader
+    icon="updates"
+    eyebrow="RECENT GROWTH"
+    title="最近育ったもの"
+    summary="新しい記事だけでなく、既存の知識への追記・改訂も含めて、Rosariumの変化を時系列で確認できます。"
+  />
+  <p>公開時期とRosariumでの更新日は分けて扱い、ここでは内容が変わった日を基準に並べています。</p>
+  {groups.map(([month, monthEntries]) => (
+    <section class="growth-month">
+      <h2>{month}</h2>
+      <div class="growth-list">
+        {monthEntries.map((entry) => <GrowthEntry entry={entry} />)}
+      </div>
+    </section>
+  ))}
+  <ActionLink href={assetUrl("feed.xml")} icon="rss" label="更新をRSSで追う" />
 </Site>

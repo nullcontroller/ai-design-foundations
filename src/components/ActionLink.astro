@@ -1,0 +1,15 @@
+---
+import Icon from "./Icon.astro";
+import type { IconName } from "../lib/icons";
+interface Props {
+  href: string;
+  icon?: IconName;
+  label: string;
+}
+const { href, icon = "arrow", label } = Astro.props;
+---
+
+<a class="action-link" href={href}>
+  <span>{label}</span>
+  <Icon name={icon} size="meta" />
+</a>

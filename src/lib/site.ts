@@ -22,10 +22,18 @@ export const publicEntry = (e: {
 export const layers = {
   "ai-mathematics": "AI数学論",
   "ai-design": "AI Design",
-  career: "Career",
+  career: "Own Career",
   reference: "Reference",
   practice: "Practice / 実践",
   case: "Case / 実務事例",
   publication: "Publication / 公開物",
 } as const;
 export const layerLabel = (layer: keyof typeof layers) => layers[layer];
+
+export const statusLabel = (status: string) =>
+  ({
+    stable: "安定版",
+    evolving: "更新中",
+    archived: "アーカイブ",
+    draft: "下書き",
+  })[status] ?? status;

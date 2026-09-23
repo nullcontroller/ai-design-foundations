@@ -1,6 +1,7 @@
 ---
 import Site from "../../layouts/Site.astro";
 import { url } from "../../lib/site";
+import PageHeader from "../../components/PageHeader.astro";
 ---
 
 <Site
@@ -9,7 +10,7 @@ import { url } from "../../lib/site";
   section="ai-mathematics"
   noindex={true}
 >
-  <h1>AI数学論へ統合しました</h1>
+  <PageHeader icon="ai-mathematics" title="AI数学論へ統合しました" />
   <p>
     「LLMを確率モデルとして設計するという立場」の要点は、AI数学論トップの「AIは数学である」へ統合しました。
   </p>

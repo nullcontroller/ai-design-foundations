@@ -2,10 +2,12 @@
 import Site from "../layouts/Site.astro";
 import SectionVisual from "../components/SectionVisual.astro";
 import { url } from "../lib/site";
+import PageHeader from "../components/PageHeader.astro";
+import Icon from "../components/Icon.astro";
 ---
 
 <Site title="Rosariumについて" section="about">
-  <h1>Rosariumについて</h1>
+  <PageHeader icon="about" title="Rosariumについて" />
   <SectionVisual name="rosarium-core" alt="本と光を表すRosariumのシンボル" />
   <p class="lead">
     Rosariumは、立林 裕太朗が趣味で構築しているサイトです。
@@ -18,31 +20,31 @@ import { url } from "../lib/site";
     Rosariumという名前は、知識と思考を育て続ける「庭」というイメージから名付けました。Bookは知識、Roseは成長と洗練、Lightは学びと発見を表します。
   </p>
   <h2>何を書いているか</h2>
-  <ul>
-    <li>
+  <ul class="about-index">
+    <li><Icon name="articles" size="list" /><div>
       <a href={url("articles")}>読む</a>
       ：AI導入、自然言語サービス、Software
       Engineering、AI数学論、実務事例など、知りたい目的から探す。
-    </li>
-    <li>
+    </div></li>
+    <li><Icon name="ai-design" size="list" /><div>
       <a href={url("ai-design")}>AI Design</a>
       ：AIを業務システムへ組み込むための設計。
-    </li>
-    <li>
+    </div></li>
+    <li><Icon name="ai-mathematics" size="list" /><div>
       <a href={url("ai-mathematics")}>AI数学論</a>
       ：AIの振る舞いを数学・確率・モデルから理解する。
-    </li>
-    <li>
+    </div></li>
+    <li><Icon name="practices" size="list" /><div>
       <a href={url("practices")}>Practices</a>：業務・組織・開発への適用。
-    </li>
-    <li>
+    </div></li>
+    <li><Icon name="cases" size="list" /><div>
       <a href={url("cases")}>Case Studies</a>
       ：実務での課題、設計判断、実装と結果。
-    </li>
-    <li>
-      <a href={url("career")}>Career</a>
+    </div></li>
+    <li><Icon name="career" size="list" /><div>
+      <a href={url("career")}>Own Career</a>
       ：このサイトを書いている人物の職務経験、専門領域、今後の方向性。
-    </li>
+    </div></li>
   </ul>
   <p>
     Article・Book・連載・Essayという出版形式は、「読む」ページ内の補助情報として扱います。

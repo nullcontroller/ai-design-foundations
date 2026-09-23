@@ -2,12 +2,15 @@
 import Site from "../layouts/Site.astro";
 import { getCollection } from "astro:content";
 import ContentLink from "../components/ContentLink.astro";
-import SectionVisual from "../components/SectionVisual.astro";
 import { publicEntry, url } from "../lib/site";
 import { primaryUseCases } from "../lib/use-cases";
 import GrowthEntry from "../components/GrowthEntry.astro";
 import { recentGrowth } from "../lib/growth";
 import { currentGrowth } from "../lib/current-growth";
+import Icon from "../components/Icon.astro";
+import SectionHeading from "../components/SectionHeading.astro";
+import ActionLink from "../components/ActionLink.astro";
+import { iconForUseCase } from "../lib/icons";
 
 const all = await getCollection("pages", publicEntry);
 const find = (id: string) => {
@@ -15,11 +18,6 @@ const find = (id: string) => {
   if (!entry) throw new Error(`Home content missing: ${id}`);
   return entry;
 };
-const featured = [
-  "foundations/applicability-and-delegation",
-  "knowledge-context/instruction-knowledge-evidence",
-  "software-engineering/development-workflow",
-].map(find);
 const cases = ["cases/system-understanding", "cases/three-ai-maintenance"].map(
   find,
 );
@@ -28,88 +26,59 @@ const recent = recentGrowth(all).slice(0, 5);
 
 <Site title="Home" section="">
   <section class="hero">
-    <SectionVisual
-      name="rosarium-core"
-      alt="本と光を表すRosariumのシンボル"
-      eager={true}
-    />
-    <h1>Rosarium</h1>
-    <p class="lead">
-      Rosariumは、立林 裕太朗が趣味で構築しているサイトです。
-    </p>
-    <p>
-      Applied AIや自然言語、システム設計、AIの数学的な理解、実務で得た知見などを整理しています。
-    </p>
-    <a href={url("about")}>Rosariumについて詳しく →</a>
+    <div class="document-title-row">
+      <Icon name="home" size="page" />
+      <h1>Rosarium</h1>
+    </div>
+    <p class="lead">立林 裕太朗が、Applied AI・自然言語・システム設計の知識と実務を継続的に整理する個人サイトです。</p>
+    <ActionLink href={url("about")} icon="about" label="詳しく見る" />
   </section>
 
-  <section aria-labelledby="use-case-heading">
-    <div class="section-heading">
-      <span>START FROM YOUR QUESTION</span>
-      <h2 id="use-case-heading">何を知りたいですか？</h2>
+  <section class="home-section" aria-labelledby="recent-growth-heading">
+    <SectionHeading icon="updates" eyebrow="RECENT GROWTH" title="最近育ったもの" id="recent-growth-heading" />
+    <p>新規公開だけでなく、追記・改訂を含む最近の知識の変化です。</p>
+    <div class="growth-list growth-list-compact">
+      {recent.map((entry) => <GrowthEntry entry={entry} />)}
     </div>
+    <ActionLink href={url("updates")} icon="updates" label="すべての更新を見る" />
+  </section>
+
+  <section class="home-section" aria-labelledby="use-case-heading">
+    <SectionHeading icon="overview" eyebrow="START FROM YOUR QUESTION" title="何を知りたいですか？" id="use-case-heading" />
     <div class="use-case-index">
       {primaryUseCases.map((useCase, index) => (
         <article class="use-case-entry" data-use-case={useCase.id}>
-          <span class="index-number">{String(index + 1).padStart(2, "0")}</span>
+          <div class="use-case-mark">
+            <Icon name={iconForUseCase(useCase.id)} size="section" />
+            <span class="index-number">{String(index + 1).padStart(2, "0")}</span>
+          </div>
           <div>
             <h3>{useCase.title}</h3>
             <p>{useCase.description}</p>
-            <a href={url(useCase.path)}>ここから読む →</a>
+            <ActionLink href={url(useCase.path)} label="読む" />
           </div>
         </article>
       ))}
     </div>
   </section>
 
-  <section class="home-section" aria-labelledby="recent-growth-heading">
-    <div class="section-heading">
-      <span>RECENT GROWTH</span>
-      <h2 id="recent-growth-heading">最近育ったもの</h2>
-    </div>
-    <p>新規公開だけでなく、追記・改訂を含む最近の知識の変化です。</p>
-    <div class="growth-list growth-list-compact">
-      {recent.map((entry) => <GrowthEntry entry={entry} />)}
-    </div>
-    <a href={url("updates")}>この庭の変化をすべて見る →</a>
-  </section>
-
   <section class="home-section" aria-labelledby="current-growth-heading">
-    <div class="section-heading">
-      <span>CURRENT GROWTH</span>
-      <h2 id="current-growth-heading">今育てているテーマ</h2>
-    </div>
+    <SectionHeading icon="ai-design" eyebrow="CURRENT GROWTH" title="今育てているテーマ" id="current-growth-heading" />
     <div class="current-growth-list">
       {currentGrowth.map((theme) => (
-        <article>
-          <h3><a href={url(theme.path)}>{theme.title}</a></h3>
-          <p>{theme.summary}</p>
+        <article class="icon-entry">
+          <Icon name={theme.icon} size="list" />
+          <div>
+            <h3 class="content-title"><a href={url(theme.path)}>{theme.title}</a></h3>
+            <p>{theme.summary}</p>
+          </div>
         </article>
       ))}
     </div>
   </section>
 
-  <details class="recommended-reading home-section">
-    <summary>まず読む</summary>
-    <div class="recommended-reading-body">
-      <p>
-        適用判断、Knowledge設計、開発工程への組込みから、Rosariumの考え方を短く辿ります。
-      </p>
-      <ul class="content-index recommended-content">
-        {featured.map((entry) => (
-          <li>
-            <ContentLink entry={entry} heading="h3" />
-          </li>
-        ))}
-      </ul>
-    </div>
-  </details>
-
   <section class="home-section" aria-labelledby="cases-heading">
-    <div class="section-heading">
-      <span>CASE STUDIES</span>
-      <h2 id="cases-heading">実際の事例</h2>
-    </div>
+    <SectionHeading icon="cases" eyebrow="CASE STUDIES" title="実際の事例" id="cases-heading" />
     <p>設計原則を、QA / RAGと既存ソフトウェア改善へ適用した記録です。</p>
     <ul class="content-index recommended-content">
       {cases.map((entry) => (
@@ -118,40 +87,34 @@ const recent = recentGrowth(all).slice(0, 5);
         </li>
       ))}
     </ul>
-    <a href={url("cases")}>Case Studiesをすべて見る →</a>
+    <ActionLink href={url("cases")} icon="cases" label="一覧を見る" />
   </section>
 
   <section class="home-section author-introduction">
-    <div class="section-heading">
-      <span>AUTHOR</span>
-      <h2>このサイトを書いている人</h2>
-    </div>
+    <SectionHeading icon="career" eyebrow="AUTHOR" title="このサイトを書いている人" />
     <p class="lead">立林 裕太朗</p>
     <p>
       Software Development、Project Management、Generative AI /
       RAGの経験を背景に、Applied AIとSystem Architectureに取り組んでいます。
     </p>
     <nav class="library-links" aria-label="著者情報">
-      <a href={url("career")}>Careerを見る →</a>
-      <a href={url("career/profile")}>詳細職務経歴を見る →</a>
+      <ActionLink href={url("career")} icon="career" label="Own Careerを見る" />
+      <ActionLink href={url("career/profile")} label="詳細職務経歴を見る" />
     </nav>
   </section>
 
   <section class="home-section">
-    <div class="section-heading">
-      <span>ABOUT</span>
-      <h2>知識と思考を育てる庭</h2>
-    </div>
+    <SectionHeading icon="about" eyebrow="ABOUT" title="知識と思考を育てる庭" />
     <p>
       Rosariumは、問いから考え方、理論、実践、知見へ進む場所です。AI
       Design・AI数学論・Practices・Case Studiesを、関心に応じて辿れます。
     </p>
-    <a href={url("about")}>Rosariumについて詳しく →</a>
+    <ActionLink href={url("about")} icon="about" label="詳しく見る" />
   </section>
 
   <nav class="library-links home-final-links" aria-label="すべてのコンテンツ">
-    <a href={url("articles")}>目的・テーマから読む</a>
-    <a href={url("overview")}>全体目次を見る</a>
-    <a href={url("search")}>サイト内を検索</a>
+    <ActionLink href={url("articles")} icon="articles" label="記事一覧を見る" />
+    <ActionLink href={url("overview")} icon="overview" label="全体目次を見る" />
+    <ActionLink href={url("search")} icon="search" label="検索する" />
   </nav>
 </Site>

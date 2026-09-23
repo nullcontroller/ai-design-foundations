@@ -5,6 +5,9 @@ import ContentIndex from "../../components/ContentIndex.astro";
 import SectionVisual from "../../components/SectionVisual.astro";
 import { designTopics } from "../../lib/navigation";
 import { publicEntry, url } from "../../lib/site";
+import PageHeader from "../../components/PageHeader.astro";
+import SectionHeading from "../../components/SectionHeading.astro";
+import { iconForTopic } from "../../lib/icons";
 const all = await getCollection("pages", publicEntry);
 ---
 
@@ -13,7 +16,7 @@ const all = await getCollection("pages", publicEntry);
   section="ai-design"
   ogImage="og/ai-design.png"
 >
-  <h1>AI Design</h1>
+  <PageHeader icon="ai-design" title="AI Design" />
   <SectionVisual
     name="system-architecture"
     alt="複数の層と接続点から成るシステム設計のシンボル"
@@ -29,9 +32,8 @@ const all = await getCollection("pages", publicEntry);
   </nav>
   {designTopics.map(([key, title, summary]) => (
     <section>
-      <h2>
-        <a href={url("ai-design/" + key)}>{title}</a>
-      </h2>
+      <SectionHeading icon={iconForTopic(key)} title={title} />
+      <p class="section-title-link"><a href={url("ai-design/" + key)}>このテーマを見る →</a></p>
       <p>{summary}</p>
       <ContentIndex
         entries={all.filter(

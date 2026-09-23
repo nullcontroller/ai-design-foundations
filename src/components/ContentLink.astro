@@ -1,7 +1,9 @@
 ---
 import { contentCategory } from "../lib/navigation";
+import { iconForEntry } from "../lib/icons";
 import type { CollectionEntry } from "astro:content";
-import { url } from "../lib/site";
+import { statusLabel, url } from "../lib/site";
+import Icon from "./Icon.astro";
 interface Props {
   entry: CollectionEntry<"pages">;
   heading?: "h2" | "h3" | "p";
@@ -9,16 +11,21 @@ interface Props {
 }
 const { entry, heading: Heading = "h2", current = false } = Astro.props;
 const d = entry.data;
+const status = d.status === "stable" ? undefined : statusLabel(d.status);
 ---
 
-<div class="content-entry" data-content-id={entry.id}>
-  <p class="meta">
-    {contentCategory(entry)} · {d.status}
-  </p>
-  <Heading class="content-title">
-    <a href={url(entry.id)} aria-current={current ? "page" : undefined}>
-      {d.title}
-    </a>
-  </Heading>
-  <p class="content-summary">{d.summary}</p>
+<div class="content-entry icon-entry" data-content-id={entry.id}>
+  <Icon name={iconForEntry(entry)} size="list" />
+  <div>
+    <p class="meta">
+      <span>{contentCategory(entry)}</span>
+      {status && <span>{status}</span>}
+    </p>
+    <Heading class="content-title">
+      <a href={url(entry.id)} aria-current={current ? "page" : undefined}>
+        {d.title}
+      </a>
+    </Heading>
+    <p class="content-summary">{d.summary}</p>
+  </div>
 </div>

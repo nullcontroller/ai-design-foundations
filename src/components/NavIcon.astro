@@ -1,9 +1,9 @@
 ---
+import Icon from "./Icon.astro";
+import type { IconName } from "../lib/icons";
 interface Props {
-  name: string;
+  name: IconName;
 }
-
-const { name } = Astro.props;
 ---
 
-<span class={`nav-icon-${name || "home"}`} aria-hidden="true"></span>
+<Icon name={Astro.props.name} size="nav" />

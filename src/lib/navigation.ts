@@ -1,38 +1,82 @@
 import type { CollectionEntry } from "astro:content";
 import { label } from "./site";
+import { iconForPath } from "./icons";
 export type Entry = CollectionEntry<"pages">;
 export const navigation = [
   [
-    { path: "", title: "Home", summary: "Rosariumの入口", icon: "home" },
-    { path: "about", title: "About", summary: "Rosariumについて", icon: "about" },
-  ],
-  [{ path: "career", title: "Career", summary: "職務経験・希望する役割", icon: "career" }],
-  [
-    { path: "overview", title: "全体目次", summary: "全コンテンツを見渡す", icon: "overview" },
+    {
+      path: "",
+      title: "Home",
+      summary: "Rosariumの入口",
+      icon: iconForPath(""),
+    },
     {
       path: "articles",
       title: "読む",
-      summary: "目的・テーマから探す",
-      icon: "articles",
+      summary: "記事一覧から探す",
+      icon: iconForPath("articles"),
+    },
+    {
+      path: "updates",
+      title: "最近育ったもの",
+      summary: "最近の追加・更新を見る",
+      icon: iconForPath("updates"),
     },
   ],
   [
-    { path: "cases", title: "Case Studies", summary: "実務への適用事例", icon: "cases" },
+    {
+      path: "cases",
+      title: "Case Studies",
+      summary: "実務への適用事例",
+      icon: iconForPath("cases"),
+    },
+    {
+      path: "career",
+      title: "Own Career",
+      summary: "職務経験・希望する役割",
+      icon: iconForPath("career"),
+    },
+    {
+      path: "about",
+      title: "About",
+      summary: "Rosariumについて",
+      icon: iconForPath("about"),
+    },
+  ],
+  [
     {
       path: "ai-design",
       title: "AI Design",
       summary: "業務システムへの組込み",
-      icon: "ai-design",
+      icon: iconForPath("ai-design"),
     },
     {
       path: "ai-mathematics",
       title: "AI数学論",
       summary: "AIの性質を理解する",
-      icon: "ai-mathematics",
+      icon: iconForPath("ai-mathematics"),
     },
-    { path: "practices", title: "Practices", summary: "業務・組織への適用", icon: "practices" },
+    {
+      path: "practices",
+      title: "Practices",
+      summary: "業務・組織への適用",
+      icon: iconForPath("practices"),
+    },
+    {
+      path: "overview",
+      title: "全体目次",
+      summary: "全コンテンツを見渡す",
+      icon: iconForPath("overview"),
+    },
   ],
-  [{ path: "reference", title: "Reference", summary: "用語・数式・参照資料", icon: "reference" }],
+  [
+    {
+      path: "reference",
+      title: "Reference",
+      summary: "用語・数式・参照資料",
+      icon: iconForPath("reference"),
+    },
+  ],
 ];
 export const designTopics = [
   ["applicability", "AI適用判断", "適用可否と委任レベル"],
@@ -201,6 +245,6 @@ export const publicationTopics = (entry: Entry) => [
     ...(entry.data.tags.some((tag) => ["aiエージェント", "mcp"].includes(tag))
       ? ["AI Agent"]
       : []),
-    ...(entry.data.tags.includes("キャリア") ? ["Career"] : []),
+    ...(entry.data.tags.includes("キャリア") ? ["Own Career"] : []),
   ]),
 ];

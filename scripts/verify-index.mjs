@@ -55,7 +55,7 @@ for (const [id, d] of entries) {
     );
 }
 const career = load(fs.readFileSync("dist/career/index.html", "utf8"));
-assert.equal(career("h1").text(), "Career — 立林 裕太朗");
+assert.equal(career("h1").text(), "Own Career — 立林 裕太朗");
 assert(career('a[href="/ai-design-foundations/career/profile/"]').length);
 console.log(
   `Verified ${entries.size} summaries/search metadata, ${links} content links and Career profile.`,
@@ -71,14 +71,15 @@ assert.deepEqual(
     .get(),
   [
     "Home",
-    "About",
-    "Career",
-    "全体目次",
     "読む",
+    "最近育ったもの",
     "Case Studies",
+    "Own Career",
+    "About",
     "AI Design",
     "AI数学論",
     "Practices",
+    "全体目次",
     "Reference",
   ],
 );
@@ -86,7 +87,7 @@ assert.deepEqual(
   top(".header-primary a")
     .map((_, e) => top(e).text().trim())
     .get(),
-  ["読む", "事例", "Career", "About"],
+  ["読む", "事例", "Own Career", "About"],
 );
 assert.deepEqual(
   top(".header-actions a")
@@ -97,14 +98,14 @@ assert.deepEqual(
 assert(!top(".sidebar summary").text().includes("設計体系"));
 for (const secondary of ["詳細職務経歴", "Books", "連載", "Essays"])
   assert(!top(".sidebar nav a .nav-copy > span").text().includes(secondary), secondary);
-assert.equal(top('.sidebar [class^="nav-icon-"]').length, 10);
+assert.equal(top(".sidebar .icon").length, 11);
 assert.equal(
   new Set(
-    top('.sidebar [class^="nav-icon-"]')
+    top(".sidebar .icon")
       .map((_, e) => top(e).attr("class"))
       .get(),
   ).size,
-  10,
+  11,
 );
 assert(career('a[href="/ai-design-foundations/career/profile/"]').length);
 const primaryIds = ($) =>
@@ -166,19 +167,10 @@ assert.deepEqual(
     "case-studies",
   ],
 );
-assert.deepEqual(
-  pubs("[data-use-case-section]")
-    .map((_, e) => pubs(e).attr("data-use-case-section"))
-    .get(),
-  [
-    "ai-adoption",
-    "natural-language-services",
-    "software-engineering",
-    "understand-ai",
-    "case-studies",
-    "career-work",
-  ],
-);
+assert.equal(pubs("details#all-publications").length, 0);
+assert.equal(pubs("section#all-publications").length, 1);
+assert.equal(pubs("#all-publications [data-publication]").length > 0, true);
+assert.equal(pubs("[data-use-case-shortcut]").length, 7);
 for (const route of ["books", "series", "essays"])
   assert(pubs(`a[href="/ai-design-foundations/${route}/"]`).length, route);
 const publicationIds = pubs("[data-publication] [data-content-id]")
@@ -309,8 +301,33 @@ console.log(
 
 assert(top("#recent-growth-heading").length);
 assert(top("#current-growth-heading").length);
+assert(
+  top.html().indexOf('id="recent-growth-heading"') <
+    top.html().indexOf('id="use-case-heading"'),
+  "Recent growth must appear before use cases on Home",
+);
 assert(top('.growth-list [data-content-id]').length >= 3);
-assert(page("updates")('.growth-list [data-content-id]').length >= 3);
+const updates = page("updates");
+assert(updates('.growth-list [data-content-id]').length >= 3);
+assert(updates(".growth-month h2").length);
+assert(updates('.sidebar a[aria-current="page"]').text().includes("最近育ったもの"));
+for (const route of [
+  "about",
+  "career",
+  "overview",
+  "articles",
+  "cases",
+  "ai-design",
+  "ai-mathematics",
+  "practices",
+  "reference",
+  "updates",
+  "search",
+])
+  assert(page(route)("main .icon").length, route + " must use the icon language");
+assert.equal(page("practices")("[data-related-publications]").length, 1);
+for (const html of walk("dist").filter((file) => file.endsWith(".html")))
+  assert(!load(fs.readFileSync(html, "utf8"))("main").text().includes("Related Publications"), html);
 for (const [id, expected] of [
   ["foundations/ai-business-design", "公開：2026年2月"],
   ["cases/three-ai-maintenance", "公開：2026年7月"],

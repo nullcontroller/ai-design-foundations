@@ -4,11 +4,10 @@ import Site from "../layouts/Site.astro";
 import PublicationLink from "../components/PublicationLink.astro";
 import { isPublication, publicationType } from "../lib/navigation";
 import { assetUrl, publicEntry, url } from "../lib/site";
-import {
-  contentUseCaseIds,
-  recommendedEntries,
-  useCases,
-} from "../lib/use-cases";
+import { contentUseCaseIds, useCases } from "../lib/use-cases";
+import PageHeader from "../components/PageHeader.astro";
+import Icon from "../components/Icon.astro";
+import { iconForUseCase } from "../lib/icons";
 const entries = (await getCollection("pages", publicEntry))
   .filter(isPublication)
   .sort((a, b) =>
@@ -20,65 +19,30 @@ const entries = (await getCollection("pages", publicEntry))
       a.data.published_at || a.data.source?.publication_month || "",
     ),
   );
-const groups = useCases.map((useCase) => ({
-  useCase,
-  recommended: recommendedEntries(entries, useCase.id, "publications"),
-  count: entries.filter((entry) =>
-    contentUseCaseIds(entry).includes(useCase.id),
-  ).length,
-}));
 ---
 
 <Site title="読む — 目的から探す" section="articles">
-  <h1>読む</h1>
-  <p class="lead">形式ではなく、知りたいこと・取り組みたいことから探す。</p>
-  <p>
-    Article・Book・連載・Essayという形式は補助情報として表示します。最初に読者の目的を選び、その後で現在の設計知識や関連する公開物へ進めます。
-  </p>
+  <PageHeader
+    icon="articles"
+    title="読む"
+    summary="Rosariumの記事一覧です。目的やテーマで絞り込めます。"
+  />
 
-  <section class="use-case-directory" aria-labelledby="reading-purpose">
-    <h2 id="reading-purpose">何について知りたいですか？</h2>
-    {groups.map(({ useCase, recommended, count }, index) => (
-      <article
-        class="use-case-publications"
-        id={useCase.id}
-        data-use-case-section={useCase.id}
-      >
-        <p class="eyebrow">
-          {String(index + 1).padStart(2, "0")} · {count}件
-        </p>
-        <h3>{useCase.shortTitle}</h3>
-        <p>{useCase.description}</p>
-        <details class="recommended-reading">
-          <summary>まず読む</summary>
-          <div class="recommended-reading-body">
-            <ul class="content-index recommended-content">
-              {recommended.map((entry) => (
-                <li>
-                  <PublicationLink entry={entry} />
-                </li>
-              ))}
-            </ul>
-          </div>
-        </details>
-        <p class="use-case-actions">
-          <a href={url(useCase.path)}>設計知識から読む →</a>
-          <a
-            href={`${url("articles")}?use_case=${useCase.id}#all-publications`}
-          >
-            関連する公開物をすべて見る →
-          </a>
-        </p>
-      </article>
-    ))}
-  </section>
-
-  <details class="all-publications" id="all-publications">
-    <summary>すべての公開物を絞り込む</summary>
-    <p>
-      読む目的を主軸に絞り込みます。Article・Book・連載・EssayはSecondary
-      Metadataです。
-    </p>
+  <section class="all-publications" id="all-publications" aria-labelledby="all-publications-heading">
+    <div class="icon-heading compact-heading">
+      <Icon name="articles" size="section" />
+      <h2 id="all-publications-heading">記事一覧</h2>
+    </div>
+    <p>内容を主軸に探せます。Article・Book・連載・Essayは補助情報です。</p>
+    <nav class="purpose-shortcuts" aria-label="読む目的のショートカット">
+      <a href={`${url("articles")}#all-publications`} data-use-case-shortcut="">すべて</a>
+      {useCases.map((useCase) => (
+        <a href={`${url("articles")}?use_case=${useCase.id}#all-publications`} data-use-case-shortcut={useCase.id}>
+          <Icon name={iconForUseCase(useCase.id)} size="meta" />
+          <span>{useCase.shortTitle}</span>
+        </a>
+      ))}
+    </nav>
     <form
       class="publication-filters"
       id="publication-filters"
@@ -109,7 +73,7 @@ const groups = useCases.map((useCase) => ({
       {entries.length}件
     </p>
     <noscript>JavaScriptが無効の場合は全件を表示します。</noscript>
-    <div class="document-list publication-list">
+    <div class="document-list publication-list" aria-label="記事一覧">
       {entries.map((entry) => (
         <article
           data-publication
@@ -120,7 +84,7 @@ const groups = useCases.map((useCase) => ({
         </article>
       ))}
     </div>
-  </details>
+  </section>
 
   <details class="secondary-publication-navigation">
     <summary>出版形式から探す</summary>
@@ -155,6 +119,12 @@ const groups = useCases.map((useCase) => ({
       item.hidden = !visible;
       if (visible) count++;
     }
+    for (const shortcut of document.querySelectorAll<HTMLElement>(
+      "[data-use-case-shortcut]",
+    )) {
+      const selected = (shortcut.dataset.useCaseShortcut || "") === String(data.get("use_case") || "");
+      shortcut.toggleAttribute("aria-current", selected);
+    }
     document.querySelector("#publication-count")!.textContent = count
       ? count + "件"
       : "該当する公開物はありません";
@@ -177,9 +147,14 @@ const groups = useCases.map((useCase) => ({
     if (value && [...select.options].some((option) => option.value === value))
       select.value = value;
   }
-  if ([...params].length) {
-    document.querySelector<HTMLDetailsElement>("#all-publications")!.open =
-      true;
-    filter();
-  }
+  filter();
+  document.querySelectorAll<HTMLElement>("[data-use-case-shortcut]").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      const select = form.elements.namedItem("use_case") as HTMLSelectElement;
+      select.value = link.dataset.useCaseShortcut || "";
+      filter();
+      document.querySelector("#all-publications")?.scrollIntoView();
+    });
+  });
 </script>

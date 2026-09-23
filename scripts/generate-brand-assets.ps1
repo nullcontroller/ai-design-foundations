@@ -6,7 +6,7 @@ param(
 Add-Type -AssemblyName System.Drawing
 
 $root = Split-Path -Parent $PSScriptRoot
-$brandDir = Join-Path $root "public/brand"
+$brandDir = Join-Path $root "brand"
 $iconDir = Join-Path $root "public/icons"
 $ogDir = Join-Path $root "public/og"
 New-Item -ItemType Directory -Force -Path $brandDir, $iconDir, $ogDir | Out-Null
@@ -159,5 +159,5 @@ Save-SquareIcon (Join-Path $iconDir "icon-maskable-192.png") 192 0.78
 Save-SquareIcon (Join-Path $iconDir "icon-maskable-512.png") 512 0.78
 
 Save-Ogp (Join-Path $ogDir "site.png") "PERSONAL SITE" "Rosarium" "立林 裕太朗 · Applied AI / System Architecture" "AI Design / AI数学論 / Practices / Case Studies"
-Save-Ogp (Join-Path $ogDir "career.png") "立林 裕太朗" "Career Profile" "Applied AI × システム企画・アーキテクチャ" "CAREER"
+Save-Ogp (Join-Path $ogDir "career.png") "立林 裕太朗" "Own Career" "Applied AI × システム企画・アーキテクチャ" "OWN CAREER"
 Save-Ogp (Join-Path $ogDir "ai-design.png") "SYSTEM DESIGN" "AI Design" "AIを業務システムへ組み込むための設計知識" "Applied AI / Architecture / Evaluation / Operations"

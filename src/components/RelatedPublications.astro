@@ -1,18 +1,21 @@
 ---
 import PublicationLink from "./PublicationLink.astro";
 import type { Entry } from "../lib/navigation";
+import SectionHeading from "./SectionHeading.astro";
 interface Props {
   entries: Entry[];
+  summary?: string;
 }
-const { entries } = Astro.props;
+const {
+  entries,
+  summary = "同じテーマを扱う記事・Book。設計知識とは別の公開物として参照できます。",
+} = Astro.props;
 ---
 
 {entries.length > 0 && (
   <section class="related-publications" data-related-publications>
-    <h2>Related Publications</h2>
-    <p>
-      同じテーマを扱う記事・Book。設計知識とは別の公開物として参照できます。
-    </p>
+    <SectionHeading icon="articles" title="関連する記事" />
+    <p>{summary}</p>
     <div class="document-list">
       {entries.map((entry) => (
         <article>

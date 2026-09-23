@@ -106,7 +106,7 @@ export const useCases = [
   {
     id: "career-work",
     title: "キャリアと仕事の設計を考えたい",
-    shortTitle: "Career・Work Design",
+    shortTitle: "Own Career・Work Design",
     description:
       "AI人材、技術職、レビュー、情報発信など、技術を取り巻く仕事とキャリアについての論考を読みます。",
     path: "articles",

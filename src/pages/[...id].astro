@@ -19,7 +19,11 @@ import AuthorBox from "../components/AuthorBox.astro";
 import { imageDimensions } from "../lib/image-metadata";
 import { contentUseCases } from "../lib/use-cases";
 import { url, layerLabel, publicEntry } from "../lib/site";
+import { statusLabel } from "../lib/site";
 import { updateLabels, updateType } from "../lib/growth";
+import { iconForEntry, iconForTopic } from "../lib/icons";
+import Icon from "../components/Icon.astro";
+import SectionHeading from "../components/SectionHeading.astro";
 export async function getStaticPaths() {
   return (await getCollection("pages", publicEntry)).map((entry) => ({
     params: { id: entry.id },
@@ -108,7 +112,11 @@ const growthType = updateType(entry);
         <span data-pagefind-meta="category">{contentCategory(entry)}</span> /{" "}
         <span data-pagefind-meta="layer">{layerLabel(d.layer)}</span> / {d.kind}
       </p>
-      <h1 data-pagefind-meta="title">{d.title}</h1>
+      <div class="document-title-row">
+        <Icon name={iconForEntry(entry)} size="page" />
+        <h1 data-pagefind-meta="title">{d.title}</h1>
+      </div>
+      <span hidden data-pagefind-meta="icon">{iconForEntry(entry)}</span>
       {d.summary && (
         <p class="lead" data-pagefind-meta="summary">
           {d.summary}
@@ -116,7 +124,7 @@ const growthType = updateType(entry);
       )}
       <p class="meta">
         <span class="status" data-pagefind-meta="status">
-          {d.status}
+          {statusLabel(d.status)}
         </span>
         {(d.publication_format || d.layer === "publication") && (
           <span>
@@ -199,7 +207,6 @@ const growthType = updateType(entry);
       <MarkdownBody html={entry.rendered?.html || ""} />
     </div>
   </article>
-  <AuthorBox />
   {readingSequence.length > 0 && (
     <nav
       class="pagination"
@@ -233,15 +240,16 @@ const growthType = updateType(entry);
     topicPublications[key]?.includes(series[0]?.id || entry.id),
   ) && (
     <section>
-      <h2>関連する設計テーマ</h2>
-      <ul>
+      <SectionHeading icon="ai-design" title="関連する設計" />
+      <ul class="related-design-list">
         {designTopics
           .filter(([key]) =>
             topicPublications[key]?.includes(series[0]?.id || entry.id),
           )
           .map(([key, title, summary]) => (
-            <li>
-              <a href={url("ai-design/" + key)}>{title}</a> — {summary}
+            <li class="icon-entry">
+              <Icon name={iconForTopic(key)} size="list" />
+              <p><a href={url("ai-design/" + key)}>{title}</a> — {summary}</p>
             </li>
           ))}
       </ul>
@@ -249,7 +257,7 @@ const growthType = updateType(entry);
   )}
   {related.length > 0 && (
     <section class="related">
-      <h2>次に読む</h2>
+      <SectionHeading icon="arrow" title="次に読む" />
       <ul>
         {related.map((e) => (
           <li>
@@ -259,4 +267,9 @@ const growthType = updateType(entry);
       </ul>
     </section>
   )}
+  <nav class="content-end-nav" aria-label="読み終えた後のリンク">
+    <a href={url(primaryPath)}>{primaryLabel}へ戻る</a>
+    <a href={url("updates")}>最近の更新を見る</a>
+  </nav>
+  <AuthorBox />
 </Site>
