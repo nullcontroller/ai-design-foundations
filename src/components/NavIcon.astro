@@ -1,0 +1,9 @@
+---
+interface Props {
+  name: string;
+}
+
+const { name } = Astro.props;
+---
+
+<span class={`nav-icon-${name || "home"}`} aria-hidden="true"></span>

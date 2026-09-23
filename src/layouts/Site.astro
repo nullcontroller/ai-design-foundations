@@ -3,6 +3,7 @@ import "../styles/global.css";
 import "katex/dist/katex.min.css";
 import { assetUrl, url } from "../lib/site";
 import { navigation } from "../lib/navigation";
+import NavIcon from "../components/NavIcon.astro";
 interface Props {
   title: string;
   summary?: string;
@@ -255,8 +256,11 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
                     href={url(item.path)}
                     aria-current={section === item.path ? "page" : undefined}
                   >
-                    <span>{item.title}</span>
-                    <small>{item.summary}</small>
+                    <NavIcon name={item.icon} />
+                    <span class="nav-copy">
+                      <span>{item.title}</span>
+                      <small>{item.summary}</small>
+                    </span>
                   </a>
                 ))}
               </div>

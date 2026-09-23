@@ -66,7 +66,7 @@ const page = (id) =>
   load(fs.readFileSync("dist/" + id + "/index.html", "utf8"));
 const top = page("");
 assert.deepEqual(
-  top(".sidebar nav a span")
+  top(".sidebar nav a .nav-copy > span")
     .map((_, e) => top(e).text())
     .get(),
   [
@@ -96,7 +96,16 @@ assert.deepEqual(
 );
 assert(!top(".sidebar summary").text().includes("設計体系"));
 for (const secondary of ["詳細職務経歴", "Books", "連載", "Essays"])
-  assert(!top(".sidebar nav a span").text().includes(secondary), secondary);
+  assert(!top(".sidebar nav a .nav-copy > span").text().includes(secondary), secondary);
+assert.equal(top('.sidebar [class^="nav-icon-"]').length, 10);
+assert.equal(
+  new Set(
+    top('.sidebar [class^="nav-icon-"]')
+      .map((_, e) => top(e).attr("class"))
+      .get(),
+  ).size,
+  10,
+);
 assert(career('a[href="/ai-design-foundations/career/profile/"]').length);
 const primaryIds = ($) =>
   $("[data-primary-index] [data-content-id]")
