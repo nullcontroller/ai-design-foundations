@@ -5,7 +5,7 @@ import ContentLink from "../components/ContentLink.astro";
 import { publicEntry, url } from "../lib/site";
 import { primaryUseCases } from "../lib/use-cases";
 import GrowthEntry from "../components/GrowthEntry.astro";
-import { recentGrowth } from "../lib/growth";
+import { recentGrowth } from "../data/recent-growth";
 import { currentGrowth } from "../lib/current-growth";
 import Icon from "../components/Icon.astro";
 import SectionHeading from "../components/SectionHeading.astro";
@@ -21,7 +21,7 @@ const find = (id: string) => {
 const cases = ["cases/system-understanding", "cases/three-ai-maintenance"].map(
   find,
 );
-const recent = recentGrowth(all).slice(0, 5);
+const recent = recentGrowth.slice(0, 3);
 ---
 
 <Site title="Home" section="">

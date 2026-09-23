@@ -1425,6 +1425,28 @@ blockquote {
   border-bottom: 1px solid var(--line);
 }
 
+.growth-history {
+  border-top: 0;
+  border-inline-start: 2px solid var(--line);
+  padding-inline-start: 1rem;
+}
+
+.growth-history .growth-entry {
+  position: relative;
+}
+
+.growth-history .growth-entry::before {
+  content: "";
+  position: absolute;
+  inline-size: 0.55rem;
+  block-size: 0.55rem;
+  inset-inline-start: -1.34rem;
+  inset-block-start: 1.65rem;
+  border: 2px solid var(--surface);
+  border-radius: 50%;
+  background: var(--accent);
+}
+
 .growth-entry .content-title,
 .current-growth-list h3 {
   margin: 0.35rem 0;

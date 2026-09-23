@@ -306,22 +306,20 @@ assert(
     top.html().indexOf('id="use-case-heading"'),
   "Recent growth must appear before use cases on Home",
 );
-assert(top('.growth-list [data-content-id]').length >= 3);
+assert.equal(top('.growth-list [data-growth-entry]').length, 1);
+assert.equal(top('.growth-list [data-growth-entry] .content-title').text(), "Rosarium 公開");
+assert(top('a[href="/ai-design-foundations/updates/"]').length);
 const updates = page("updates");
-assert(updates('.growth-list [data-content-id]').length >= 3);
-assert(updates(".growth-month h2").length);
+assert.equal(updates('.growth-list [data-growth-entry]').length, 1);
+assert.equal(updates('.growth-list [data-growth-entry] .content-title').text(), "Rosarium 公開");
+assert.equal(updates('.growth-list [data-growth-entry] .update-badge').text().trim(), "LAUNCH");
+assert.equal(updates(".growth-month h2").text(), "2026年9月");
 assert(updates('.sidebar a[aria-current="page"]').text().includes("最近育ったもの"));
-for (const id of updates('.growth-list [data-content-id]')
-  .map((_, e) => updates(e).attr("data-content-id"))
-  .get()) {
-  const data = entries.get(id);
-  assert(
-    data.updated_at ||
-      data.update_type ||
-      (data.published_at && data.source?.type === "repository"),
-    `Updates must not treat a migrated source publication date as Rosarium growth: ${id}`,
-  );
-}
+assert.equal(updates('.growth-list [data-content-id]').length, 0);
+assert(
+  !fs.readFileSync("dist/feed.xml", "utf8").includes("Rosarium 公開"),
+  "Curated Recent Growth must remain separate from the content RSS feed",
+);
 for (const route of [
   "about",
   "career",
