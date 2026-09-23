@@ -25,6 +25,7 @@ const manualRoutes = [
   "reference",
   "series",
   "start-here",
+  "updates",
 ];
 
 const escapeXml = (value: string) =>

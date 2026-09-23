@@ -1,6 +1,6 @@
 ---
 title: 基本用語集
-summary: "AI Design Foundationsで使う基本用語を、モデル・情報・工程・責任の観点から定義する。用語を製品名や流行語ではなく、設計上の役割として確認するための参照資料。"
+summary: "Rosariumで使う基本用語を、モデル・情報・工程・責任の観点から定義する。用語を製品名や流行語ではなく、設計上の役割として確認するための参照資料。"
 layer: reference
 kind: principle
 section: foundations

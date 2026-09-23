@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import Site from "../layouts/Site.astro";
 import SeriesIndex from "../components/SeriesIndex.astro";
+import SectionVisual from "../components/SectionVisual.astro";
 import { caseStudies } from "../lib/navigation";
 import { publicEntry, url } from "../lib/site";
 const all = await getCollection("pages", publicEntry);
@@ -9,6 +10,10 @@ const all = await getCollection("pages", publicEntry);
 
 <Site title="Case Studies" section="cases">
   <h1>Case Studies</h1>
+  <SectionVisual
+    name="practice-case-study"
+    alt="実務データと知見の関係を表すCase Studiesのシンボル"
+  />
   <p class="lead">実務での課題・設計判断・実装・結果を、2冊のBookで読む。</p>
   <p>まず概要から全体を掴み、目次から必要な章へ進めます。</p>
   <nav class="topic-navigation" aria-label="全体と公開物への入口">

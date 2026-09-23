@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import Site from "../layouts/Site.astro";
 import ContentIndex from "../components/ContentIndex.astro";
 import RelatedPublications from "../components/RelatedPublications.astro";
+import SectionVisual from "../components/SectionVisual.astro";
 import { publicEntry } from "../lib/site";
 const all = await getCollection("pages", publicEntry);
 const practices = all
@@ -12,6 +13,10 @@ const practices = all
 
 <Site title="Practices" section="practices">
   <h1>Practices</h1>
+  <SectionVisual
+    name="lifecycle-roadmap"
+    alt="段階的な適用と継続的な改善を表すシンボル"
+  />
   <p class="lead">
     設計原則を、AI導入・教育・横展開・開発Workflowへ適用する。
   </p>

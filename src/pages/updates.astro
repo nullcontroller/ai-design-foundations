@@ -1,0 +1,24 @@
+---
+import { getCollection } from "astro:content";
+import GrowthEntry from "../components/GrowthEntry.astro";
+import Site from "../layouts/Site.astro";
+import { recentGrowth } from "../lib/growth";
+import { publicEntry } from "../lib/site";
+
+const entries = recentGrowth(await getCollection("pages", publicEntry));
+---
+
+<Site
+  title="Rosariumの更新"
+  summary="新規公開だけでなく、追記・改訂・接続を含むRosariumの知識の変化を日付順に確認できます。"
+  section="updates"
+>
+  <p class="eyebrow">GROWTH HISTORY</p>
+  <h1>Rosariumの更新</h1>
+  <p class="lead">
+    新しく生まれた文書と、既存の知識を追記・改訂した記録です。開発作業の履歴ではなく、公開している内容の変化を示します。
+  </p>
+  <div class="growth-list">
+    {entries.map((entry) => <GrowthEntry entry={entry} />)}
+  </div>
+</Site>

@@ -24,7 +24,7 @@ const oldFoundations = Astro.params.section === "foundations";
 <Site
   title={
     oldFoundations
-      ? "AI Design Foundations"
+      ? "設計資料アーカイブ"
       : essays
         ? title
         : `${title} — コンテンツ一覧`
@@ -32,7 +32,7 @@ const oldFoundations = Astro.params.section === "foundations";
   section={essays ? "articles" : "ai-design"}
   noindex={!essays}
 >
-  <h1>{oldFoundations ? "AI Design Foundations" : title}</h1>
+  <h1>{oldFoundations ? "設計資料アーカイブ" : title}</h1>
   <p class="lead">{summary}</p>
   {oldFoundations ? (
     <>

@@ -11,7 +11,10 @@ $iconDir = Join-Path $root "public/icons"
 $ogDir = Join-Path $root "public/og"
 New-Item -ItemType Directory -Force -Path $brandDir, $iconDir, $ogDir | Out-Null
 $sourceAsset = Join-Path $brandDir "site-icon-source.png"
-Copy-Item -LiteralPath $Source -Destination $sourceAsset -Force
+$resolvedSource = (Resolve-Path -LiteralPath $Source).Path
+if ($resolvedSource -ne $sourceAsset) {
+  Copy-Item -LiteralPath $resolvedSource -Destination $sourceAsset -Force
+}
 
 $teal = [System.Drawing.ColorTranslator]::FromHtml("#17383b")
 $deepTeal = [System.Drawing.ColorTranslator]::FromHtml("#102a2d")
@@ -155,6 +158,6 @@ Save-SquareIcon (Join-Path $iconDir "apple-touch-icon.png") 180 0.9
 Save-SquareIcon (Join-Path $iconDir "icon-maskable-192.png") 192 0.78
 Save-SquareIcon (Join-Path $iconDir "icon-maskable-512.png") 512 0.78
 
-Save-Ogp (Join-Path $ogDir "site.png") "PERSONAL TECHNICAL SITE" "Rosarium" "立林 裕太朗 · Applied AI / System Architecture" "AI Design Foundations / Articles / Career"
+Save-Ogp (Join-Path $ogDir "site.png") "PERSONAL SITE" "Rosarium" "立林 裕太朗 · Applied AI / System Architecture" "AI Design / AI数学論 / Practices / Case Studies"
 Save-Ogp (Join-Path $ogDir "career.png") "立林 裕太朗" "Career Profile" "Applied AI × システム企画・アーキテクチャ" "CAREER"
-Save-Ogp (Join-Path $ogDir "ai-design-foundations.png") "TECHNICAL KNOWLEDGE" "AI Design Foundations" "AIを業務システムへ組み込むための設計知識" "AI Design / AI数学論 / Practices / Case Studies"
+Save-Ogp (Join-Path $ogDir "ai-design.png") "SYSTEM DESIGN" "AI Design" "AIを業務システムへ組み込むための設計知識" "Applied AI / Architecture / Evaluation / Operations"

@@ -1,0 +1,24 @@
+---
+import type { Entry } from "../lib/navigation";
+import { contentCategory } from "../lib/navigation";
+import { activityDate, updateLabels, updateType } from "../lib/growth";
+import { url } from "../lib/site";
+
+interface Props {
+  entry: Entry;
+}
+
+const { entry } = Astro.props;
+const date = activityDate(entry)!;
+const type = updateType(entry);
+---
+
+<article class="growth-entry" data-content-id={entry.id}>
+  <p class="meta growth-meta">
+    <span class={`update-badge update-${type}`}>{updateLabels[type]}</span>
+    <time datetime={date}>{date}</time>
+    <span>{contentCategory(entry)}</span>
+  </p>
+  <h3 class="content-title"><a href={url(entry.id)}>{entry.data.title}</a></h3>
+  <p class="content-summary">{entry.data.update_note ?? entry.data.summary}</p>
+</article>

@@ -2,7 +2,7 @@
 import type { Entry } from "../lib/navigation";
 import {
   publicationType,
-  publicationDate,
+  publicationTiming,
   publicationTopic,
   publicationTopics,
 } from "../lib/navigation";
@@ -15,6 +15,7 @@ interface Props {
 const { entry, heading: Heading = "h3" } = Astro.props;
 const d = entry.data;
 const purposes = contentUseCases(entry);
+const timing = publicationTiming(entry);
 ---
 
 <div class="content-entry publication-entry" data-content-id={entry.id}>
@@ -30,7 +31,13 @@ const purposes = contentUseCases(entry);
       読む目的：{purposes.map((purpose) => purpose.shortTitle).join(" / ")}
     </p>
   )}
-  <p class="meta publication-date">公開：{publicationDate(entry)}</p>
+  <p class="meta publication-date">
+    {timing.label}：{timing.datetime ? (
+      <time datetime={timing.datetime}>{timing.value}</time>
+    ) : (
+      timing.value
+    )}
+  </p>
   <p class="tags publication-topics">
     Topics：{publicationTopics(entry).join(" / ")}
   </p>

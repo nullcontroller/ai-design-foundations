@@ -10,6 +10,7 @@ import {
   designTopics,
   topicPublications,
   publicationType,
+  publicationTiming,
   mathematicsReadingIds,
 } from "../lib/navigation";
 import ContentLink from "../components/ContentLink.astro";
@@ -18,6 +19,7 @@ import AuthorBox from "../components/AuthorBox.astro";
 import { imageDimensions } from "../lib/image-metadata";
 import { contentUseCases } from "../lib/use-cases";
 import { url, layerLabel, publicEntry } from "../lib/site";
+import { updateLabels, updateType } from "../lib/growth";
 export async function getStaticPaths() {
   return (await getCollection("pages", publicEntry)).map((entry) => ({
     params: { id: entry.id },
@@ -61,6 +63,8 @@ const related = all
   )
   .slice(0, 3);
 const purposes = contentUseCases(entry);
+const timing = publicationTiming(entry);
+const growthType = updateType(entry);
 ---
 
 <Site
@@ -114,17 +118,30 @@ const purposes = contentUseCases(entry);
         <span class="status" data-pagefind-meta="status">
           {d.status}
         </span>
-        {d.published_at && (
+        {(d.publication_format || d.layer === "publication") && (
           <span>
-            公開：<time datetime={d.published_at}>{d.published_at}</time>
+            {timing.label}：{timing.datetime ? (
+              <time datetime={timing.datetime}>{timing.value}</time>
+            ) : (
+              timing.value
+            )}
           </span>
         )}
         {d.updated_at && (
-          <span>
+          <span data-pagefind-meta="updated_at">
             更新：<time datetime={d.updated_at}>{d.updated_at}</time>
           </span>
         )}
+        {d.updated_at && (
+          <span data-pagefind-meta="update_type">{updateLabels[growthType]}</span>
+        )}
       </p>
+      {(d.publication_format || d.layer === "publication") && (
+        <span hidden data-pagefind-meta="publication">{timing.value}</span>
+      )}
+      {d.update_note && (
+        <p class="update-note">今回の更新：{d.update_note}</p>
+      )}
       <p class="tags" data-pagefind-meta="tags">
         {d.tags.join(" / ")}
       </p>
@@ -232,7 +249,7 @@ const purposes = contentUseCases(entry);
   )}
   {related.length > 0 && (
     <section class="related">
-      <h2>同じ領域のコンテンツ</h2>
+      <h2>次に読む</h2>
       <ul>
         {related.map((e) => (
           <li>

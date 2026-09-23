@@ -22,7 +22,7 @@ source:
   chapter_slug: null
   url: https://zenn.dev/nullcontroller/books/76ed12dcc7e5d7
   published_at: null
-  publication_month: 2026-08
+  publication_month: 2026-02
   topics: *a1
   zenn_type: null
   metadata:

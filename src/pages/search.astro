@@ -59,7 +59,14 @@ import { url } from "../lib/site";
         entry.append(
           element(
             "p",
-            [r.meta.use_case, r.meta.category, r.meta.status]
+            [
+              r.meta.update_type,
+              r.meta.updated_at,
+              r.meta.publication,
+              r.meta.use_case,
+              r.meta.category,
+              r.meta.status,
+            ]
               .filter(Boolean)
               .join(" · "),
             "meta",

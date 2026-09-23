@@ -49,14 +49,18 @@ const groups = useCases.map((useCase) => ({
         </p>
         <h3>{useCase.shortTitle}</h3>
         <p>{useCase.description}</p>
-        <h4>まず読む</h4>
-        <ul class="content-index recommended-content">
-          {recommended.map((entry) => (
-            <li>
-              <PublicationLink entry={entry} />
-            </li>
-          ))}
-        </ul>
+        <details class="recommended-reading">
+          <summary>まず読む</summary>
+          <div class="recommended-reading-body">
+            <ul class="content-index recommended-content">
+              {recommended.map((entry) => (
+                <li>
+                  <PublicationLink entry={entry} />
+                </li>
+              ))}
+            </ul>
+          </div>
+        </details>
         <p class="use-case-actions">
           <a href={url(useCase.path)}>設計知識から読む →</a>
           <a

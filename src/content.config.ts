@@ -51,6 +51,11 @@ const pages = defineCollection({
       tags: z.array(z.string()).default([]),
       published_at: z.string().nullable().optional(),
       updated_at: z.string().nullable().optional(),
+      update_type: z
+        .enum(["new", "updated", "expanded", "revised", "connected", "reframed"])
+        .optional(),
+      update_note: z.string().trim().min(1).optional(),
+      publication_status: z.enum(["ongoing"]).optional(),
       canonical: z.url().optional(),
       series: z
         .string()

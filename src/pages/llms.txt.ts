@@ -8,7 +8,7 @@ export const GET: APIRoute = ({ site }) => {
   const body = [
     "# Rosarium",
     "",
-    "立林 裕太朗が、Applied AIとSystem Architectureを中心に、知識・設計・実務・文章を継続的に育てる個人技術サイトです。",
+    "Rosariumは、立林 裕太朗が趣味で構築しているサイトです。Applied AI、自然言語、システム設計、AI数学論、実務で得た知見などを公開しています。",
     "",
     link("Home", ""),
     link("Career", "career"),

@@ -24,11 +24,14 @@ tags:
   - HITL
 published_at: "2026-09-21"
 updated_at: "2026-09-21"
+update_type: expanded
+update_note: "責任境界と実行権限の整理を追加"
 ---
 ```
 
 タイトルは共通レイアウトがH1として表示します。本文の見出しは`##`から始めます。
 新規記事に出典や日付を捏造しません。公開日・更新日は不明なら省略できます。
+内容を実質的に変更した場合は`updated_at`を設定します。変化の種類を明示する必要がある場合だけ、`update_type`（new / updated / expanded / revised / connected / reframed）と1行の`update_note`を追加します。Homeと`/updates/`はこれらの値から自動生成されます。
 `summary`は必須です。本文で実際に扱う内容を1〜2文で要約し、タイトルから推測しません。すべての一覧・章目次・前後リンク・検索結果はこの値だけを概要として表示します。本文を変更したら概要も確認してください。
 
 ## Layer / Topic / Source
@@ -49,7 +52,7 @@ AI Designはdesign_topicも必須です。applicability / responsibility-control
 既存URLはlayerに合わせて移動しません。旧foundationsの文書も同じURLを維持します。新規本文の物理配置と公開URLは編集時に決め、公開後は維持します。
 
 記事一覧は出版物の横断ビューです。Zenn由来のLLM確率モデル記事のように、layerがai-mathematicsでも出版元情報を保持したまま掲載できます。出典だけでlayerを自動判定しません。
-PublicationのTypeはBook、kindがessayならEssay、それ以外はArticle。sourceの元typeは保持し、章はBookの目次から辿ります。未確認の公開日は捏造せず、判明している月と未確認の旨を表示します。
+PublicationのTypeはBook、kindがessayならEssay、それ以外はArticle。sourceの元typeは保持し、章はBookの目次から辿ります。未確認の公開日は捏造せず、判明している月だけを「YYYY年M月」と表示します。現在も更新中のBookは`publication_status: ongoing`で「連載中」と表示し、Rosariumでの更新日は`updated_at`として別に扱います。
 
 AI Designの正本一覧にはZennを混在させません。Related Publicationsはsrc/lib/navigation.tsの明示的な文書ID対応表で管理します。Case Studiesも同ファイルでBook・注目章・関連原則を接続し、本文は複製しません。
 

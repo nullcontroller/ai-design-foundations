@@ -21,21 +21,28 @@ export async function createRssResponse(site: URL) {
   const items = entries
     .map((entry) => {
       const link = absoluteUrl(site, entry.id);
-      const date = entry.publishedAt
-        ? new Date(entry.publishedAt).toUTCString()
+      const date = entry.activityAt
+        ? new Date(entry.activityAt).toUTCString()
         : undefined;
+      const description = `${entry.updateLabel}: ${entry.updateNote ?? entry.summary}`;
+      const guid = entry.activityAt
+        ? `${link}#growth-${entry.activityAt}`
+        : link;
       return [
         "    <item>",
         `      <title>${escapeXml(entry.title)}</title>`,
-        `      <description>${escapeXml(entry.summary)}</description>`,
+        `      <description>${escapeXml(description)}</description>`,
         `      <link>${escapeXml(link)}</link>`,
-        `      <guid isPermaLink="true">${escapeXml(link)}</guid>`,
+        `      <guid isPermaLink="false">${escapeXml(guid)}</guid>`,
         `      <dc:creator>${escapeXml(feedAuthor.name)}</dc:creator>`,
         ...entry.topics.map(
           (topic) => `      <category>${escapeXml(topic)}</category>`,
         ),
         date && date !== "Invalid Date"
           ? `      <pubDate>${date}</pubDate>`
+          : "",
+        entry.updatedAt
+          ? `      <atom:updated>${escapeXml(entry.updatedAt)}</atom:updated>`
           : "",
         "    </item>",
       ]

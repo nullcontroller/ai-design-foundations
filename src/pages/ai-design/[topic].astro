@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import Site from "../../layouts/Site.astro";
 import ContentIndex from "../../components/ContentIndex.astro";
 import RelatedPublications from "../../components/RelatedPublications.astro";
+import SectionVisual from "../../components/SectionVisual.astro";
 import { designTopics, relatedPublications } from "../../lib/navigation";
 import { publicEntry, url } from "../../lib/site";
 export function getStaticPaths() {
@@ -13,18 +14,38 @@ export function getStaticPaths() {
 }
 const { title, summary } = Astro.props;
 const all = await getCollection("pages", publicEntry);
+const visuals: Record<string, [string, string]> = {
+  "responsibility-control": [
+    "responsibility-governance",
+    "責任境界と安全な制御を表すシンボル",
+  ],
+  "knowledge-context": [
+    "knowledge-context",
+    "知識とContextの接続を表すシンボル",
+  ],
+  "lifecycle-operations": [
+    "lifecycle-roadmap",
+    "継続的な運用と改善を表すシンボル",
+  ],
+  architecture: [
+    "system-architecture",
+    "複数の層と接続点から成るシステム設計のシンボル",
+  ],
+};
+const visual = visuals[Astro.params.topic || ""];
 ---
 
 <Site
   title={title}
   section="ai-design"
   summary={summary}
-  ogImage="og/ai-design-foundations.png"
+  ogImage="og/ai-design.png"
 >
   <nav class="breadcrumb">
     <a href={url("ai-design")}>AI Design</a> / {title}
   </nav>
   <h1>{title}</h1>
+  {visual && <SectionVisual name={visual[0]} alt={visual[1]} />}
   <p class="lead">{summary}</p>
   <ContentIndex
     entries={all.filter(

@@ -78,14 +78,11 @@ export const useCases = [
     path: "ai-mathematics",
     home: true,
     featured: [
-      "foundations/llm-as-probabilistic-model",
       "foundations/conditional-probability",
       "foundations/temperature-design",
+      "foundations/hallucination-mechanisms",
     ],
-    publications: [
-      "foundations/llm-as-probabilistic-model",
-      "essays/model-competition-and-ecosystems",
-    ],
+    publications: ["essays/model-competition-and-ecosystems"],
   },
   {
     id: "case-studies",

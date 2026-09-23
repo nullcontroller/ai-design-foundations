@@ -71,17 +71,28 @@ assert.deepEqual(
     .get(),
   [
     "Home",
+    "About",
+    "Career",
+    "全体目次",
     "読む",
     "Case Studies",
-    "Career",
-    "About",
-    "Search",
     "AI Design",
     "AI数学論",
     "Practices",
-    "全体目次",
     "Reference",
   ],
+);
+assert.deepEqual(
+  top(".header-primary a")
+    .map((_, e) => top(e).text().trim())
+    .get(),
+  ["読む", "事例", "Career", "About"],
+);
+assert.deepEqual(
+  top(".header-actions a")
+    .map((_, e) => top(e).text().trim())
+    .get(),
+  ["検索"],
 );
 assert(!top(".sidebar summary").text().includes("設計体系"));
 for (const secondary of ["詳細職務経歴", "Books", "連載", "Essays"])
@@ -165,7 +176,11 @@ const publicationIds = pubs("[data-publication] [data-content-id]")
   .map((_, e) => pubs(e).attr("data-content-id"))
   .get();
 for (const [id, d] of entries)
-  if (["article", "book"].includes(d.source?.original_type))
+  if (
+    d.public !== false &&
+    d.status !== "draft" &&
+    ["article", "book"].includes(d.source?.original_type)
+  )
     assert(publicationIds.includes(id), "Missing publication " + id);
 assert.equal(new Set(publicationIds).size, publicationIds.length);
 for (const id of publicationIds) {
@@ -180,6 +195,23 @@ for (const id of publicationIds) {
       .text()
       .match(/Article|Book|Essay|連載/),
   );
+}
+for (const [id, expected] of [
+  ["foundations/ai-business-design", "公開：2026年2月"],
+  ["cases/three-ai-maintenance", "公開：2026年7月"],
+  ["cases/system-understanding", "状態：連載中"],
+]) {
+  for (const route of ["articles", id.startsWith("cases/") ? "cases" : "series"]) {
+    const $ = page(route);
+    assert(
+      $('[data-content-id="' + id + '"] .publication-date')
+        .text()
+        .replace(/\s+/g, " ")
+        .trim()
+        .includes(expected),
+      `${route}: ${id} must display ${expected}`,
+    );
+  }
 }
 assert.equal(page("cases")(".case-study-index").length, 2);
 for (const id of [
@@ -198,6 +230,7 @@ for (const id of [
   "search",
   "about",
   "career/profile",
+  "updates",
 ])
   assert(page(id)("h1").length, id);
 console.log(
@@ -212,7 +245,6 @@ assert.deepEqual(
     .map((_, e) => mathematics(e).attr("data-content-id"))
     .get(),
   [
-    "foundations/llm-as-probabilistic-model",
     "foundations/conditional-probability",
     "foundations/temperature-design",
     "foundations/hallucination-mechanisms",
@@ -265,3 +297,17 @@ for (const [id, d] of entries) {
 console.log(
   "Verified full overview, two case books, independent series and simplified navigation.",
 );
+
+assert(top("#recent-growth-heading").length);
+assert(top("#current-growth-heading").length);
+assert(top('.growth-list [data-content-id]').length >= 3);
+assert(page("updates")('.growth-list [data-content-id]').length >= 3);
+for (const [id, expected] of [
+  ["foundations/ai-business-design", "公開：2026年2月"],
+  ["cases/three-ai-maintenance", "公開：2026年7月"],
+  ["cases/system-understanding", "状態：連載中"],
+]) {
+  const $ = page(id);
+  assert($.root().text().replace(/\s+/g, " ").includes(expected), id);
+}
+console.log("Verified recent growth and exact Book publication presentation.");

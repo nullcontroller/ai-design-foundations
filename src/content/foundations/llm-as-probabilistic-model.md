@@ -1,4 +1,5 @@
 ---
+public: false
 summary: "LLMを次トークンの確率モデルとして捉え、出力の揺らぎと制約を整理する。プロンプトやRAGを小技ではなく、不確実性を前提とした出力分布の設計として考える。"
 publication_format: article
 layer: ai-mathematics
@@ -34,7 +35,6 @@ source:
     published: true
     published_at: 2026-02-28 18:58
 ---
-
 
 LLMを業務システムへ組み込むときは、知識データベースや決定論的な関数としてではなく、与えられた条件から出力系列の確率分布を形成するモデルとして扱う。
 

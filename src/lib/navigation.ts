@@ -4,6 +4,11 @@ export type Entry = CollectionEntry<"pages">;
 export const navigation = [
   [
     { path: "", title: "Home", summary: "Rosariumの入口" },
+    { path: "about", title: "About", summary: "Rosariumについて" },
+  ],
+  [{ path: "career", title: "Career", summary: "職務経験・希望する役割" }],
+  [
+    { path: "overview", title: "全体目次", summary: "全コンテンツを見渡す" },
     {
       path: "articles",
       title: "読む",
@@ -12,11 +17,6 @@ export const navigation = [
   ],
   [
     { path: "cases", title: "Case Studies", summary: "実務への適用事例" },
-    { path: "career", title: "Career", summary: "職務経験・希望する役割" },
-    { path: "about", title: "About", summary: "Rosariumについて" },
-    { path: "search", title: "Search", summary: "サイト内を検索" },
-  ],
-  [
     {
       path: "ai-design",
       title: "AI Design",
@@ -28,9 +28,8 @@ export const navigation = [
       summary: "AIの性質を理解する",
     },
     { path: "practices", title: "Practices", summary: "業務・組織への適用" },
-    { path: "overview", title: "全体目次", summary: "全コンテンツを見渡す" },
-    { path: "reference", title: "Reference", summary: "用語・数式・参照資料" },
   ],
+  [{ path: "reference", title: "Reference", summary: "用語・数式・参照資料" }],
 ];
 export const designTopics = [
   ["applicability", "AI適用判断", "適用可否と委任レベル"],
@@ -90,12 +89,25 @@ export const publicationType = (e: Entry) =>
 export const isPublication = (e: Entry) =>
   !!e.data.publication_format ||
   (e.data.layer === "publication" && (!e.data.series || e.data.order === 0));
-export const publicationDate = (e: Entry) =>
-  e.data.published_at
-    ? e.data.published_at.slice(0, 10)
-    : e.data.source?.publication_month
-      ? e.data.source.publication_month + "（公開月・日付未確認）"
-      : "公開日未確認";
+export const publicationTiming = (e: Entry) => {
+  if (e.data.publication_status === "ongoing")
+    return { label: "状態", value: "連載中" };
+  if (e.data.published_at)
+    return {
+      label: "公開",
+      value: e.data.published_at.slice(0, 10),
+      datetime: e.data.published_at,
+    };
+  const month = e.data.source?.publication_month;
+  const match = month?.match(/^(\d{4})-(\d{2})$/);
+  if (match)
+    return {
+      label: "公開",
+      value: `${match[1]}年${Number(match[2])}月`,
+    };
+  return { label: "公開", value: "公開時期未確認" };
+};
+export const publicationDate = (e: Entry) => publicationTiming(e).value;
 export const topicPublications: Record<string, string[]> = {
   applicability: [
     "foundations/ai-business-design",
@@ -168,7 +180,6 @@ export const caseStudies = [
 ];
 
 export const mathematicsReadingIds = [
-  "foundations/llm-as-probabilistic-model",
   "foundations/conditional-probability",
   "foundations/temperature-design",
   "foundations/hallucination-mechanisms",

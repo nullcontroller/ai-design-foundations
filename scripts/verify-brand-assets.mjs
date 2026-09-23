@@ -21,7 +21,7 @@ assert.match(favicon, /^<svg[\s\S]*<\/svg>\s*$/);
 for (const term of ["本と薔薇と光", "#17383b", "#87dfcd"])
   assert(favicon.includes(term), term);
 
-for (const file of ["site.png", "career.png", "ai-design-foundations.png"])
+for (const file of ["site.png", "career.png", "ai-design.png"])
   assert.deepEqual(dimensions("public/og/" + file), [1200, 630], file);
 
 const manifest = JSON.parse(fs.readFileSync("dist/site.webmanifest", "utf8"));

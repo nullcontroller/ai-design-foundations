@@ -5,13 +5,13 @@
       "source_file": "index.md",
       "destination_file": "src/content/career/overview.md",
       "source_sha256": "904f71cb5684d60c7a1209c48f89e71a48258baf388127303d32061381266877",
-      "destination_body_sha256": "0446f0020d31b0e337fd97c2bcca705a2a7afb0d330842563acd90f586167dea"
+      "destination_body_sha256": "97808dcc9af76637ee2ce0d03444ebc2810d88963701a7e2f8540b37cc8bb4c4"
     },
     {
       "source_file": "profile/index.md",
       "destination_file": "src/content/career/profile.md",
       "source_sha256": "0d7ba53d536134b193aaf2804a721146973fc83212666fe2fe2cf2c53c6b2327",
-      "destination_body_sha256": "47c80a19c26559fcb534d7375ee19067d39e3a0df9048f87896b626dad365188"
+      "destination_body_sha256": "b70c806872fe319f173f94cdb80765100a1f798bcfa641f47d6c2130052ae293"
     }
   ]
 }

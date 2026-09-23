@@ -14,6 +14,7 @@ tags: &a1
   - rag
 published_at: null
 updated_at: "2026-09-22"
+publication_status: ongoing
 canonical: https://zenn.dev/nullcontroller/books/db491398459cbc
 source:
   type: zenn

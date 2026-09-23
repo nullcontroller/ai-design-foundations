@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import Site from "../layouts/Site.astro";
 import ContentLink from "../components/ContentLink.astro";
 import ContentIndex from "../components/ContentIndex.astro";
+import SectionVisual from "../components/SectionVisual.astro";
 import { publicEntry, url } from "../lib/site";
 import { mathematicsReadingIds } from "../lib/navigation";
 const entries = (await getCollection("pages", publicEntry)).filter(
@@ -18,9 +19,13 @@ const reading = mathematicsReadingIds.map((id) => {
 <Site
   title="AI数学論"
   section="ai-mathematics"
-  ogImage="og/ai-design-foundations.png"
+  ogImage="og/site.png"
 >
   <h1>AI数学論</h1>
+  <SectionVisual
+    name="ai-mathematics"
+    alt="数式・モデル・知識の関係を表すAI数学論のシンボル"
+  />
   <p class="lead">
     AIがなぜそう振る舞うのかを、数学・確率・モデルから理解する。
   </p>
@@ -28,19 +33,30 @@ const reading = mathematicsReadingIds.map((id) => {
     出力の揺らぎ、条件付き確率、Temperature、Hallucination、コード生成モデルの仕組みを扱います。業務への組込みは
     <a href={url("ai-design")}>AI Design</a>から直接読むこともできます。
   </p>
-  <h2>推奨する読み順</h2>
+  <h2>AIは数学である</h2>
   <p>
-    概念理解 → 数学 → 出力制御 → エラー特性 →
-    応用モデルの順に読み進めます。必要なページから直接参照しても構いません。
+    生成AIやLLMは言葉を理解しているように見えますが、内部では数値・ベクトル・確率分布・行列演算として処理されています。AI数学論では、AIを人格や直感で説明せず、数学的な対象として分解して考えます。
   </p>
-  <ol class="reading-route" data-mathematics-reading>
-    {reading.map((entry, i) => (
-      <li>
-        <span>{String(i + 1).padStart(2, "0")}</span>
-        <ContentLink entry={entry} heading="h3" />
-      </li>
-    ))}
-  </ol>
+  <p>
+    確率、条件付き確率、分布、Sampling、Temperature、Optimization、Representationを手掛かりに、「なぜ答えが揺らぐのか」「なぜHallucinationが起こるのか」「生成条件が出力をどう変えるのか」を理解し、設計上の含意へつなげます。
+  </p>
+  <details class="recommended-reading">
+    <summary>推奨する読み順</summary>
+    <div class="recommended-reading-body">
+      <p>
+        数学 → 出力制御 → エラー特性 →
+        応用モデルの順に読み進めます。必要なページから直接参照しても構いません。
+      </p>
+      <ol class="reading-route" data-mathematics-reading>
+        {reading.map((entry, i) => (
+          <li>
+            <span>{String(i + 1).padStart(2, "0")}</span>
+            <ContentLink entry={entry} heading="h3" />
+          </li>
+        ))}
+      </ol>
+    </div>
+  </details>
   <h2>AI数学論の一覧</h2>
   <ContentIndex entries={entries} />
 </Site>

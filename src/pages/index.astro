@@ -2,8 +2,12 @@
 import Site from "../layouts/Site.astro";
 import { getCollection } from "astro:content";
 import ContentLink from "../components/ContentLink.astro";
+import SectionVisual from "../components/SectionVisual.astro";
 import { publicEntry, url } from "../lib/site";
 import { primaryUseCases } from "../lib/use-cases";
+import GrowthEntry from "../components/GrowthEntry.astro";
+import { recentGrowth } from "../lib/growth";
+import { currentGrowth } from "../lib/current-growth";
 
 const all = await getCollection("pages", publicEntry);
 const find = (id: string) => {
@@ -19,17 +23,22 @@ const featured = [
 const cases = ["cases/system-understanding", "cases/three-ai-maintenance"].map(
   find,
 );
+const recent = recentGrowth(all).slice(0, 5);
 ---
 
 <Site title="Home" section="">
   <section class="hero">
+    <SectionVisual
+      name="rosarium-core"
+      alt="本と光を表すRosariumのシンボル"
+      eager={true}
+    />
     <h1>Rosarium</h1>
     <p class="lead">
-      Rosariumは、立林 裕太朗がApplied
-      AI・システム設計・自然言語サービスについて、実務・設計・理論から考え、育てている個人サイトです。
+      Rosariumは、立林 裕太朗が趣味で構築しているサイトです。
     </p>
     <p>
-      AIをどこに使うか。人間とAIの責任をどう分けるか。自然言語と企業内Knowledge・既存システムをどうつなぐか。その考え方と実践を整理しています。
+      Applied AIや自然言語、システム設計、AIの数学的な理解、実務で得た知見などを整理しています。
     </p>
     <a href={url("about")}>Rosariumについて詳しく →</a>
   </section>
@@ -53,22 +62,48 @@ const cases = ["cases/system-understanding", "cases/three-ai-maintenance"].map(
     </div>
   </section>
 
-  <section class="home-section" aria-labelledby="featured-heading">
+  <section class="home-section" aria-labelledby="recent-growth-heading">
     <div class="section-heading">
-      <span>RECOMMENDED</span>
-      <h2 id="featured-heading">まず読む</h2>
+      <span>RECENT GROWTH</span>
+      <h2 id="recent-growth-heading">最近育ったもの</h2>
     </div>
-    <p>
-      適用判断、Knowledge設計、開発工程への組込みから、Rosariumの考え方を短く辿ります。
-    </p>
-    <ul class="content-index recommended-content">
-      {featured.map((entry) => (
-        <li>
-          <ContentLink entry={entry} heading="h3" />
-        </li>
-      ))}
-    </ul>
+    <p>新規公開だけでなく、追記・改訂を含む最近の知識の変化です。</p>
+    <div class="growth-list growth-list-compact">
+      {recent.map((entry) => <GrowthEntry entry={entry} />)}
+    </div>
+    <a href={url("updates")}>この庭の変化をすべて見る →</a>
   </section>
+
+  <section class="home-section" aria-labelledby="current-growth-heading">
+    <div class="section-heading">
+      <span>CURRENT GROWTH</span>
+      <h2 id="current-growth-heading">今育てているテーマ</h2>
+    </div>
+    <div class="current-growth-list">
+      {currentGrowth.map((theme) => (
+        <article>
+          <h3><a href={url(theme.path)}>{theme.title}</a></h3>
+          <p>{theme.summary}</p>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <details class="recommended-reading home-section">
+    <summary>まず読む</summary>
+    <div class="recommended-reading-body">
+      <p>
+        適用判断、Knowledge設計、開発工程への組込みから、Rosariumの考え方を短く辿ります。
+      </p>
+      <ul class="content-index recommended-content">
+        {featured.map((entry) => (
+          <li>
+            <ContentLink entry={entry} heading="h3" />
+          </li>
+        ))}
+      </ul>
+    </div>
+  </details>
 
   <section class="home-section" aria-labelledby="cases-heading">
     <div class="section-heading">
@@ -108,9 +143,8 @@ const cases = ["cases/system-understanding", "cases/three-ai-maintenance"].map(
       <h2>知識と思考を育てる庭</h2>
     </div>
     <p>
-      Rosariumは、問いから考え方、理論、実践、知見へ進む場所です。AI Design
-      Foundationsは、その中でAI Design・AI数学論・Practices・Case
-      Studiesをつなぐ技術知識・設計体系です。
+      Rosariumは、問いから考え方、理論、実践、知見へ進む場所です。AI
+      Design・AI数学論・Practices・Case Studiesを、関心に応じて辿れます。
     </p>
     <a href={url("about")}>Rosariumについて詳しく →</a>
   </section>

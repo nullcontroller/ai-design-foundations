@@ -18,14 +18,18 @@ export const GET: APIRoute = async ({ site }) => {
         authors: [feedAuthor],
         items: entries.map((entry) => {
           const pageUrl = absoluteUrl(site, entry.id);
+          const itemId = entry.activityAt
+            ? `${pageUrl}#growth-${entry.activityAt}`
+            : pageUrl;
           return {
-            id: pageUrl,
+            id: itemId,
             url: pageUrl,
             title: entry.title,
-            summary: entry.summary,
+            summary: `${entry.updateLabel}: ${entry.updateNote ?? entry.summary}`,
             authors: [feedAuthor],
             tags: entry.topics,
             ...(entry.publishedAt ? { date_published: entry.publishedAt } : {}),
+            ...(entry.updatedAt ? { date_modified: entry.updatedAt } : {}),
           };
         }),
       },

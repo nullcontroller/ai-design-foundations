@@ -24,7 +24,7 @@ Codeだけでは完了できない無料施策の確認表です。アカウン�
 ## GitHub Repository
 
 - [ ] About欄のWebsiteへ公開Siteを設定
-- [ ] DescriptionをRosariumとAI Design Foundationsの関係が分かる内容にする
+- [ ] DescriptionをRosariumの内容が自然に分かる文章にする
 - [ ] Topicsを実内容に合わせて設定する
 
 Topics候補：`applied-ai`、`system-architecture`、`rag`、`llm`、`knowledge-management`、`astro`。
