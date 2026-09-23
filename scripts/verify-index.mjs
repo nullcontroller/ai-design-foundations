@@ -311,6 +311,17 @@ const updates = page("updates");
 assert(updates('.growth-list [data-content-id]').length >= 3);
 assert(updates(".growth-month h2").length);
 assert(updates('.sidebar a[aria-current="page"]').text().includes("最近育ったもの"));
+for (const id of updates('.growth-list [data-content-id]')
+  .map((_, e) => updates(e).attr("data-content-id"))
+  .get()) {
+  const data = entries.get(id);
+  assert(
+    data.updated_at ||
+      data.update_type ||
+      (data.published_at && data.source?.type === "repository"),
+    `Updates must not treat a migrated source publication date as Rosarium growth: ${id}`,
+  );
+}
 for (const route of [
   "about",
   "career",
