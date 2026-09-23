@@ -1,6 +1,7 @@
 import { getCollection } from "astro:content";
 import { isPublication, publicationTopics } from "./navigation";
 import { publicEntry } from "./site";
+import { contentUseCases } from "./use-cases";
 
 export const feedAuthor = {
   name: "立林 裕太朗",
@@ -22,6 +23,11 @@ export async function publicationFeedEntries() {
       title: entry.data.title,
       summary: entry.data.summary,
       publishedAt: entry.data.published_at ?? undefined,
-      topics: publicationTopics(entry),
+      topics: [
+        ...new Set([
+          ...contentUseCases(entry).map((useCase) => useCase.shortTitle),
+          ...publicationTopics(entry),
+        ]),
+      ],
     }));
 }

@@ -6,15 +6,20 @@ import { url } from "../lib/site";
 <Site title="Rosariumについて" section="about">
   <h1>Rosariumについて</h1>
   <p class="lead">
-    Rosariumは、立林 裕太朗が技術・設計・実務・文章を継続的に整理し、育てる個人サイトです。
+    Rosariumは、立林
+    裕太朗が技術・設計・実務・文章を継続的に整理し、育てる個人サイトです。
   </p>
   <p>
     Rosariumという名前は、知識と思考を育て続ける「庭」というイメージから名付けています。Book・Rose・Lightを象徴とし、学習と実務から得た知見を少しずつ磨き、長期的に育てていきます。
   </p>
+  <p>
+    静的な保管庫ではなく、問いを起点に、考え方・理論・実践・知見へ進む場所として運営しています。Homeと「読む」では読者の目的から入口を選び、その先で技術知識の構造へ接続します。
+  </p>
   <ul>
     <li>
-      <a href={url("career")}>Career</a>
-      ：職務経験、専門領域、今後の方向性と希望条件。
+      <a href={url("articles")}>読む</a>
+      ：AI導入、自然言語サービス、Software
+      Engineering、AI数学論、実務事例など、知りたい目的から探す。
     </li>
     <li>
       <a href={url("ai-design")}>AI Design</a>
@@ -32,12 +37,17 @@ import { url } from "../lib/site";
       ：実務での課題、設計判断、実装と結果。
     </li>
     <li>
-      <a href={url("articles")}>Articles</a>：単発記事・Book・連載・Essay。
+      <a href={url("career")}>Career</a>
+      ：このサイトを書いている人物の職務経験、専門領域、今後の方向性。
     </li>
   </ul>
+  <p>
+    Article・Book・連載・Essayという出版形式は、「読む」ページ内の補助情報として扱います。
+  </p>
   <h2>AI Design Foundations</h2>
   <p>
-    AI Design Foundationsは、Rosarium内の技術知識・設計体系です。AI Design・AI数学論・Practices・Case
+    AI Design Foundationsは、Rosarium内の技術知識・設計体系です。AI
+    Design・AI数学論・Practices・Case
     Studiesにまたがる技術知識・設計体系を表します。実務や学習から得た知見を整理し、継続的に更新しています。
   </p>
   <p>
@@ -46,7 +56,8 @@ import { url } from "../lib/site";
   <h2>このサイトの設計</h2>
   <p>
     Markdownを知識の正本として管理し、Gitで変更履歴を残しています。AIは編集・レビュー・情報構造の整理に利用し、AstroとContent
-    Collectionsで静的サイトを生成しています。Content ModelとValidationはTypeScriptで管理し、GitHub
+    Collectionsで静的サイトを生成しています。Content
+    ModelとValidationはTypeScriptで管理し、GitHub
     ActionsでBuild・検証・Deployを行い、GitHub Pagesで公開しています。
   </p>
   <p>
@@ -56,6 +67,21 @@ import { url } from "../lib/site";
   <p>
     知識をMarkdownとして記述し、変更を差分として確認しながら、検証と公開を自動化する考え方です。このサイトは一度完成させて終わる成果物ではなく、実務・学習・検証・発信から得た知見を継続的に取り込み、情報構造・設計原則・実装を更新するための知識基盤として運用しています。
   </p>
+  <h3>Repository構造</h3>
+  <ul>
+    <li>
+      <code>src/content/</code>：Markdownで管理する技術知識とCareer。
+    </li>
+    <li>
+      <code>src/pages/</code>：目的別の入口、一覧、検索、公開Feed。
+    </li>
+    <li>
+      <code>src/components/</code>：文書索引、意味ブロック、Series表示。
+    </li>
+    <li>
+      <code>scripts/</code>：Content、Link、SEO、Accessibilityの検証。
+    </li>
+  </ul>
   <p>
     <a href="https://github.com/nullcontroller/ai-design-foundations">
       このサイトのRepositoryを見る

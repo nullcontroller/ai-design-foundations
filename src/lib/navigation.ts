@@ -4,7 +4,17 @@ export type Entry = CollectionEntry<"pages">;
 export const navigation = [
   [
     { path: "", title: "Home", summary: "Rosariumの入口" },
+    {
+      path: "articles",
+      title: "読む",
+      summary: "目的・テーマから探す",
+    },
+  ],
+  [
+    { path: "cases", title: "Case Studies", summary: "実務への適用事例" },
     { path: "career", title: "Career", summary: "職務経験・希望する役割" },
+    { path: "about", title: "About", summary: "Rosariumについて" },
+    { path: "search", title: "Search", summary: "サイト内を検索" },
   ],
   [
     {
@@ -18,20 +28,8 @@ export const navigation = [
       summary: "AIの性質を理解する",
     },
     { path: "practices", title: "Practices", summary: "業務・組織への適用" },
-    { path: "cases", title: "Case Studies", summary: "実務事例のBook 2冊" },
-  ],
-  [
-    {
-      path: "articles",
-      title: "Articles",
-      summary: "単発記事・Book・連載・Essay",
-    },
-  ],
-  [
     { path: "overview", title: "全体目次", summary: "全コンテンツを見渡す" },
     { path: "reference", title: "Reference", summary: "用語・数式・参照資料" },
-    { path: "about", title: "About", summary: "Rosariumについて" },
-    { path: "search", title: "Search", summary: "サイト内を検索" },
   ],
 ];
 export const designTopics = [

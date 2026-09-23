@@ -59,7 +59,9 @@ import { url } from "../lib/site";
         entry.append(
           element(
             "p",
-            [r.meta.category, r.meta.status].filter(Boolean).join(" · "),
+            [r.meta.use_case, r.meta.category, r.meta.status]
+              .filter(Boolean)
+              .join(" · "),
             "meta",
           ),
         );

@@ -16,6 +16,7 @@ import ContentLink from "../components/ContentLink.astro";
 import MarkdownBody from "../components/MarkdownBody.astro";
 import AuthorBox from "../components/AuthorBox.astro";
 import { imageDimensions } from "../lib/image-metadata";
+import { contentUseCases } from "../lib/use-cases";
 import { url, layerLabel, publicEntry } from "../lib/site";
 export async function getStaticPaths() {
   return (await getCollection("pages", publicEntry)).map((entry) => ({
@@ -59,6 +60,7 @@ const related = all
         : e.data.section === d.section),
   )
   .slice(0, 3);
+const purposes = contentUseCases(entry);
 ---
 
 <Site
@@ -126,6 +128,21 @@ const related = all
       <p class="tags" data-pagefind-meta="tags">
         {d.tags.join(" / ")}
       </p>
+      {purposes.length > 0 && (
+        <p class="content-purpose" data-pagefind-meta="use_case">
+          <span>読む目的：</span>{" "}
+          {purposes.map((purpose, index) => (
+            <>
+              {index > 0 && " / "}
+              <a
+                href={`${url("articles")}?use_case=${purpose.id}#all-publications`}
+              >
+                {purpose.shortTitle}
+              </a>
+            </>
+          ))}
+        </p>
+      )}
     </header>
     {d.cover && (
       <img

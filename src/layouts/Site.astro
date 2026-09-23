@@ -192,7 +192,7 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
       set:html={JSON.stringify(structuredData)}
     ></script>
   </head>
-  <body>
+  <body class:list={[section === "" && "home-page"]}>
     <a class="skip" href="#main">
       本文へ移動
     </a>
@@ -203,10 +203,36 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
         <span class="brand-domain">Applied AI / System Architecture</span>
       </a>
       <div class="header-links">
-        <a href={url("overview")}>全体目次</a>
-        <a href={url("search")}>検索</a>
-        <a href={url("about")}>About</a>
-        <a href={url("career")}>Career</a>
+        <a
+          href={url("articles")}
+          aria-current={section === "articles" ? "page" : undefined}
+        >
+          読む
+        </a>
+        <a
+          href={url("cases")}
+          aria-current={section === "cases" ? "page" : undefined}
+        >
+          事例
+        </a>
+        <a
+          href={url("career")}
+          aria-current={section === "career" ? "page" : undefined}
+        >
+          Career
+        </a>
+        <a
+          href={url("about")}
+          aria-current={section === "about" ? "page" : undefined}
+        >
+          About
+        </a>
+        <a
+          href={url("search")}
+          aria-current={section === "search" ? "page" : undefined}
+        >
+          検索
+        </a>
         <button id="theme" type="button" aria-label="配色を切り替える">
           配色切替
         </button>
@@ -263,8 +289,9 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
         <span>立林 裕太朗 · Applied AI / System Architecture</span>
       </div>
       <nav aria-label="フッター">
+        <a href={url("articles")}>読む</a> ·{" "}
+        <a href={url("cases")}>Case Studies</a> ·{" "}
         <a href={url("career")}>Career</a> ·{" "}
-        <a href={url("articles")}>Articles</a> ·{" "}
         <a href={assetUrl("feed.xml")}>RSS</a> ·{" "}
         <a href={url("about")}>About</a>
       </nav>

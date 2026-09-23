@@ -35,15 +35,15 @@ updated_at: "2026-09-21"
 
 layerは知識の役割、sectionは既存のテーマとURL用分類、source.typeは出典です。これらを混同しません。
 
-| layer | 役割 |
-|---|---|
-| ai-design | 現在の設計知識の正本 |
+| layer          | 役割                                   |
+| -------------- | -------------------------------------- |
+| ai-design      | 現在の設計知識の正本                   |
 | ai-mathematics | AIの振る舞いを説明する数学・モデル基礎 |
-| practice | 組織・業務・開発への適用 |
-| case | 実務事例 |
-| publication | 独立した記事・Book・Essay |
-| project | プロジェクトの記録 |
-| reference | 用語・参照資料 |
+| practice       | 組織・業務・開発への適用               |
+| case           | 実務事例                               |
+| publication    | 独立した記事・Book・Essay              |
+| project        | プロジェクトの記録                     |
+| reference      | 用語・参照資料                         |
 
 AI Designはdesign_topicも必須です。applicability / responsibility-control / architecture / knowledge-context / evaluation-hitl / software-engineering / lifecycle-operationsから選びます。
 既存URLはlayerに合わせて移動しません。旧foundationsの文書も同じURLを維持します。新規本文の物理配置と公開URLは編集時に決め、公開後は維持します。
@@ -181,10 +181,9 @@ Zennとの自動双方向同期は行いません。
 元Zennと公開Wikiのcommit、各ファイルのハッシュ、変換先は`migration/`に記録しています。
 catalogは分類根拠、templatesは参考資料として扱い、公開記事として水増ししていません。
 
-
 ## 個人統合サイトの公開方針
 
-サイトブランドは「立林 裕太朗」。Careerと技術知識・公開物を同じサイト内で閲覧できる構成です。
+サイトブランドは「Rosarium」。Authorである立林 裕太朗のCareerと、技術知識・公開物を同じサイト内で閲覧できる構成です。
 Careerは src/content/career の専用Content Collectionで管理します。職歴・条件の事実変更は依頼に基づいて行います。
 
 sourceとcanonicalの移行元情報は内部資料として保持します。公開ページのcanonicalは自サイトです。
@@ -200,3 +199,9 @@ Project・Tools・Project Journalは公開しません。開発記録は docs/hi
 publication_format（article / book / series / essay）で公開形式を指定します。
 source.original_typeは元の形式として保持し、サイト上の分類には使用しません。
 実務BookはCase Studies、連載は /series/、横断索引は /overview/ から参照します。
+
+## 読者の目的と知識分類
+
+Homeと `/articles/` は、出版形式ではなく読者の目的を入口にします。現在の目的分類は `src/lib/use-cases.ts` で管理し、既存の `layer`、`design_topic`、`section`、`tags` から導出します。1つのページは複数の目的に所属できます。
+
+`AI Design`、`AI数学論`、`Practices`、`Case Studies` は知識体系の分類として維持します。`Article`、`Book`、`Series`、`Essay` は `publication_format` で保持しますが、一覧では補助情報として表示します。同じ意味の分類をfront matterへ重複して追加せず、新しい目的が必要になった場合は既存メタデータで安定して判定できるかを先に確認してください。

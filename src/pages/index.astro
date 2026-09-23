@@ -1,65 +1,123 @@
 ---
 import Site from "../layouts/Site.astro";
-import { url } from "../lib/site";
-const entries = [
-  [
-    "career",
-    "Career",
-    "技術・実務経験と今後の方向性。詳細な職務経歴、希望する役割・働き方。",
-  ],
-  [
-    "ai-design",
-    "AI Design",
-    "AI・人間・既存システムの責任境界から、業務システムへの組込みを設計する。",
-  ],
-  [
-    "ai-mathematics",
-    "AI数学論",
-    "確率・モデル・生成条件から、AIがなぜそのように振る舞うかを理解する。",
-  ],
-  ["practices", "Practices", "設計原則を業務・組織・開発へ適用する。"],
-  [
-    "cases",
-    "Case Studies",
-    "Knowledge再構築・QA / RAGと、複数AIを用いたソフトウェア改善の実務事例。",
-  ],
-  [
-    "articles",
-    "Articles",
-    "これまで執筆した単発記事・Book・連載・Essayを読む。",
-  ],
-];
+import { getCollection } from "astro:content";
+import ContentLink from "../components/ContentLink.astro";
+import { publicEntry, url } from "../lib/site";
+import { primaryUseCases } from "../lib/use-cases";
+
+const all = await getCollection("pages", publicEntry);
+const find = (id: string) => {
+  const entry = all.find((item) => item.id === id);
+  if (!entry) throw new Error(`Home content missing: ${id}`);
+  return entry;
+};
+const featured = [
+  "foundations/applicability-and-delegation",
+  "knowledge-context/instruction-knowledge-evidence",
+  "software-engineering/development-workflow",
+].map(find);
+const cases = ["cases/system-understanding", "cases/three-ai-maintenance"].map(
+  find,
+);
 ---
 
 <Site title="Home" section="">
   <section class="hero">
     <h1>Rosarium</h1>
-    <p class="hero-author">立林 裕太朗</p>
-    <p class="lead">知識・設計・実務を育てるための庭。</p>
-    <p>
-      Applied AI × システム企画・アーキテクチャを中心に、AIを業務システムへ組み込むための設計原則、数学的背景、実務事例を整理しています。
+    <p class="lead">
+      Rosariumは、立林 裕太朗がApplied
+      AI・システム設計・自然言語サービスについて、実務・設計・理論から考え、育てている個人サイトです。
     </p>
-    <nav class="library-links" aria-label="最初の入口">
-      <a href={url("career")}>キャリア概要を見る</a>
-      <a href={url("overview")}>全体目次から探す</a>
+    <p>
+      AIをどこに使うか。人間とAIの責任をどう分けるか。自然言語と企業内Knowledge・既存システムをどうつなぐか。その考え方と実践を整理しています。
+    </p>
+    <a href={url("about")}>Rosariumについて詳しく →</a>
+  </section>
+
+  <section aria-labelledby="use-case-heading">
+    <div class="section-heading">
+      <span>START FROM YOUR QUESTION</span>
+      <h2 id="use-case-heading">何を知りたいですか？</h2>
+    </div>
+    <div class="use-case-index">
+      {primaryUseCases.map((useCase, index) => (
+        <article class="use-case-entry" data-use-case={useCase.id}>
+          <span class="index-number">{String(index + 1).padStart(2, "0")}</span>
+          <div>
+            <h3>{useCase.title}</h3>
+            <p>{useCase.description}</p>
+            <a href={url(useCase.path)}>ここから読む →</a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="home-section" aria-labelledby="featured-heading">
+    <div class="section-heading">
+      <span>RECOMMENDED</span>
+      <h2 id="featured-heading">まず読む</h2>
+    </div>
+    <p>
+      適用判断、Knowledge設計、開発工程への組込みから、Rosariumの考え方を短く辿ります。
+    </p>
+    <ul class="content-index recommended-content">
+      {featured.map((entry) => (
+        <li>
+          <ContentLink entry={entry} heading="h3" />
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="home-section" aria-labelledby="cases-heading">
+    <div class="section-heading">
+      <span>CASE STUDIES</span>
+      <h2 id="cases-heading">実際の事例</h2>
+    </div>
+    <p>設計原則を、QA / RAGと既存ソフトウェア改善へ適用した記録です。</p>
+    <ul class="content-index recommended-content">
+      {cases.map((entry) => (
+        <li>
+          <ContentLink entry={entry} heading="h3" />
+        </li>
+      ))}
+    </ul>
+    <a href={url("cases")}>Case Studiesをすべて見る →</a>
+  </section>
+
+  <section class="home-section author-introduction">
+    <div class="section-heading">
+      <span>AUTHOR</span>
+      <h2>このサイトを書いている人</h2>
+    </div>
+    <p class="lead">立林 裕太朗</p>
+    <p>
+      Software Development、Project Management、Generative AI /
+      RAGの経験を背景に、Applied AIとSystem Architectureに取り組んでいます。
+    </p>
+    <nav class="library-links" aria-label="著者情報">
+      <a href={url("career")}>Careerを見る →</a>
+      <a href={url("career/profile")}>詳細職務経歴を見る →</a>
     </nav>
   </section>
-  <div class="document-list">
-    {entries.map(([path, title, summary]) => (
-      <section class="content-entry">
-        <h2 class="content-title">
-          <a href={url(path)}>{title}</a>
-        </h2>
-        <p class="content-summary">{summary}</p>
-      </section>
-    ))}
-  </div>
-  <section>
-    <h2>AI Design Foundations</h2>
+
+  <section class="home-section">
+    <div class="section-heading">
+      <span>ABOUT</span>
+      <h2>知識と思考を育てる庭</h2>
+    </div>
     <p>
-      AI Design・AI数学論・Practices・Case
-      Studiesを通じて、AIを業務システムへ組み込むための技術知識と設計体系を整理しています。
+      Rosariumは、問いから考え方、理論、実践、知見へ進む場所です。AI Design
+      Foundationsは、その中でAI Design・AI数学論・Practices・Case
+      Studiesをつなぐ技術知識・設計体系です。
     </p>
-    <a href={url("ai-design")}>設計知識から読む →</a>
+    <a href={url("about")}>Rosariumについて詳しく →</a>
   </section>
+
+  <nav class="library-links home-final-links" aria-label="すべてのコンテンツ">
+    <a href={url("articles")}>目的・テーマから読む</a>
+    <a href={url("overview")}>全体目次を見る</a>
+    <a href={url("search")}>サイト内を検索</a>
+  </nav>
 </Site>

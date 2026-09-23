@@ -2,12 +2,13 @@
 import { getCollection } from "astro:content";
 import Site from "../layouts/Site.astro";
 import PublicationLink from "../components/PublicationLink.astro";
-import {
-  isPublication,
-  publicationType,
-  publicationTopics,
-} from "../lib/navigation";
+import { isPublication, publicationType } from "../lib/navigation";
 import { assetUrl, publicEntry, url } from "../lib/site";
+import {
+  contentUseCaseIds,
+  recommendedEntries,
+  useCases,
+} from "../lib/use-cases";
 const entries = (await getCollection("pages", publicEntry))
   .filter(isPublication)
   .sort((a, b) =>
@@ -19,65 +20,117 @@ const entries = (await getCollection("pages", publicEntry))
       a.data.published_at || a.data.source?.publication_month || "",
     ),
   );
-const topics = [...new Set(entries.flatMap(publicationTopics))];
+const groups = useCases.map((useCase) => ({
+  useCase,
+  recommended: recommendedEntries(entries, useCase.id, "publications"),
+  count: entries.filter((entry) =>
+    contentUseCaseIds(entry).includes(useCase.id),
+  ).length,
+}));
 ---
 
-<Site title="Articles" section="articles">
-  <h1>Articles</h1>
-  <p class="lead">単発記事・Book・連載・Essayを、形式とテーマから探す。</p>
+<Site title="読む — 目的から探す" section="articles">
+  <h1>読む</h1>
+  <p class="lead">形式ではなく、知りたいこと・取り組みたいことから探す。</p>
   <p>
-    独立した公開物を、形式・テーマから探せます。設計知識の正本は
-    <a href={url("ai-design")}>AI Design</a>、事例の適用過程は
-    <a href={url("cases")}>Case Studies</a>へ。
+    Article・Book・連載・Essayという形式は補助情報として表示します。最初に読者の目的を選び、その後で現在の設計知識や関連する公開物へ進めます。
   </p>
-  <nav class="topic-navigation" aria-label="出版形式">
-    <a href={url("overview")}>全体目次</a>
-    <a href={url("books")}>実務事例のBook 2冊</a>
-    <a href={url("series")}>連載</a>
-    <a href={url("essays")}>Essays</a>
-    <a href={assetUrl("feed.xml")}>RSSで購読</a>
-  </nav>
-  <form
-    class="publication-filters"
-    id="publication-filters"
-    aria-label="記事の絞り込み"
-  >
-    <label>
-      Format
-      <select name="type">
-        <option value="">すべて</option>
-        <option>Article</option>
-        <option>Book</option>
-        <option>連載</option>
-        <option>Essay</option>
-      </select>
-    </label>
-    <label>
-      Topic
-      <select name="topic">
-        <option value="">すべて</option>
-        {topics.map((x) => (
-          <option>{x}</option>
-        ))}
-      </select>
-    </label>
-    <button type="reset">解除</button>
-  </form>
-  <p id="publication-count" role="status" aria-live="polite">
-    {entries.length}件
-  </p>
-  <noscript>JavaScriptが無効の場合は全件を表示します。</noscript>
-  <div class="document-list publication-list">
-    {entries.map((entry) => (
+
+  <section class="use-case-directory" aria-labelledby="reading-purpose">
+    <h2 id="reading-purpose">何について知りたいですか？</h2>
+    {groups.map(({ useCase, recommended, count }, index) => (
       <article
-        data-publication
-        data-type={publicationType(entry)}
-        data-topic={JSON.stringify(publicationTopics(entry))}
+        class="use-case-publications"
+        id={useCase.id}
+        data-use-case-section={useCase.id}
       >
-        <PublicationLink entry={entry} heading="h2" />
+        <p class="eyebrow">
+          {String(index + 1).padStart(2, "0")} · {count}件
+        </p>
+        <h3>{useCase.shortTitle}</h3>
+        <p>{useCase.description}</p>
+        <h4>まず読む</h4>
+        <ul class="content-index recommended-content">
+          {recommended.map((entry) => (
+            <li>
+              <PublicationLink entry={entry} />
+            </li>
+          ))}
+        </ul>
+        <p class="use-case-actions">
+          <a href={url(useCase.path)}>設計知識から読む →</a>
+          <a
+            href={`${url("articles")}?use_case=${useCase.id}#all-publications`}
+          >
+            関連する公開物をすべて見る →
+          </a>
+        </p>
       </article>
     ))}
-  </div>
+  </section>
+
+  <details class="all-publications" id="all-publications">
+    <summary>すべての公開物を絞り込む</summary>
+    <p>
+      読む目的を主軸に絞り込みます。Article・Book・連載・EssayはSecondary
+      Metadataです。
+    </p>
+    <form
+      class="publication-filters"
+      id="publication-filters"
+      aria-label="公開物の絞り込み"
+    >
+      <label>
+        読む目的
+        <select name="use_case">
+          <option value="">すべて</option>
+          {useCases.map((useCase) => (
+            <option value={useCase.id}>{useCase.shortTitle}</option>
+          ))}
+        </select>
+      </label>
+      <label>
+        形式（補助）
+        <select name="type">
+          <option value="">すべて</option>
+          <option>Article</option>
+          <option>Book</option>
+          <option>連載</option>
+          <option>Essay</option>
+        </select>
+      </label>
+      <button type="reset">解除</button>
+    </form>
+    <p id="publication-count" role="status" aria-live="polite">
+      {entries.length}件
+    </p>
+    <noscript>JavaScriptが無効の場合は全件を表示します。</noscript>
+    <div class="document-list publication-list">
+      {entries.map((entry) => (
+        <article
+          data-publication
+          data-type={publicationType(entry)}
+          data-use-case={JSON.stringify(contentUseCaseIds(entry))}
+        >
+          <PublicationLink entry={entry} heading="h2" />
+        </article>
+      ))}
+    </div>
+  </details>
+
+  <details class="secondary-publication-navigation">
+    <summary>出版形式から探す</summary>
+    <nav class="topic-navigation" aria-label="出版形式">
+      <a href={url("books")}>Book</a>
+      <a href={url("series")}>連載</a>
+      <a href={url("essays")}>Essay</a>
+      <a href={assetUrl("feed.xml")}>RSSで購読</a>
+    </nav>
+  </details>
+  <p>
+    <a href={url("overview")}>全体目次</a> ·{" "}
+    <a href={url("search")}>本文を検索</a>
+  </p>
 </Site>
 <script>
   const form = document.querySelector<HTMLFormElement>("#publication-filters")!;
@@ -88,23 +141,41 @@ const topics = [...new Set(entries.flatMap(publicationTopics))];
     const data = new FormData(form);
     let count = 0;
     for (const item of items) {
-      const show = ["type", "topic"].every(
-        (key) =>
-          !data.get(key) ||
-          (key === "topic"
-            ? JSON.parse(item.dataset.topic || "[]").includes(data.get(key))
-            : data.get(key) === item.dataset[key]),
+      const show = ["type"].every(
+        (key) => !data.get(key) || data.get(key) === item.dataset[key],
       );
-      item.hidden = !show;
-      if (show) count++;
+      const useCase = data.get("use_case");
+      const matchesUseCase =
+        !useCase || JSON.parse(item.dataset.useCase || "[]").includes(useCase);
+      const visible = show && matchesUseCase;
+      item.hidden = !visible;
+      if (visible) count++;
     }
     document.querySelector("#publication-count")!.textContent = count
       ? count + "件"
       : "該当する公開物はありません";
+    const current = new URL(location.href);
+    for (const key of ["use_case", "type"]) {
+      const value = String(data.get(key) || "");
+      if (value) current.searchParams.set(key, value);
+      else current.searchParams.delete(key);
+    }
+    history.replaceState(null, "", current);
   }
   form.addEventListener("change", filter);
   form.addEventListener("reset", () => {
     for (const select of form.querySelectorAll("select")) select.value = "";
     filter();
   });
+  const params = new URLSearchParams(location.search);
+  for (const select of form.querySelectorAll("select")) {
+    const value = params.get(select.name);
+    if (value && [...select.options].some((option) => option.value === value))
+      select.value = value;
+  }
+  if ([...params].length) {
+    document.querySelector<HTMLDetailsElement>("#all-publications")!.open =
+      true;
+    filter();
+  }
 </script>

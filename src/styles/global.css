@@ -202,6 +202,11 @@ blockquote {
   color: var(--ink);
   text-decoration: none;
 }
+.header-links a[aria-current] {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.35em;
+}
 .shell {
   display: grid;
   grid-template-columns: 235px minmax(0, 830px) 210px;
@@ -397,6 +402,30 @@ blockquote {
 .section-index > a > div {
   flex: 1;
 }
+.use-case-index {
+  border-top: 1px solid var(--line);
+}
+.use-case-entry {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  gap: 1rem;
+  padding: 1.4rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.use-case-entry h3 {
+  margin: 0;
+  font-size: 1.08rem;
+}
+.use-case-entry p {
+  margin: 0.4rem 0 0.65rem;
+  color: var(--muted);
+}
+.home-section {
+  margin-top: 3.5rem;
+}
+.home-final-links {
+  margin-top: 4rem;
+}
 .section-index h3 {
   margin: 0;
   font-size: 1rem;
@@ -441,6 +470,11 @@ blockquote {
   font-size: 0.73rem;
   color: var(--muted);
   overflow-wrap: anywhere;
+}
+.content-purpose,
+.publication-purpose {
+  color: var(--muted);
+  font-size: 0.78rem;
 }
 .document-list article {
   padding: 1.5rem 0;
@@ -622,7 +656,7 @@ blockquote {
     font-size: 0.7rem;
     flex-wrap: wrap;
     justify-content: flex-end;
-    max-width: 145px;
+    max-width: 220px;
   }
   .header-links button {
     padding: 0.1rem 0.4rem;
@@ -644,6 +678,9 @@ blockquote {
     padding: 0.6rem 1rem;
     border-right: 0;
     border-bottom: 1px solid var(--line);
+  }
+  .home-page .sidebar {
+    display: none;
   }
   .sidebar summary {
     margin: 0;
@@ -681,6 +718,10 @@ blockquote {
   }
   .hero h1 {
     font-size: 3rem;
+  }
+  .use-case-entry {
+    grid-template-columns: 2rem minmax(0, 1fr);
+    gap: 0.6rem;
   }
   .lead {
     font-size: 1.05rem;
@@ -929,6 +970,39 @@ blockquote {
 }
 .publication-list > [hidden] {
   display: none;
+}
+.use-case-directory {
+  margin-top: 2.5rem;
+}
+.use-case-publications {
+  padding: 2.2rem 0 2.8rem;
+  border-top: 1px solid var(--line);
+  scroll-margin-top: 6.5rem;
+}
+.use-case-publications > h3 {
+  margin-top: 0.25rem;
+  font-size: 1.3rem;
+}
+.use-case-publications h4 {
+  margin: 1.5rem 0 0;
+}
+.use-case-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin-top: 1.2rem;
+}
+.all-publications,
+.secondary-publication-navigation {
+  margin-top: 2.5rem;
+  border-top: 1px solid var(--line);
+  padding-top: 1rem;
+}
+.all-publications > summary,
+.secondary-publication-navigation > summary {
+  cursor: pointer;
+  font-weight: 650;
+  padding: 0.6rem 0;
 }
 .reading-route {
   list-style: none;

@@ -71,16 +71,16 @@ assert.deepEqual(
     .get(),
   [
     "Home",
+    "読む",
+    "Case Studies",
     "Career",
+    "About",
+    "Search",
     "AI Design",
     "AI数学論",
     "Practices",
-    "Case Studies",
-    "Articles",
     "全体目次",
     "Reference",
-    "About",
-    "Search",
   ],
 );
 assert(!top(".sidebar summary").text().includes("設計体系"));
@@ -134,6 +134,31 @@ for (const [route, layer] of [
   for (const id of primaryIds($)) assert.equal(entries.get(id).layer, layer);
 }
 const pubs = page("articles");
+assert.deepEqual(
+  top(".use-case-index [data-use-case]")
+    .map((_, e) => top(e).attr("data-use-case"))
+    .get(),
+  [
+    "ai-adoption",
+    "natural-language-services",
+    "software-engineering",
+    "understand-ai",
+    "case-studies",
+  ],
+);
+assert.deepEqual(
+  pubs("[data-use-case-section]")
+    .map((_, e) => pubs(e).attr("data-use-case-section"))
+    .get(),
+  [
+    "ai-adoption",
+    "natural-language-services",
+    "software-engineering",
+    "understand-ai",
+    "case-studies",
+    "career-work",
+  ],
+);
 for (const route of ["books", "series", "essays"])
   assert(pubs(`a[href="/ai-design-foundations/${route}/"]`).length, route);
 const publicationIds = pubs("[data-publication] [data-content-id]")
@@ -145,6 +170,8 @@ for (const [id, d] of entries)
 assert.equal(new Set(publicationIds).size, publicationIds.length);
 for (const id of publicationIds) {
   const node = pubs('[data-content-id="' + id + '"]');
+  const item = node.closest("[data-publication]");
+  assert(JSON.parse(item.attr("data-use-case")).length, id + " use case");
   assert(node.find(".publication-date").text().trim());
   assert(node.find(".publication-topics").text().trim());
   assert(
@@ -174,7 +201,7 @@ for (const id of [
 ])
   assert(page(id)("h1").length, id);
 console.log(
-  "Verified Phase 3 navigation, layer separation, related publications, complete Publication Hub and existing URLs.",
+  "Verified use-case-first navigation, layer separation, related publications, complete Publication Hub and existing URLs.",
 );
 
 // Phase 4: journal order, preserved summaries, reading route and secondary archives.
