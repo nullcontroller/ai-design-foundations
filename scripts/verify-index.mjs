@@ -72,10 +72,9 @@ assert.deepEqual(
   [
     "Home",
     "読む",
-    "最近育ったもの",
     "Case Studies",
+    "最近育ったもの",
     "Own Career",
-    "About",
     "AI Design",
     "AI数学論",
     "Practices",
@@ -87,26 +86,29 @@ assert.deepEqual(
   top(".header-primary a")
     .map((_, e) => top(e).text().trim())
     .get(),
-  ["読む", "事例", "Own Career", "About"],
+  ["読む", "事例", "最近育ったもの", "Own Career"],
 );
-assert.deepEqual(
-  top(".header-actions a")
-    .map((_, e) => top(e).text().trim())
-    .get(),
-  ["検索"],
-);
+assert.equal(top(".header-actions a").length, 0);
+assert.equal(top("#global-search-input").length, 1);
+assert.equal(top(".global-search-toggle").length, 1);
 assert(!top(".sidebar summary").text().includes("設計体系"));
 for (const secondary of ["詳細職務経歴", "Books", "連載", "Essays"])
-  assert(!top(".sidebar nav a .nav-copy > span").text().includes(secondary), secondary);
-assert.equal(top(".sidebar .icon").length, 11);
+  assert(
+    !top(".sidebar nav a .nav-copy > span").text().includes(secondary),
+    secondary,
+  );
+assert.equal(top(".sidebar .icon").length, 10);
 assert.equal(
   new Set(
     top(".sidebar .icon")
       .map((_, e) => top(e).attr("class"))
       .get(),
   ).size,
-  11,
+  10,
 );
+assert.equal(top(".sidebar").length, 1);
+assert.equal(career(".sidebar,.toc,.global-search").length, 0);
+assert.equal(career(".career-header-links").length, 1);
 assert(career('a[href="/ai-design-foundations/career/profile/"]').length);
 const primaryIds = ($) =>
   $("[data-primary-index] [data-content-id]")
@@ -155,18 +157,9 @@ for (const [route, layer] of [
   for (const id of primaryIds($)) assert.equal(entries.get(id).layer, layer);
 }
 const pubs = page("articles");
-assert.deepEqual(
-  top(".use-case-index [data-use-case]")
-    .map((_, e) => top(e).attr("data-use-case"))
-    .get(),
-  [
-    "ai-adoption",
-    "natural-language-services",
-    "software-engineering",
-    "understand-ai",
-    "case-studies",
-  ],
-);
+assert.equal(top("#use-case-heading,#current-growth-heading").length, 0);
+assert.equal(pubs("#reading-purpose-heading").length, 1);
+assert.equal(pubs("#current-topics-heading").length, 1);
 assert.equal(pubs("details#all-publications").length, 0);
 assert.equal(pubs("section#all-publications").length, 1);
 assert.equal(pubs("#all-publications [data-publication]").length > 0, true);
@@ -202,7 +195,10 @@ for (const [id, expected] of [
   ["cases/three-ai-maintenance", "公開：2026年7月"],
   ["cases/system-understanding", "状態：連載中"],
 ]) {
-  for (const route of ["articles", id.startsWith("cases/") ? "cases" : "series"]) {
+  for (const route of [
+    "articles",
+    id.startsWith("cases/") ? "cases" : "series",
+  ]) {
     const $ = page(route);
     assert(
       $('[data-content-id="' + id + '"] .publication-date')
@@ -300,28 +296,33 @@ console.log(
 );
 
 assert(top("#recent-growth-heading").length);
-assert(top("#current-growth-heading").length);
-assert(
-  top.html().indexOf('id="recent-growth-heading"') <
-    top.html().indexOf('id="use-case-heading"'),
-  "Recent growth must appear before use cases on Home",
+assert.equal(top("main > section").length, 2);
+assert.equal(top(".growth-list [data-growth-entry]").length, 1);
+assert.equal(
+  top(".growth-list [data-growth-entry] .content-title").text(),
+  "Rosarium 公開",
 );
-assert.equal(top('.growth-list [data-growth-entry]').length, 1);
-assert.equal(top('.growth-list [data-growth-entry] .content-title').text(), "Rosarium 公開");
 assert(top('a[href="/ai-design-foundations/updates/"]').length);
 const updates = page("updates");
-assert.equal(updates('.growth-list [data-growth-entry]').length, 1);
-assert.equal(updates('.growth-list [data-growth-entry] .content-title').text(), "Rosarium 公開");
-assert.equal(updates('.growth-list [data-growth-entry] .update-badge').text().trim(), "LAUNCH");
+assert.equal(updates(".growth-list [data-growth-entry]").length, 1);
+assert.equal(
+  updates(".growth-list [data-growth-entry] .content-title").text(),
+  "Rosarium 公開",
+);
+assert.equal(
+  updates(".growth-list [data-growth-entry] .update-badge").text().trim(),
+  "LAUNCH",
+);
 assert.equal(updates(".growth-month h2").text(), "2026年9月");
-assert(updates('.sidebar a[aria-current="page"]').text().includes("最近育ったもの"));
-assert.equal(updates('.growth-list [data-content-id]').length, 0);
+assert(
+  updates('.sidebar a[aria-current="page"]').text().includes("最近育ったもの"),
+);
+assert.equal(updates(".growth-list [data-content-id]").length, 0);
 assert(
   !fs.readFileSync("dist/feed.xml", "utf8").includes("Rosarium 公開"),
   "Curated Recent Growth must remain separate from the content RSS feed",
 );
 for (const route of [
-  "about",
   "career",
   "overview",
   "articles",
@@ -331,12 +332,24 @@ for (const route of [
   "practices",
   "reference",
   "updates",
-  "search",
 ])
-  assert(page(route)("main .icon").length, route + " must use the icon language");
+  assert(
+    page(route)("main .icon").length,
+    route + " must use the icon language",
+  );
+for (const route of ["about", "search"]) {
+  const $ = page(route);
+  assert.match($("meta[name=robots]").attr("content") || "", /noindex/);
+  assert.equal($("meta[http-equiv=refresh]").length, 1);
+}
 assert.equal(page("practices")("[data-related-publications]").length, 1);
 for (const html of walk("dist").filter((file) => file.endsWith(".html")))
-  assert(!load(fs.readFileSync(html, "utf8"))("main").text().includes("Related Publications"), html);
+  assert(
+    !load(fs.readFileSync(html, "utf8"))("main")
+      .text()
+      .includes("Related Publications"),
+    html,
+  );
 for (const [id, expected] of [
   ["foundations/ai-business-design", "公開：2026年2月"],
   ["cases/three-ai-maintenance", "公開：2026年7月"],

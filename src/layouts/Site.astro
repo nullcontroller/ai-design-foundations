@@ -4,6 +4,7 @@ import "katex/dist/katex.min.css";
 import { assetUrl, url } from "../lib/site";
 import { navigation } from "../lib/navigation";
 import NavIcon from "../components/NavIcon.astro";
+import GlobalSearch from "../components/GlobalSearch.astro";
 interface Props {
   title: string;
   summary?: string;
@@ -16,6 +17,7 @@ interface Props {
   publishedAt?: string | null;
   updatedAt?: string | null;
   breadcrumbs?: { name: string; path: string }[];
+  frame?: boolean;
 }
 const {
   title,
@@ -29,6 +31,7 @@ const {
   publishedAt,
   updatedAt,
   breadcrumbs = [],
+  frame = true,
 } = Astro.props;
 const documentTitle =
   title === "Home" ? "Rosarium | 立林 裕太朗" : `${title} | Rosarium`;
@@ -193,81 +196,93 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
       type="application/ld+json"
       set:html={JSON.stringify(structuredData)}
     ></script>
+    <slot name="head" />
   </head>
-  <body class:list={[section === "" && "home-page"]}>
+  <body class:list={[section === "" && "home-page", !frame && "career-page"]}>
     <a class="skip" href="#main">
       本文へ移動
     </a>
-    <header class="masthead">
+    <header class:list={["masthead", !frame && "career-masthead"]}>
       <a class="brand" href={url()}>
         <span class="brand-name">Rosarium</span>
         <span class="brand-author">立林 裕太朗</span>
         <span class="brand-domain">Applied AI / System Architecture</span>
       </a>
-      <div class="header-links">
-        <nav class="header-primary" aria-label="主要ページ">
-          <a
-            href={url("articles")}
-            aria-current={section === "articles" ? "page" : undefined}
-          >
-            読む
-          </a>
-          <a
-            href={url("cases")}
-            aria-current={section === "cases" ? "page" : undefined}
-          >
-            事例
-          </a>
-          <a
-            href={url("career")}
-            aria-current={section === "career" ? "page" : undefined}
-          >
-            Own Career
-          </a>
-          <a
-            href={url("about")}
-            aria-current={section === "about" ? "page" : undefined}
-          >
-            About
-          </a>
-        </nav>
-        <div class="header-actions">
-          <a
-            href={url("search")}
-            aria-current={section === "search" ? "page" : undefined}
-          >
-            検索
-          </a>
-          <button id="theme" type="button" aria-label="配色を切り替える">
-            配色切替
-          </button>
-        </div>
-      </div>
-    </header>
-    <div class="shell">
-      <aside class="sidebar" aria-label="主要ナビゲーション">
-        <details open>
-          <summary>ナビゲーション</summary>
-          <nav>
-            {navigation.map((group, i) => (
-              <div class:list={["nav-group", i > 0 && "nav-divider"]}>
-                {group.map((item) => (
-                  <a
-                    href={url(item.path)}
-                    aria-current={section === item.path ? "page" : undefined}
-                  >
-                    <NavIcon name={item.icon} />
-                    <span class="nav-copy">
-                      <span>{item.title}</span>
-                      <small>{item.summary}</small>
-                    </span>
-                  </a>
-                ))}
-              </div>
-            ))}
+      {frame ? (
+        <div class="header-links">
+          <nav class="header-primary" aria-label="主要ページ">
+            <a
+              href={url("articles")}
+              aria-current={section === "articles" ? "page" : undefined}
+            >
+              読む
+            </a>
+            <a
+              href={url("cases")}
+              aria-current={section === "cases" ? "page" : undefined}
+            >
+              事例
+            </a>
+            <a
+              href={url("updates")}
+              aria-current={section === "updates" ? "page" : undefined}
+            >
+              最近育ったもの
+            </a>
+            <a
+              href={url("career")}
+              aria-current={section?.startsWith("career") ? "page" : undefined}
+            >
+              Own Career
+            </a>
           </nav>
-        </details>
-      </aside>
+          <div class="header-actions">
+            <GlobalSearch />
+            <button id="theme" type="button" aria-label="配色を切り替える">
+              配色切替
+            </button>
+          </div>
+        </div>
+      ) : (
+        <nav class="career-header-links" aria-label="Rosariumへの導線">
+          <a href={url()}>Rosariumへ戻る</a>
+          <a href={url("cases")}>事例を見る</a>
+        </nav>
+      )}
+    </header>
+    <div
+      class:list={[
+        "shell",
+        frame && "global-frame",
+        !frame && "career-shell",
+        frame && headings.length > 0 && "has-toc",
+      ]}
+    >
+      {frame && (
+        <aside class="sidebar" aria-label="主要ナビゲーション">
+          <details open>
+            <summary>ナビゲーション</summary>
+            <nav>
+              {navigation.map((group, i) => (
+                <div class:list={["nav-group", i > 0 && "nav-divider"]}>
+                  {group.map((item) => (
+                    <a
+                      href={url(item.path)}
+                      aria-current={section === item.path ? "page" : undefined}
+                    >
+                      <NavIcon name={item.icon} />
+                      <span class="nav-copy">
+                        <span>{item.title}</span>
+                        <small>{item.summary}</small>
+                      </span>
+                    </a>
+                  ))}
+                </div>
+              ))}
+            </nav>
+          </details>
+        </aside>
+      )}
       <main
         id="main"
         tabindex="-1"
@@ -275,8 +290,8 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
       >
         <slot />
       </main>
-      <aside class="toc" aria-label="ページ内目次">
-        {headings.length > 0 && (
+      {frame && headings.length > 0 && (
+        <aside class="toc" aria-label="ページ内目次">
           <>
             <p>このページ</p>
             <ol>
@@ -289,8 +304,8 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
                 ))}
             </ol>
           </>
-        )}
-      </aside>
+        </aside>
+      )}
     </div>
     <footer class="site-footer">
       <div class="footer-brand">
@@ -303,7 +318,9 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
         <a href={url("career")}>Own Career</a> ·{" "}
         <a href={url("updates")}>最近育ったもの</a> ·{" "}
         <a href={assetUrl("feed.xml")}>RSS</a> ·{" "}
-        <a href={url("about")}>About</a>
+        <a href="https://github.com/nullcontroller/ai-design-foundations">
+          Repository
+        </a>
       </nav>
     </footer>
     <script>

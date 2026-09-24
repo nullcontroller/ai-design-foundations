@@ -1,0 +1,206 @@
+---
+import Icon from "./Icon.astro";
+---
+
+<div class="global-search" data-global-search>
+  <button
+    class="global-search-toggle"
+    type="button"
+    aria-label="Rosariumを検索"
+    aria-expanded="false"
+    aria-controls="global-search-panel"
+  >
+    <Icon name="search" size="meta" />
+    <span>検索</span>
+  </button>
+  <div class="global-search-panel" id="global-search-panel">
+    <label class="visually-hidden" for="global-search-input">
+      Rosariumを検索
+    </label>
+    <div class="global-search-field">
+      <Icon name="search" size="meta" />
+      <input
+        id="global-search-input"
+        type="search"
+        placeholder="Rosariumを検索..."
+        autocomplete="off"
+        role="combobox"
+        aria-autocomplete="list"
+        aria-expanded="false"
+        aria-controls="global-search-results"
+      />
+    </div>
+    <div class="global-search-results-panel" hidden>
+      <p class="global-search-status" role="status" aria-live="polite"></p>
+      <ol id="global-search-results" class="global-search-results" role="listbox"></ol>
+    </div>
+  </div>
+</div>
+
+<script>
+  type SearchResult = { url: string; meta: Record<string, string> };
+  type SearchHit = { data: () => Promise<SearchResult> };
+  type PagefindIndex = {
+    search: (query: string) => Promise<{ results: SearchHit[] }>;
+  };
+
+  const root = document.querySelector<HTMLElement>("[data-global-search]");
+  const toggle = root?.querySelector<HTMLButtonElement>(".global-search-toggle");
+  const input = root?.querySelector<HTMLInputElement>("#global-search-input");
+  const panel = root?.querySelector<HTMLElement>(".global-search-results-panel");
+  const results = root?.querySelector<HTMLOListElement>("#global-search-results");
+  const status = root?.querySelector<HTMLElement>(".global-search-status");
+  let pagefind: Promise<PagefindIndex> | undefined;
+  let timer: ReturnType<typeof setTimeout>;
+  let generation = 0;
+  let activeIndex = -1;
+
+  const moduleUrl =
+    import.meta.env.BASE_URL.replace(/\/$/, "") + "/pagefind/pagefind.js";
+
+  function setOpen(open: boolean, focusInput = false) {
+    if (!root || !toggle || !input) return;
+    root.toggleAttribute("data-open", open);
+    toggle.setAttribute("aria-expanded", String(open));
+    input.setAttribute("aria-expanded", String(open && !panel?.hidden));
+    if (focusInput) input.focus();
+  }
+
+  function closeSearch(restoreFocus = false) {
+    if (!panel || !input) return;
+    panel.hidden = true;
+    input.setAttribute("aria-expanded", "false");
+    input.removeAttribute("aria-activedescendant");
+    activeIndex = -1;
+    setOpen(false);
+    if (restoreFocus) toggle?.focus();
+  }
+
+  function resultOptions() {
+    return [...(results?.querySelectorAll<HTMLAnchorElement>("[role=option]") ?? [])];
+  }
+
+  function selectResult(index: number) {
+    const options = resultOptions();
+    if (!input || !options.length) return;
+    activeIndex = (index + options.length) % options.length;
+    options.forEach((option, optionIndex) => {
+      const selected = optionIndex === activeIndex;
+      option.toggleAttribute("data-active", selected);
+      option.setAttribute("aria-selected", String(selected));
+    });
+    input.setAttribute("aria-activedescendant", options[activeIndex].id);
+    options[activeIndex].scrollIntoView({ block: "nearest" });
+  }
+
+  function textElement<K extends keyof HTMLElementTagNameMap>(
+    tag: K,
+    text: string,
+    className = "",
+  ) {
+    const element = document.createElement(tag);
+    element.textContent = text;
+    element.className = className;
+    return element;
+  }
+
+  async function search() {
+    if (!input || !panel || !results || !status) return;
+    const query = input.value.trim();
+    const run = ++generation;
+    results.replaceChildren();
+    activeIndex = -1;
+    input.removeAttribute("aria-activedescendant");
+    if (!query) {
+      closeSearch();
+      return;
+    }
+    setOpen(true);
+    panel.hidden = false;
+    input.setAttribute("aria-expanded", "true");
+    status.textContent = "検索中…";
+    try {
+      pagefind ??= import(/* @vite-ignore */ moduleUrl) as Promise<PagefindIndex>;
+      const response = await (await pagefind).search(query);
+      if (run !== generation) return;
+      const data = await Promise.all(response.results.slice(0, 8).map((hit) => hit.data()));
+      if (run !== generation) return;
+      status.textContent = data.length
+        ? `検索結果：${response.results.length}件（上位${data.length}件）`
+        : "一致するページはありません";
+      data.forEach((result, index) => {
+        const item = document.createElement("li");
+        const link = document.createElement("a");
+        link.href = result.url;
+        link.id = `global-search-result-${index}`;
+        link.setAttribute("role", "option");
+        link.setAttribute("aria-selected", "false");
+        const icon = textElement(
+          "span",
+          "",
+          `icon icon-${result.meta.icon || "articles"} icon-list`,
+        );
+        icon.setAttribute("aria-hidden", "true");
+        const copy = textElement("span", "", "global-search-result-copy");
+        copy.append(
+          textElement("strong", result.meta.title || "無題"),
+          textElement("span", result.meta.summary || "", "global-search-result-summary"),
+          textElement(
+            "small",
+            [result.meta.category, result.meta.use_case].filter(Boolean).join(" · "),
+          ),
+        );
+        link.append(icon, copy);
+        item.append(link);
+        results.append(item);
+      });
+    } catch {
+      pagefind = undefined;
+      if (run === generation)
+        status.textContent = "検索索引を読み込めませんでした。再度お試しください。";
+    }
+  }
+
+  toggle?.addEventListener("click", () => {
+    const open = !root?.hasAttribute("data-open");
+    if (open) setOpen(true, true);
+    else closeSearch(true);
+  });
+  input?.addEventListener("input", () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => void search(), 180);
+  });
+  input?.addEventListener("keydown", (event) => {
+    const options = resultOptions();
+    if (event.key === "ArrowDown" && options.length) {
+      event.preventDefault();
+      selectResult(activeIndex + 1);
+    } else if (event.key === "ArrowUp" && options.length) {
+      event.preventDefault();
+      selectResult(activeIndex - 1);
+    } else if (event.key === "Enter" && options.length) {
+      event.preventDefault();
+      location.href = options[Math.max(activeIndex, 0)].href;
+    } else if (event.key === "Escape") {
+      event.preventDefault();
+      closeSearch(true);
+    }
+  });
+  results?.addEventListener("mousemove", (event) => {
+    const option = (event.target as HTMLElement).closest<HTMLAnchorElement>("[role=option]");
+    if (!option) return;
+    selectResult(resultOptions().indexOf(option));
+  });
+  document.addEventListener("pointerdown", (event) => {
+    if (root && !root.contains(event.target as Node)) closeSearch();
+  });
+
+  const initial = new URLSearchParams(location.search);
+  if (initial.has("search") || initial.has("q")) {
+    setOpen(true, true);
+    if (input && initial.get("q")) {
+      input.value = initial.get("q")!;
+      void search();
+    }
+  }
+</script>

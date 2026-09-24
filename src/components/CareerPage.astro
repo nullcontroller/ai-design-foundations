@@ -23,6 +23,7 @@ const displayTitle =
   ogType="profile"
   section={Astro.props.id === "profile" ? "career/profile" : "career"}
   headings={headings}
+  frame={false}
   breadcrumbs={[
     { name: "Home", path: "" },
     { name: "Own Career", path: "career" },
@@ -31,8 +32,8 @@ const displayTitle =
       : []),
   ]}
 >
-  <nav class="breadcrumb">
-    <a href={url()}>Home</a> / <a href={url("career")}>Own Career</a>
+  <nav class="breadcrumb" aria-label="現在位置">
+    <a href={url()}>Rosarium</a> / <a href={url("career")}>Own Career</a>
   </nav>
   <article data-pagefind-body>
     <div class="document-title-row">

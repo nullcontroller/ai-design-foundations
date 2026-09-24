@@ -11,7 +11,7 @@ const canonical = new URL(assetUrl("404.html"), Astro.site).toString();
   <p>お探しのページは移動または削除された可能性があります。</p>
   <nav class="topic-navigation" aria-label="復帰先">
     <a href={url()}>Homeへ戻る</a>
-    <a href={url("search")}>サイト内を検索</a>
+    <a href={url("articles")}>記事一覧から探す</a>
     <a href={url("overview")}>全体目次を見る</a>
   </nav>
 </Site>

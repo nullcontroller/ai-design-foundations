@@ -17,30 +17,22 @@ export const navigation = [
       icon: iconForPath("articles"),
     },
     {
-      path: "updates",
-      title: "最近育ったもの",
-      summary: "最近の追加・更新を見る",
-      icon: iconForPath("updates"),
-    },
-  ],
-  [
-    {
       path: "cases",
       title: "Case Studies",
       summary: "実務への適用事例",
       icon: iconForPath("cases"),
     },
     {
+      path: "updates",
+      title: "最近育ったもの",
+      summary: "最近の追加・更新を見る",
+      icon: iconForPath("updates"),
+    },
+    {
       path: "career",
       title: "Own Career",
       summary: "職務経験・希望する役割",
       icon: iconForPath("career"),
-    },
-    {
-      path: "about",
-      title: "About",
-      summary: "Rosariumについて",
-      icon: iconForPath("about"),
     },
   ],
   [
@@ -62,14 +54,14 @@ export const navigation = [
       summary: "業務・組織への適用",
       icon: iconForPath("practices"),
     },
+  ],
+  [
     {
       path: "overview",
       title: "全体目次",
       summary: "全コンテンツを見渡す",
       icon: iconForPath("overview"),
     },
-  ],
-  [
     {
       path: "reference",
       title: "Reference",
@@ -199,6 +191,12 @@ export const caseStudies = [
   {
     book: "cases/system-understanding",
     topics: ["QA / RAG", "Knowledge再構築"],
+    challenge:
+      "仕様書が不足し、UI・ソースコード・既存資料へ知識が分散していた。",
+    designSummary:
+      "仕様と操作を再構築し、人向けの可視化とRAGで検索できるKnowledgeを分けて設計した。",
+    result:
+      "問い合わせ・仕様確認と、安全な変更に再利用できる理解基盤として整理した。",
     chapters: [
       "cases/system-understanding/recovering-code-structure",
       "cases/system-understanding/human-and-ai-knowledge",
@@ -213,6 +211,11 @@ export const caseStudies = [
   {
     book: "cases/three-ai-maintenance",
     topics: ["AIオーケストレーション", "既存ソフトウェア開発・改善"],
+    challenge:
+      "既存ソフトウェアの暗号方式変更で、仕様理解・影響調査・異常系設計を同時に進める必要があった。",
+    designSummary:
+      "複数AIを仕様調査、コード探索、実装支援へ分担し、生成物を人間がレビューできる中間成果物として扱った。",
+    result: "外部委託を不要にし、従来想定比で工期を約7割短縮した。",
     chapters: [
       "cases/three-ai-maintenance/cryptography-and-failure-modes",
       "cases/three-ai-maintenance/structuring-failure-handling",

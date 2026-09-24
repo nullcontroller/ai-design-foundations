@@ -50,17 +50,19 @@ for (const file of htmlFiles) {
     !titles.has(title),
     `Duplicate title: ${title} (${file}, ${titles.get(title)})`,
   );
-  assert.ok(
-    !canonicals.has(canonical),
-    `Duplicate canonical: ${canonical} (${file}, ${canonicals.get(canonical)})`,
-  );
   titles.set(title, file);
-  canonicals.set(canonical, file);
   descriptions.set(description, [
     ...(descriptions.get(description) || []),
     file,
   ]);
-  if (!robots.includes("noindex")) indexable.push(canonical);
+  if (!robots.includes("noindex")) {
+    assert.ok(
+      !canonicals.has(canonical),
+      `Duplicate canonical: ${canonical} (${file}, ${canonicals.get(canonical)})`,
+    );
+    canonicals.set(canonical, file);
+    indexable.push(canonical);
+  }
 
   const scripts = $('script[type="application/ld+json"]');
   assert.equal(scripts.length, 1, `Expected one JSON-LD graph: ${file}`);
@@ -97,7 +99,7 @@ for (const canonical of indexable)
     sitemapUrls.has(canonical),
     `Indexable canonical missing from sitemap: ${canonical}`,
   );
-for (const route of ["search/", "404.html"])
+for (const route of ["about/", "search/", "404.html"])
   assert.ok(
     !sitemap.includes(`/ai-design-foundations/${route}`),
     `Sitemap contains noindex route: ${route}`,
@@ -105,8 +107,10 @@ for (const route of ["search/", "404.html"])
 assert.ok(sitemap.startsWith('<?xml version="1.0"'), "Invalid sitemap XML");
 
 const search = load(fs.readFileSync("dist/search/index.html", "utf8"));
+const about = load(fs.readFileSync("dist/about/index.html", "utf8"));
 const notFound = load(fs.readFileSync("dist/404.html", "utf8"));
 assert.match(search('meta[name="robots"]').attr("content") || "", /noindex/);
+assert.match(about('meta[name="robots"]').attr("content") || "", /noindex/);
 assert.match(notFound('meta[name="robots"]').attr("content") || "", /noindex/);
 
 const robotsFile = fs.readFileSync("dist/robots.txt", "utf8");
@@ -134,7 +138,7 @@ assert.equal(jsonFeed.authors[0].name, "立林 裕太朗");
 
 assert.match(
   fs.readFileSync("dist/opensearch.xml", "utf8"),
-  /\?q=\{searchTerms\}/,
+  /\?search=1&amp;q=\{searchTerms\}/,
 );
 assert.match(fs.readFileSync("dist/llms.txt", "utf8"), /^# Rosarium/m);
 

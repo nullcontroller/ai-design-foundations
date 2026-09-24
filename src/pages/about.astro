@@ -1,89 +1,22 @@
 ---
 import Site from "../layouts/Site.astro";
-import SectionVisual from "../components/SectionVisual.astro";
 import { url } from "../lib/site";
-import PageHeader from "../components/PageHeader.astro";
-import Icon from "../components/Icon.astro";
+
+const home = url();
+const canonical = new URL(home, Astro.site).toString();
 ---
 
-<Site title="Rosariumについて" section="about">
-  <PageHeader icon="about" title="Rosariumについて" />
-  <SectionVisual name="rosarium-core" alt="本と光を表すRosariumのシンボル" />
-  <p class="lead">
-    Rosariumは、立林 裕太朗が趣味で構築しているサイトです。
-  </p>
-  <p>
-    Applied AI、自然言語、システム設計、AI数学論、実務で得た知見や個人的な思考・文章を、継続的に整理して公開しています。
-  </p>
-  <h2>名前とシンボル</h2>
-  <p>
-    Rosariumという名前は、知識と思考を育て続ける「庭」というイメージから名付けました。Bookは知識、Roseは成長と洗練、Lightは学びと発見を表します。
-  </p>
-  <h2>何を書いているか</h2>
-  <ul class="about-index">
-    <li><Icon name="articles" size="list" /><div>
-      <a href={url("articles")}>読む</a>
-      ：AI導入、自然言語サービス、Software
-      Engineering、AI数学論、実務事例など、知りたい目的から探す。
-    </div></li>
-    <li><Icon name="ai-design" size="list" /><div>
-      <a href={url("ai-design")}>AI Design</a>
-      ：AIを業務システムへ組み込むための設計。
-    </div></li>
-    <li><Icon name="ai-mathematics" size="list" /><div>
-      <a href={url("ai-mathematics")}>AI数学論</a>
-      ：AIの振る舞いを数学・確率・モデルから理解する。
-    </div></li>
-    <li><Icon name="practices" size="list" /><div>
-      <a href={url("practices")}>Practices</a>：業務・組織・開発への適用。
-    </div></li>
-    <li><Icon name="cases" size="list" /><div>
-      <a href={url("cases")}>Case Studies</a>
-      ：実務での課題、設計判断、実装と結果。
-    </div></li>
-    <li><Icon name="career" size="list" /><div>
-      <a href={url("career")}>Own Career</a>
-      ：このサイトを書いている人物の職務経験、専門領域、今後の方向性。
-    </div></li>
-  </ul>
-  <p>
-    Article・Book・連載・Essayという出版形式は、「読む」ページ内の補助情報として扱います。
-  </p>
-  <p>
-    <a href={url("overview")}>全体目次</a>から各領域へ進めます。
-  </p>
-  <h2>どのように更新しているか</h2>
-  <p>
-    文章はMarkdownで管理し、Gitで変更履歴を残しています。AIは編集・レビュー・情報構造の整理に利用し、AstroとContent
-    Collectionsで静的サイトを生成しています。Content
-    ModelとValidationはTypeScriptで管理し、GitHub
-    ActionsでBuild・検証・Deployを行い、GitHub Pagesで公開しています。
-  </p>
-  <p>
-    本文ではMermaidによる図を利用でき、生成後の静的HTMLはサイト内検索の対象になります。こうした仕組みにより、文章・図・分類・公開工程を同じRepositoryで追跡できます。
-  </p>
-  <h3>Knowledge / Publishing as Code</h3>
-  <p>
-    考えたことをMarkdownへ記述し、変更を差分として確認しながら、検証と公開を自動化する考え方です。一度完成させて終えるのではなく、実務・学習・検証・発信から得た知見を少しずつ取り込み、文章・分類・実装を更新しています。
-  </p>
-  <h3>Repository構造</h3>
-  <ul>
-    <li>
-      <code>src/content/</code>：Markdownで管理する技術知識とCareer。
-    </li>
-    <li>
-      <code>src/pages/</code>：目的別の入口、一覧、検索、公開Feed。
-    </li>
-    <li>
-      <code>src/components/</code>：文書索引、意味ブロック、Series表示。
-    </li>
-    <li>
-      <code>scripts/</code>：Content、Link、SEO、Accessibilityの検証。
-    </li>
-  </ul>
-  <p>
-    <a href="https://github.com/nullcontroller/ai-design-foundations">
-      このサイトのRepositoryを見る
-    </a>
-  </p>
+<Site
+  title="Rosariumについて"
+  summary="Rosariumの概要はHomeへ統合しました。"
+  canonical={canonical}
+  noindex
+>
+  <meta slot="head" http-equiv="refresh" content={`0;url=${home}`} />
+  <script is:inline define:vars={{ home }}>
+    location.replace(home);
+  </script>
+  <h1>Rosariumについて</h1>
+  <p>Rosariumの説明はHomeへ統合しました。</p>
+  <p><a href={home}>Rosarium Homeへ移動する</a></p>
 </Site>

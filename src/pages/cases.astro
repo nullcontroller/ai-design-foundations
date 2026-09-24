@@ -16,7 +16,7 @@ const all = await getCollection("pages", publicEntry);
     alt="実務データと知見の関係を表すCase Studiesのシンボル"
   />
   <p class="lead">実務での課題・設計判断・実装・結果を、2冊のBookで読む。</p>
-  <p>まず概要から全体を掴み、目次から必要な章へ進めます。</p>
+  <p>各事例の課題、設計、結果を確認し、必要な章へ進めます。</p>
   <nav class="topic-navigation" aria-label="全体と公開物への入口">
     <a href={url("overview")}>全体目次</a>
     <a href={url("series")}>設計原則の連載</a>
@@ -24,6 +24,20 @@ const all = await getCollection("pages", publicEntry);
   </nav>
   {caseStudies.map((study) => (
     <section class="case-study-index">
+      <dl class="case-outcome">
+        <div>
+          <dt>課題</dt>
+          <dd>{study.challenge}</dd>
+        </div>
+        <div>
+          <dt>設計</dt>
+          <dd>{study.designSummary}</dd>
+        </div>
+        <div>
+          <dt>結果</dt>
+          <dd>{study.result}</dd>
+        </div>
+      </dl>
       <SeriesIndex entry={all.find((e) => e.id === study.book)!} all={all} />
     </section>
   ))}

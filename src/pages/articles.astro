@@ -8,6 +8,8 @@ import { contentUseCaseIds, useCases } from "../lib/use-cases";
 import PageHeader from "../components/PageHeader.astro";
 import Icon from "../components/Icon.astro";
 import { iconForUseCase } from "../lib/icons";
+import { currentGrowth } from "../lib/current-growth";
+import SectionHeading from "../components/SectionHeading.astro";
 const entries = (await getCollection("pages", publicEntry))
   .filter(isPublication)
   .sort((a, b) =>
@@ -28,12 +30,13 @@ const entries = (await getCollection("pages", publicEntry))
     summary="Rosariumの記事一覧です。目的やテーマで絞り込めます。"
   />
 
-  <section class="all-publications" id="all-publications" aria-labelledby="all-publications-heading">
-    <div class="icon-heading compact-heading">
-      <Icon name="articles" size="section" />
-      <h2 id="all-publications-heading">記事一覧</h2>
-    </div>
-    <p>内容を主軸に探せます。Article・Book・連載・Essayは補助情報です。</p>
+  <section class="reading-discovery" aria-labelledby="reading-purpose-heading">
+    <SectionHeading
+      icon="overview"
+      title="何を知りたいですか？"
+      id="reading-purpose-heading"
+    />
+    <p>読む目的を選ぶと、該当する記事へ絞り込めます。読む順番を示すものではありません。</p>
     <nav class="purpose-shortcuts" aria-label="読む目的のショートカット">
       <a href={`${url("articles")}#all-publications`} data-use-case-shortcut="">すべて</a>
       {useCases.map((useCase) => (
@@ -43,6 +46,33 @@ const entries = (await getCollection("pages", publicEntry))
         </a>
       ))}
     </nav>
+  </section>
+
+  <section class="reading-discovery" aria-labelledby="current-topics-heading">
+    <SectionHeading
+      icon="ai-design"
+      title="今育てているテーマ"
+      id="current-topics-heading"
+    />
+    <div class="current-growth-list">
+      {currentGrowth.map((theme) => (
+        <article class="icon-entry">
+          <Icon name={theme.icon} size="list" />
+          <div>
+            <h3 class="content-title"><a href={url(theme.path)}>{theme.title}</a></h3>
+            <p>{theme.summary}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="all-publications" id="all-publications" aria-labelledby="all-publications-heading">
+    <div class="icon-heading compact-heading">
+      <Icon name="articles" size="section" />
+      <h2 id="all-publications-heading">記事一覧</h2>
+    </div>
+    <p>内容を主軸に探せます。Article・Book・連載・Essayは補助情報です。</p>
     <form
       class="publication-filters"
       id="publication-filters"
@@ -96,8 +126,7 @@ const entries = (await getCollection("pages", publicEntry))
     </nav>
   </details>
   <p>
-    <a href={url("overview")}>全体目次</a> ·{" "}
-    <a href={url("search")}>本文を検索</a>
+    <a href={url("overview")}>全体目次</a>
   </p>
 </Site>
 <script>
