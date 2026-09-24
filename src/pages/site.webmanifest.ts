@@ -9,7 +9,7 @@ export const GET: APIRoute = () =>
       name: "Rosarium — 立林 裕太朗",
       short_name: "Rosarium",
       description:
-        "立林 裕太朗が趣味で構築し、Applied AI・自然言語・システム設計・AI数学論・実務で得た知見を公開するサイト。",
+        "立林 裕太朗が趣味で構築し、Applied AI・自然言語・システム設計・AI理論・実務で得た知見を公開するサイト。",
       start_url: url(),
       scope: url(),
       display: "browser",

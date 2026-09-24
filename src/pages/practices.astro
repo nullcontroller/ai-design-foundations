@@ -4,17 +4,22 @@ import Site from "../layouts/Site.astro";
 import ContentIndex from "../components/ContentIndex.astro";
 import RelatedPublications from "../components/RelatedPublications.astro";
 import SectionVisual from "../components/SectionVisual.astro";
-import { publicEntry } from "../lib/site";
+import { publicEntry, url } from "../lib/site";
 import PageHeader from "../components/PageHeader.astro";
 import SectionHeading from "../components/SectionHeading.astro";
+import ThemeArticleIndex from "../components/ThemeArticleIndex.astro";
 const all = await getCollection("pages", publicEntry);
 const practices = all
   .filter((e) => e.data.layer === "practice")
   .sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999));
+const themeLinks = practices.map((entry) => ({
+  title: entry.data.title,
+  href: url(entry.id),
+}));
 ---
 
-<Site title="Practice" section="practices">
-  <PageHeader icon="practices" title="Practice" />
+<Site title="実践知" section="practices" themeLinks={themeLinks}>
+  <PageHeader icon="practices" title="実践知" />
   <SectionVisual
     name="lifecycle-roadmap"
     alt="段階的な適用と継続的な改善を表すシンボル"
@@ -22,6 +27,7 @@ const practices = all
   <p class="lead">
     設計原則を、AI導入・教育・横展開・開発Workflowへ適用する。
   </p>
+  <ThemeArticleIndex links={themeLinks} />
   <SectionHeading icon="practices" title="業務・開発プロセスへの組込み" />
   <ContentIndex entries={practices} />
   <RelatedPublications

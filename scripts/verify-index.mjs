@@ -76,22 +76,13 @@ assert.deepEqual(
   top(".sidebar nav a .nav-copy > span")
     .map((_, e) => top(e).text())
     .get(),
-  [
-    "Home",
-    "成長録",
-    "読み物",
-    "AIデザイン",
-    "AI数学論",
-    "Practice",
-    "実践事例",
-    "Reference",
-  ],
+  ["庭", "読み物", "AI設計", "AI理論", "実践知", "実践事例", "Reference"],
 );
 assert.deepEqual(
   top(".header-primary a")
     .map((_, e) => top(e).text().trim())
     .get(),
-  ["成長録", "読み物", "キャリア"],
+  ["庭", "読み物", "キャリア"],
 );
 assert.equal(top(".header-actions a").length, 0);
 assert.equal(top("#global-search-input").length, 1);
@@ -102,21 +93,28 @@ for (const secondary of ["詳細職務経歴", "Books", "連載", "Essays"])
     !top(".sidebar nav a .nav-copy > span").text().includes(secondary),
     secondary,
   );
-assert.equal(top(".sidebar .icon").length, 8);
+assert.equal(top(".sidebar .icon").length, 7);
 assert.equal(
   new Set(
     top(".sidebar .icon")
       .map((_, e) => top(e).attr("class"))
       .get(),
   ).size,
-  8,
+  7,
 );
-assert.equal(top('.sidebar a[href="/ai-design-foundations/career/"]').length, 0);
+assert.equal(
+  top('.sidebar a[href="/ai-design-foundations/career/"]').length,
+  0,
+);
+assert.equal(
+  top('.sidebar a[href="/ai-design-foundations/updates/"]').length,
+  0,
+);
 assert.deepEqual(
   top(".sidebar .nav-children a .nav-copy > span")
     .map((_, e) => top(e).text())
     .get(),
-  ["AIデザイン", "AI数学論", "Practice", "実践事例"],
+  ["AI設計", "AI理論", "実践知", "実践事例"],
 );
 assert.equal(top(".sidebar").length, 1);
 assert.equal(career(".sidebar,.toc,.global-search").length, 0);
@@ -180,10 +178,21 @@ assert.equal(pubs("[data-publication]").length, 0);
 assert.equal(pubs("[data-use-case-shortcut]").length, 0);
 assert.equal(pubs("[data-content-id]").length, 0);
 assert.deepEqual(
-  pubs(".reading-area > .section-heading h2")
+  pubs(".reading-area .reading-category")
     .map((_, e) => pubs(e).text().trim())
     .get(),
-  ["AIデザイン", "AI数学論", "Practice", "実践事例"],
+  ["AI設計", "AI理論", "実践知", "実践事例"],
+);
+assert.deepEqual(
+  pubs(".reading-area .reading-question")
+    .map((_, e) => pubs(e).text().replace("→", "").trim())
+    .get(),
+  [
+    "AIを仕事やシステムにどう組み込む？",
+    "生成AIはなぜそう振る舞う？",
+    "AIを仕事や開発でどう使う？",
+    "実際の課題にどう適用した？",
+  ],
 );
 for (const [section, href] of [
   ["ai-design", "/ai-design-foundations/ai-design/"],
@@ -211,6 +220,8 @@ for (const [id, expected] of [
 }
 const cases = page("cases");
 assert.equal(cases(".case-study-index").length, 2);
+assert.equal(cases("main img").length, 0);
+assert.equal(cases(".book-list-entry-text").length, 2);
 for (const id of ["cases/system-understanding", "cases/three-ai-maintenance"]) {
   const study = cases(`[data-series-index="${id}"]`);
   const descendants = study.find("*").toArray();
@@ -272,6 +283,8 @@ assert.deepEqual(
 );
 const reference = page("reference");
 assert.equal(reference("[data-reference-archive]").length, 0);
+assert.equal(reference(".site-implementation").length, 0);
+assert(!reference("main").text().includes("Knowledge / Publishing as Code"));
 assert.equal(
   reference('[data-content-id="foundations/wiki-overview"]').length,
   0,
@@ -296,7 +309,10 @@ assert.equal(
 );
 const overview = page("overview");
 assert.match(overview("meta[name=robots]").attr("content") || "", /noindex/);
-assert.equal(overview("meta[http-equiv=refresh]").attr("content"), "0;url=/ai-design-foundations/articles/");
+assert.equal(
+  overview("meta[http-equiv=refresh]").attr("content"),
+  "0;url=/ai-design-foundations/articles/",
+);
 assert(overview('a[href="/ai-design-foundations/articles/"]').length);
 console.log(
   "Verified overview compatibility redirect, two case books, independent series and simplified navigation.",
@@ -309,21 +325,14 @@ assert.equal(
   top(".growth-list [data-growth-entry] .content-title").text(),
   "Rosarium 公開",
 );
-assert(top('a[href="/ai-design-foundations/updates/"]').length);
+assert.equal(top('a[href="/ai-design-foundations/updates/"]').length, 0);
 const updates = page("updates");
-assert.equal(updates(".growth-list [data-growth-entry]").length, 1);
+assert.match(updates("meta[name=robots]").attr("content") || "", /noindex/);
 assert.equal(
-  updates(".growth-list [data-growth-entry] .content-title").text(),
-  "Rosarium 公開",
+  updates("meta[http-equiv=refresh]").attr("content"),
+  "0;url=/ai-design-foundations/",
 );
-assert.equal(
-  updates(".growth-list [data-growth-entry] .update-badge").text().trim(),
-  "LAUNCH",
-);
-assert.equal(updates(".growth-month h2").text(), "2026年9月");
-assert(
-  updates('.sidebar a[aria-current="page"]').text().includes("成長録"),
-);
+assert(updates('a[href="/ai-design-foundations/"]').length);
 assert.equal(updates(".growth-list [data-content-id]").length, 0);
 assert(
   !fs.readFileSync("dist/feed.xml", "utf8").includes("Rosarium 公開"),
@@ -337,7 +346,6 @@ for (const route of [
   "ai-mathematics",
   "practices",
   "reference",
-  "updates",
 ])
   assert(
     page(route)("main .icon").length,
@@ -366,18 +374,41 @@ for (const [id, expected] of [
   for (const value of expected) assert(text.includes(value), `${id}: ${value}`);
 }
 assert(
-  page("cases/system-understanding")("main").text().includes(
-    "この実践で使用した生成AIはGPTであり、当時の作業ではGitHub Copilotを利用していない。",
-  ),
+  page("cases/system-understanding")("main")
+    .text()
+    .includes(
+      "この実践で使用した生成AIはGPTであり、当時の作業ではGitHub Copilotを利用していない。",
+    ),
 );
 assert(
-  page("cases/system-understanding")("main").text().includes(
-    "GPTにGitHub Copilotを組み合わせることで、より高い生産性を期待できる。",
-  ),
+  page("cases/system-understanding")("main")
+    .text()
+    .includes(
+      "GPTにGitHub Copilotを組み合わせることで、より高い生産性を期待できる。",
+    ),
 );
 assert(
-  page("cases/three-ai-maintenance")("main").text().includes(
-    "GPT、GitHub Copilot、Microsoft 365 Copilotを工程ごとに役割分担して利用した。",
-  ),
+  page("cases/three-ai-maintenance")("main")
+    .text()
+    .includes(
+      "GPT、GitHub Copilot、Microsoft 365 Copilotを工程ごとに役割分担して利用した。",
+    ),
 );
 console.log("Verified recent growth and exact Book publication presentation.");
+
+for (const route of ["ai-design", "ai-mathematics", "practices", "cases"]) {
+  const $ = page(route);
+  const desktop = $(".theme-toc a")
+    .map((_, e) => $(e).attr("href"))
+    .get();
+  const mobile = $(".theme-toc-mobile a")
+    .map((_, e) => $(e).attr("href"))
+    .get();
+  assert(desktop.length, `${route}: desktop article index`);
+  assert.deepEqual(mobile, desktop, `${route}: mobile article index`);
+  assert.equal($(".theme-toc > p").text(), "このテーマの記事");
+  assert.equal($(".theme-toc-mobile > summary").text(), "このテーマの記事");
+}
+console.log(
+  "Verified category article indexes, Garden navigation and updates compatibility.",
+);

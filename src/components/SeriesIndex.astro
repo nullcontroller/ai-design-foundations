@@ -7,8 +7,9 @@ import { imageDimensions } from "../lib/image-metadata";
 interface Props {
   entry: Entry;
   all: Entry[];
+  showCover?: boolean;
 }
-const { entry, all } = Astro.props;
+const { entry, all, showCover = true } = Astro.props;
 const chapters = all
   .filter((e) => e.data.series === entry.data.series && (e.data.order ?? 0) > 0)
   .sort((a, b) => (a.data.order ?? 0) - (b.data.order ?? 0));
@@ -17,8 +18,11 @@ const coverDimensions = imageDimensions(
 );
 ---
 
-<article class="book-list-entry" data-series-index={entry.id}>
-  {entry.data.cover && (
+<article
+  class:list={["book-list-entry", !showCover && "book-list-entry-text"]}
+  data-series-index={entry.id}
+>
+  {showCover && entry.data.cover && (
     <a href={url(entry.id)} tabindex="-1" aria-hidden="true">
       <img
         src={base + entry.data.cover}

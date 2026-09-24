@@ -8,31 +8,36 @@ export type NavigationItem = {
   title: string;
   summary: string;
   icon: ReturnType<typeof iconForPath>;
+  question?: string;
   children?: readonly NavigationItem[];
 };
 
 export const readingCategories = [
   {
     path: "ai-design",
-    title: "AIデザイン",
+    title: "AI設計",
+    question: "AIを仕事やシステムにどう組み込む？",
     summary: "AIを業務やシステムへ組み込むための設計原則。",
     icon: iconForPath("ai-design"),
   },
   {
     path: "ai-mathematics",
-    title: "AI数学論",
+    title: "AI理論",
+    question: "生成AIはなぜそう振る舞う？",
     summary: "LLMや生成AIの振る舞いを理解するための数学・理論。",
     icon: iconForPath("ai-mathematics"),
   },
   {
     path: "practices",
-    title: "Practice",
+    title: "実践知",
+    question: "AIを仕事や開発でどう使う？",
     summary: "AIを実務・開発・組織で使うための実践知。",
     icon: iconForPath("practices"),
   },
   {
     path: "cases",
     title: "実践事例",
+    question: "実際の課題にどう適用した？",
     summary: "実務での課題、設計判断、実装、結果をまとめた事例。",
     icon: iconForPath("cases"),
   },
@@ -42,15 +47,9 @@ export const navigation: readonly (readonly NavigationItem[])[] = [
   [
     {
       path: "",
-      title: "Home",
+      title: "庭",
       summary: "Rosariumの入口",
       icon: iconForPath(""),
-    },
-    {
-      path: "updates",
-      title: "成長録",
-      summary: "Rosariumの更新を見る",
-      icon: iconForPath("updates"),
     },
   ],
   [
@@ -242,7 +241,7 @@ export const mathematicsReadingIds = [
 ] as const;
 
 export const publicationTopic = (e: Entry) =>
-  e.data.layer === "ai-mathematics" ? "AI数学論" : label(e.data.section);
+  e.data.layer === "ai-mathematics" ? "AI理論" : label(e.data.section);
 
 export const publicationTopics = (entry: Entry) => [
   ...new Set([

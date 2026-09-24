@@ -43,8 +43,8 @@ const oldFoundations = Astro.params.section === "foundations";
         から選べます。
       </p>
       <nav class="topic-navigation">
-        <a href={url("ai-design")}>AIデザイン</a>
-        <a href={url("ai-mathematics")}>AI数学論</a>
+        <a href={url("ai-design")}>AI設計</a>
+        <a href={url("ai-mathematics")}>AI理論</a>
         <a href={url("reference")}>Reference</a>
       </nav>
     </>
@@ -56,7 +56,7 @@ const oldFoundations = Astro.params.section === "foundations";
   ) : (
     <p>
       設計知識の入口は
-      <a href={url("ai-design/" + Astro.params.section)}>AIデザイン / {title}</a>
+      <a href={url("ai-design/" + Astro.params.section)}>AI設計 / {title}</a>
       です。
     </p>
   )}
@@ -70,14 +70,14 @@ const oldFoundations = Astro.params.section === "foundations";
     </div>
   ) : (
     <>
-      <SectionHeading icon="ai-design" title="AIデザイン" />
+      <SectionHeading icon="ai-design" title="AI設計" />
       <ContentIndex
         entries={entries.filter((e) => e.data.layer === "ai-design")}
       />
       {entries.some((e) => e.data.layer === "ai-mathematics") && (
         <section>
-          <SectionHeading icon="ai-mathematics" title="AI数学論" />
-          <p><a href={url("ai-mathematics")}>AI数学論を見る →</a></p>
+          <SectionHeading icon="ai-mathematics" title="AI理論" />
+          <p><a href={url("ai-mathematics")}>AI理論を見る →</a></p>
           <ContentIndex
             entries={entries.filter((e) => e.data.layer === "ai-mathematics")}
           />
@@ -85,8 +85,8 @@ const oldFoundations = Astro.params.section === "foundations";
       )}
       {entries.some((e) => e.data.layer === "practice") && (
         <section>
-          <SectionHeading icon="practices" title="Practice" />
-          <p><a href={url("practices")}>Practiceを見る →</a></p>
+          <SectionHeading icon="practices" title="実践知" />
+          <p><a href={url("practices")}>実践知を見る →</a></p>
           <ContentIndex
             entries={entries.filter((e) => e.data.layer === "practice")}
           />

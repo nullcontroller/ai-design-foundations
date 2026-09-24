@@ -1,11 +1,9 @@
 ---
 import Site from "../layouts/Site.astro";
-import { url } from "../lib/site";
 import GrowthEntry from "../components/GrowthEntry.astro";
 import { recentGrowth } from "../data/recent-growth";
 import Icon from "../components/Icon.astro";
 import SectionHeading from "../components/SectionHeading.astro";
-import ActionLink from "../components/ActionLink.astro";
 
 const recent = recentGrowth.slice(0, 3);
 ---
@@ -23,17 +21,12 @@ const recent = recentGrowth.slice(0, 3);
     <SectionHeading
       icon="updates"
       eyebrow="RECENT GROWTH"
-      title="成長録"
+      title="最近育ったもの"
       id="recent-growth-heading"
     />
     <p>読者へ知らせる価値のある公開・追記・改訂を記録しています。</p>
     <div class="growth-list growth-list-compact">
       {recent.map((entry) => <GrowthEntry entry={entry} />)}
     </div>
-    <ActionLink
-      href={url("updates")}
-      icon="updates"
-      label="成長録を見る"
-    />
   </section>
 </Site>

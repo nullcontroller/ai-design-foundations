@@ -17,11 +17,12 @@ interface Props {
   publishedAt?: string | null;
   updatedAt?: string | null;
   breadcrumbs?: { name: string; path: string }[];
+  themeLinks?: { title: string; href: string }[];
   frame?: boolean;
 }
 const {
   title,
-  summary = "Rosariumは、立林 裕太朗が趣味で構築しているサイトです。Applied AI、自然言語、システム設計、AI数学論、実務で得た知見などを公開しています。",
+  summary = "Rosariumは、立林 裕太朗が趣味で構築しているサイトです。Applied AI、自然言語、システム設計、AI理論、実務で得た知見などを公開しています。",
   canonical,
   ogImage = "og/site.png",
   ogType = "website",
@@ -31,6 +32,7 @@ const {
   publishedAt,
   updatedAt,
   breadcrumbs = [],
+  themeLinks = [],
   frame = true,
 } = Astro.props;
 const documentTitle =
@@ -211,11 +213,8 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
       {frame ? (
         <div class="header-links">
           <nav class="header-primary" aria-label="主要ページ">
-            <a
-              href={url("updates")}
-              aria-current={section === "updates" ? "page" : undefined}
-            >
-              成長録
+            <a href={url()} aria-current={section === "" ? "page" : undefined}>
+              庭
             </a>
             <a
               href={url("articles")}
@@ -239,7 +238,7 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
         </div>
       ) : (
         <nav class="career-header-links" aria-label="Rosariumへの導線">
-          <a href={url("updates")}>成長録</a>
+          <a href={url()}>庭</a>
           <a href={url("articles")}>読み物</a>
           <a href={url("career")} aria-current="page">キャリア</a>
         </nav>
@@ -251,6 +250,7 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
         frame && "global-frame",
         !frame && "career-shell",
         frame && headings.length > 0 && "has-toc",
+        frame && themeLinks.length > 0 && "has-theme-toc",
       ]}
     >
       {frame && (
@@ -335,6 +335,16 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
           </>
         </aside>
       )}
+      {frame && themeLinks.length > 0 && (
+        <aside class="theme-toc" aria-label="このテーマの記事">
+          <p>このテーマの記事</p>
+          <ol>
+            {themeLinks.map((item) => (
+              <li><a href={item.href}>{item.title}</a></li>
+            ))}
+          </ol>
+        </aside>
+      )}
     </div>
     <footer class="site-footer">
       <div class="footer-brand">
@@ -342,8 +352,8 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
         <span>学習と実務を通じて育て続ける「庭」</span>
       </div>
       <nav aria-label="フッター">
+        <a href={url()}>庭</a> ·{" "}
         <a href={url("articles")}>読み物</a> ·{" "}
-        <a href={url("updates")}>成長録</a> ·{" "}
         <a href={url("cases")}>実践事例</a> ·{" "}
         <a href={url("career")}>キャリア</a> ·{" "}
         <a href={assetUrl("feed.xml")}>RSS</a> ·{" "}

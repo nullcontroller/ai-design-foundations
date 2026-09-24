@@ -15,31 +15,6 @@ const entries = (await getCollection("pages", publicEntry))
     数学的定義、観測から計算する指標、関係を単純化した説明モデル、実装と評価で確かめる設計仮説を区別して扱います。
   </p>
   <ContentIndex entries={entries} />
-  <section class="site-implementation">
-    <h2>Rosariumの実装</h2>
-    <h3>名前とシンボル</h3>
-    <p>
-      Rosariumは、知識と思考を育て続ける「庭」を表します。Bookは知識、Roseは成長と洗練、Lightは学びと発見を示します。
-    </p>
-    <h3>Knowledge / Publishing as Code</h3>
-    <p>
-      技術知識はMarkdownを正本としてGitで変更履歴を管理しています。AstroとContent
-      Collectionsで静的HTMLを生成し、TypeScriptによるContent
-      ModelとValidation、GitHub ActionsによるBuild・Deploy、GitHub
-      Pagesによる公開を行っています。
-    </p>
-    <p>
-      Mermaid、サイト内検索、RSSを含む公開機能も同じRepositoryで管理しています。この運用は、文章・分類・検証・公開を差分として扱うKnowledge
-      / Publishing as Codeの考え方に基づいています。
-    </p>
-    <h3>Repository構造</h3>
-    <ul>
-      <li><code>src/content/</code>：Markdownで管理する技術知識とCareer。</li>
-      <li><code>src/pages/</code>：目的別の入口、一覧、移行ページ、公開Feed。</li>
-      <li><code>src/components/</code>：文書索引、意味ブロック、Series表示。</li>
-      <li><code>scripts/</code>：Content、Link、SEO、Accessibility等の検証。</li>
-    </ul>
-  </section>
   <p>
     <a href={url("articles")}>読み物</a>
   </p>

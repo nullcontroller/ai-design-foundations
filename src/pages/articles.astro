@@ -1,8 +1,7 @@
 ---
 import Site from "../layouts/Site.astro";
 import PageHeader from "../components/PageHeader.astro";
-import SectionHeading from "../components/SectionHeading.astro";
-import ActionLink from "../components/ActionLink.astro";
+import Icon from "../components/Icon.astro";
 import { url } from "../lib/site";
 import { readingCategories } from "../lib/navigation";
 ---
@@ -17,14 +16,15 @@ import { readingCategories } from "../lib/navigation";
   <div class="reading-directory">
     {readingCategories.map((category) => (
       <section class="reading-area" id={category.path}>
-      <SectionHeading icon={category.icon} title={category.title} />
-      <p>{category.summary}</p>
-      <ActionLink
-        href={url(category.path)}
-        icon={category.icon}
-        label={category.title}
-      />
-    </section>
+        <Icon name={category.icon} size="section" />
+        <div>
+          <h2 class="reading-question">
+            <a href={url(category.path)}>{category.question} →</a>
+          </h2>
+          <p class="reading-category">{category.title}</p>
+          <p>{category.summary}</p>
+        </div>
+      </section>
     ))}
   </div>
 </Site>

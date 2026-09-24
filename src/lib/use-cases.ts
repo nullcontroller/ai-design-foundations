@@ -72,7 +72,7 @@ export const useCases = [
   {
     id: "understand-ai",
     title: "AIの仕組みを理解したい",
-    shortTitle: "AI数学論・モデルの性質",
+    shortTitle: "AI理論・モデルの性質",
     description:
       "AIがなぜそのように振る舞うのかを、確率、生成条件、Temperature、Hallucination、モデルの性質から理解します。",
     path: "ai-mathematics",

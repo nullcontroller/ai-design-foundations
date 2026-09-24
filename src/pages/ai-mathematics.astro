@@ -8,6 +8,7 @@ import { publicEntry, url } from "../lib/site";
 import { mathematicsReadingIds } from "../lib/navigation";
 import PageHeader from "../components/PageHeader.astro";
 import SectionHeading from "../components/SectionHeading.astro";
+import ThemeArticleIndex from "../components/ThemeArticleIndex.astro";
 const entries = (await getCollection("pages", publicEntry)).filter(
   (e) => e.data.layer === "ai-mathematics",
 );
@@ -16,28 +17,34 @@ const reading = mathematicsReadingIds.map((id) => {
   if (!entry) throw new Error("Missing mathematics reading: " + id);
   return entry;
 });
+const themeLinks = entries.map((entry) => ({
+  title: entry.data.title,
+  href: url(entry.id),
+}));
 ---
 
 <Site
-  title="AI数学論"
+  title="AI理論"
   section="ai-mathematics"
   ogImage="og/site.png"
+  themeLinks={themeLinks}
 >
-  <PageHeader icon="ai-mathematics" title="AI数学論" />
+  <PageHeader icon="ai-mathematics" title="AI理論" />
   <SectionVisual
     name="ai-mathematics"
-    alt="数式・モデル・知識の関係を表すAI数学論のシンボル"
+    alt="数式・モデル・知識の関係を表すAI理論のシンボル"
   />
   <p class="lead">
     AIがなぜそう振る舞うのかを、数学・確率・モデルから理解する。
   </p>
   <p>
     出力の揺らぎ、条件付き確率、Temperature、Hallucination、コード生成モデルの仕組みを扱います。業務への組込みは
-    <a href={url("ai-design")}>AIデザイン</a>から直接読むこともできます。
+    <a href={url("ai-design")}>AI設計</a>から直接読むこともできます。
   </p>
+  <ThemeArticleIndex links={themeLinks} />
   <SectionHeading icon="ai-mathematics" title="AIは数学である" />
   <p>
-    生成AIやLLMは言葉を理解しているように見えますが、内部では数値・ベクトル・確率分布・行列演算として処理されています。AI数学論では、AIを人格や直感で説明せず、数学的な対象として分解して考えます。
+    生成AIやLLMは言葉を理解しているように見えますが、内部では数値・ベクトル・確率分布・行列演算として処理されています。AI理論では、AIを人格や直感で説明せず、数学的な対象として分解して考えます。
   </p>
   <p>
     確率、条件付き確率、分布、Sampling、Temperature、Optimization、Representationを手掛かりに、「なぜ答えが揺らぐのか」「なぜHallucinationが起こるのか」「生成条件が出力をどう変えるのか」を理解し、設計上の含意へつなげます。
@@ -59,6 +66,6 @@ const reading = mathematicsReadingIds.map((id) => {
       </ol>
     </div>
   </details>
-  <SectionHeading icon="ai-mathematics" title="AI数学論の一覧" />
+  <SectionHeading icon="ai-mathematics" title="AI理論の一覧" />
   <ContentIndex entries={entries} />
 </Site>

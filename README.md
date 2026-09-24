@@ -2,11 +2,11 @@
 
 Rosariumは、立林 裕太朗が趣味で構築しているサイトです。
 
-Applied AI、自然言語、システム設計、AI数学論、実務で得た知見や個人的な文章を整理して公開しています。MarkdownをGitで管理し、レビュー・検証を経てAstroから静的HTMLを生成します。
+Applied AI、自然言語、システム設計、AI理論、実務で得た知見や個人的な文章を整理して公開しています。MarkdownをGitで管理し、レビュー・検証を経てAstroから静的HTMLを生成します。
 
 **[サイトを見る](https://nullcontroller.github.io/ai-design-foundations/)**
 
-[キャリア](https://nullcontroller.github.io/ai-design-foundations/career/) / [AIデザイン](https://nullcontroller.github.io/ai-design-foundations/ai-design/) / [読み物](https://nullcontroller.github.io/ai-design-foundations/articles/)
+[キャリア](https://nullcontroller.github.io/ai-design-foundations/career/) / [AI設計](https://nullcontroller.github.io/ai-design-foundations/ai-design/) / [読み物](https://nullcontroller.github.io/ai-design-foundations/articles/)
 
 中心テーマ：Applied AI / System Architecture / Knowledge・Context / Evaluation・HITL / AI-Assisted Software Engineering / AI System Lifecycle。
 既存システムの改善・モダナイゼーションは、設計原則を適用した実務事例として扱います。

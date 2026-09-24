@@ -383,7 +383,8 @@ blockquote {
   justify-content: center;
   min-height: calc(100vh - 160px);
 }
-.shell.has-toc {
+.shell.has-toc,
+.shell.has-theme-toc {
   grid-template-columns: 235px minmax(0, 830px) 210px;
 }
 .career-shell {
@@ -631,7 +632,8 @@ blockquote {
   padding: 3rem 3.3rem 5rem;
   background: var(--surface);
 }
-.toc {
+.toc,
+.theme-toc {
   padding: 2.6rem 1rem;
   position: sticky;
   top: 88px;
@@ -640,25 +642,56 @@ blockquote {
   overflow: auto;
   font-size: 0.72rem;
 }
-.toc p {
+.toc p,
+.theme-toc p {
   color: var(--muted);
   font-weight: 600;
 }
-.toc ol {
+.toc ol,
+.theme-toc ol {
   list-style: none;
   padding: 0;
   border-left: 1px solid var(--line);
 }
-.toc li {
+.toc li,
+.theme-toc li {
   padding-left: 0.8rem;
 }
 .toc li.sub {
   padding-left: 1.4rem;
   font-size: 0.68rem;
 }
-.toc a {
+.toc a,
+.theme-toc a {
   color: var(--muted);
   text-decoration: none;
+}
+.theme-toc li + li {
+  margin-top: 0.65rem;
+}
+.theme-toc a:hover,
+.theme-toc a:focus-visible {
+  color: var(--accent);
+  text-decoration: underline;
+}
+.theme-toc-mobile {
+  display: none;
+  margin: 1.25rem 0 2rem;
+  border-block: 1px solid var(--line);
+}
+.theme-toc-mobile > summary {
+  cursor: pointer;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  font-weight: 650;
+}
+.theme-toc-mobile ol {
+  margin-top: 0;
+  padding: 0 0 1rem 1.4rem;
+}
+.theme-toc-mobile li + li {
+  margin-top: 0.55rem;
 }
 .site-footer {
   border-top: 1px solid var(--line);
@@ -986,11 +1019,16 @@ blockquote {
 }
 @media (max-width: 1190px) {
   .shell,
-  .shell.has-toc {
+  .shell.has-toc,
+  .shell.has-theme-toc {
     grid-template-columns: 215px minmax(0, 830px);
   }
-  .toc {
+  .toc,
+  .theme-toc {
     display: none;
+  }
+  .theme-toc-mobile {
+    display: block;
   }
   .shell > main {
     padding: 2.5rem;
@@ -1162,6 +1200,8 @@ blockquote {
   .masthead,
   .sidebar,
   .toc,
+  .theme-toc,
+  .theme-toc-mobile,
   .site-footer {
     display: none;
   }
@@ -1225,6 +1265,9 @@ blockquote {
   grid-template-columns: 120px minmax(0, 1fr);
   gap: 1.5rem;
 }
+.book-list-entry-text {
+  grid-template-columns: minmax(0, 1fr);
+}
 .book-list-entry details {
   font-size: 0.85rem;
 }
@@ -1259,6 +1302,9 @@ blockquote {
   .book-list-entry {
     grid-template-columns: 70px minmax(0, 1fr);
     gap: 1rem;
+  }
+  .book-list-entry-text {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -1587,11 +1633,27 @@ blockquote {
   border-top: 1px solid var(--line);
 }
 .reading-area {
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  gap: 1rem;
   padding: 1.5rem 0;
   border-bottom: 1px solid var(--line);
 }
-.reading-area .section-heading {
-  padding-top: 0;
+.reading-question {
+  margin: 0;
+  font-size: clamp(1.2rem, 2vw, 1.55rem);
+}
+.reading-question a {
+  color: var(--ink);
+  text-decoration-color: var(--accent);
+  text-underline-offset: 0.2em;
+}
+.reading-category {
+  margin: 0.45rem 0 0;
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
 }
 .reading-area p {
   margin-bottom: 0.7rem;
@@ -1681,25 +1743,30 @@ blockquote {
   margin-top: 2.5rem;
 }
 .case-outcome {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
   margin: 1.5rem 0;
   border-block: 1px solid var(--line);
 }
 .case-outcome > div {
-  display: grid;
-  grid-template-columns: 4rem minmax(0, 1fr);
-  gap: 1rem;
+  position: relative;
   padding: 0.85rem 0;
-  border-bottom: 1px solid var(--line);
 }
-.case-outcome > div:last-child {
-  border-bottom: 0;
+.case-outcome > div:not(:last-child)::after {
+  content: "→";
+  position: absolute;
+  inset-inline-end: -0.95rem;
+  inset-block-start: 50%;
+  color: var(--muted);
+  transform: translateY(-50%);
 }
 .case-outcome dt {
   color: var(--accent);
   font-weight: 700;
 }
 .case-outcome dd {
-  margin: 0;
+  margin: 0.35rem 0 0;
 }
 
 @media (max-width: 760px) {
@@ -1736,5 +1803,28 @@ blockquote {
   }
   .home-page .hero h1 {
     font-size: 2.5rem;
+  }
+  .reading-area {
+    grid-template-columns: 2.4rem minmax(0, 1fr);
+    gap: 0.75rem;
+  }
+  .case-outcome {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .case-outcome > div {
+    padding: 0.85rem 0 1.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .case-outcome > div:last-child {
+    border-bottom: 0;
+  }
+  .case-outcome > div:not(:last-child)::after {
+    content: "↓";
+    inset-inline-start: 0;
+    inset-inline-end: auto;
+    inset-block-start: auto;
+    inset-block-end: 0.15rem;
+    transform: none;
   }
 }

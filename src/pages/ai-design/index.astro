@@ -8,15 +8,22 @@ import { publicEntry, url } from "../../lib/site";
 import PageHeader from "../../components/PageHeader.astro";
 import SectionHeading from "../../components/SectionHeading.astro";
 import { iconForTopic } from "../../lib/icons";
+import ThemeArticleIndex from "../../components/ThemeArticleIndex.astro";
 const all = await getCollection("pages", publicEntry);
+const designEntries = all.filter((entry) => entry.data.layer === "ai-design");
+const themeLinks = designEntries.map((entry) => ({
+  title: entry.data.title,
+  href: url(entry.id),
+}));
 ---
 
 <Site
-  title="AIデザイン"
+  title="AI設計"
   section="ai-design"
   ogImage="og/ai-design.png"
+  themeLinks={themeLinks}
 >
-  <PageHeader icon="ai-design" title="AIデザイン" />
+  <PageHeader icon="ai-design" title="AI設計" />
   <SectionVisual
     name="system-architecture"
     alt="複数の層と接続点から成るシステム設計のシンボル"
@@ -25,7 +32,8 @@ const all = await getCollection("pages", publicEntry);
   <p>
     適用判断から責任境界、評価、運用までを扱う現在の設計知識です。数学の章を先に読まなくても、必要なテーマから参照できます。
   </p>
-  <nav class="topic-navigation" aria-label="AIデザインのテーマ">
+  <ThemeArticleIndex links={themeLinks} />
+  <nav class="topic-navigation" aria-label="AI設計のテーマ">
     {designTopics.map(([key, title]) => (
       <a href={url("ai-design/" + key)}>{title}</a>
     ))}
