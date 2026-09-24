@@ -13,7 +13,7 @@ const all = await getCollection("pages", publicEntry);
   <p>
     <a href={url("cases")}>実践事例</a> ·{" "}
     <a href={url("series")}>設計原則の連載</a> ·{" "}
-    <a href={url("articles")}>読む</a>
+    <a href={url("articles")}>読み物</a>
   </p>
   {caseStudies.map((study) => (
     <SeriesIndex entry={all.find((e) => e.id === study.book)!} all={all} />

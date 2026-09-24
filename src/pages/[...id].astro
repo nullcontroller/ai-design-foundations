@@ -10,6 +10,7 @@ import {
   designTopics,
   topicPublications,
   publicationType,
+  publicationStatus,
   publicationTiming,
   mathematicsReadingIds,
 } from "../lib/navigation";
@@ -68,6 +69,7 @@ const related = all
   .slice(0, 3);
 const purposes = contentUseCases(entry);
 const timing = publicationTiming(entry);
+const publicationState = publicationStatus(entry);
 const growthType = updateType(entry);
 ---
 
@@ -127,13 +129,16 @@ const growthType = updateType(entry);
           {statusLabel(d.status)}
         </span>
         {(d.publication_format || d.layer === "publication") && (
-          <span>
-            {timing.label}：{timing.datetime ? (
-              <time datetime={timing.datetime}>{timing.value}</time>
-            ) : (
-              timing.value
-            )}
-          </span>
+          <>
+            {publicationState && <span>状態：{publicationState}</span>}
+            <span>
+              {timing.label}：{timing.datetime ? (
+                <time datetime={timing.datetime}>{timing.value}</time>
+              ) : (
+                timing.value
+              )}
+            </span>
+          </>
         )}
         {d.updated_at && (
           <span data-pagefind-meta="updated_at">

@@ -595,9 +595,27 @@ blockquote {
   margin-top: 2px;
 }
 .sidebar nav a:hover,
-.sidebar nav a[aria-current] {
+.sidebar nav a[aria-current],
+.sidebar nav a[data-section-active] {
   background: var(--soft);
   border-color: var(--accent);
+}
+.nav-children {
+  margin-left: 1.15rem;
+  padding-left: 0.45rem;
+  border-left: 1px solid var(--line);
+}
+.nav-children a {
+  grid-template-columns: 2rem minmax(0, 1fr);
+  padding-block: 0.55rem;
+}
+.nav-children .icon {
+  width: 1.85rem;
+  height: 1.85rem;
+}
+.nav-children .icon::before {
+  width: 1.2rem;
+  height: 1.2rem;
 }
 .sidebar nav a.secondary {
   margin-top: 1rem;
@@ -1452,6 +1470,9 @@ blockquote {
   margin-top: 0.75rem;
   padding-top: 0.75rem;
 }
+.nav-spacing {
+  margin-top: 0.75rem;
+}
 .topic-navigation {
   display: flex;
   flex-wrap: wrap;
@@ -1559,9 +1580,21 @@ blockquote {
     display: block;
   }
   .sidebar .nav-group {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: block;
   }
+}
+.reading-directory {
+  border-top: 1px solid var(--line);
+}
+.reading-area {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.reading-area .section-heading {
+  padding-top: 0;
+}
+.reading-area p {
+  margin-bottom: 0.7rem;
 }
 .growth-list {
   display: grid;

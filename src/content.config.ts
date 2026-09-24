@@ -55,7 +55,7 @@ const pages = defineCollection({
         .enum(["new", "updated", "expanded", "revised", "connected", "reframed"])
         .optional(),
       update_note: z.string().trim().min(1).optional(),
-      publication_status: z.enum(["ongoing"]).optional(),
+      publication_status: z.enum(["ongoing", "published"]).optional(),
       canonical: z.url().optional(),
       series: z
         .string()

@@ -2,6 +2,7 @@
 import type { Entry } from "../lib/navigation";
 import {
   publicationType,
+  publicationStatus,
   publicationTiming,
 } from "../lib/navigation";
 import { iconForEntry } from "../lib/icons";
@@ -16,6 +17,7 @@ const { entry, heading: Heading = "h3" } = Astro.props;
 const d = entry.data;
 const purposes = contentUseCases(entry);
 const timing = publicationTiming(entry);
+const publicationState = publicationStatus(entry);
 ---
 
 <div class="content-entry publication-entry icon-entry" data-content-id={entry.id}>
@@ -31,6 +33,7 @@ const timing = publicationTiming(entry);
       </p>
     )}
     <p class="meta publication-date">
+      {publicationState && <span>状態：{publicationState}</span>}
       <span>{timing.label}：{timing.datetime ? (
         <time datetime={timing.datetime}>{timing.value}</time>
       ) : (

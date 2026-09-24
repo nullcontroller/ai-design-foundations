@@ -2,7 +2,43 @@ import type { CollectionEntry } from "astro:content";
 import { label } from "./site";
 import { iconForPath } from "./icons";
 export type Entry = CollectionEntry<"pages">;
-export const navigation = [
+
+export type NavigationItem = {
+  path: string;
+  title: string;
+  summary: string;
+  icon: ReturnType<typeof iconForPath>;
+  children?: readonly NavigationItem[];
+};
+
+export const readingCategories = [
+  {
+    path: "ai-design",
+    title: "AIデザイン",
+    summary: "AIを業務やシステムへ組み込むための設計原則。",
+    icon: iconForPath("ai-design"),
+  },
+  {
+    path: "ai-mathematics",
+    title: "AI数学論",
+    summary: "LLMや生成AIの振る舞いを理解するための数学・理論。",
+    icon: iconForPath("ai-mathematics"),
+  },
+  {
+    path: "practices",
+    title: "Practice",
+    summary: "AIを実務・開発・組織で使うための実践知。",
+    icon: iconForPath("practices"),
+  },
+  {
+    path: "cases",
+    title: "実践事例",
+    summary: "実務での課題、設計判断、実装、結果をまとめた事例。",
+    icon: iconForPath("cases"),
+  },
+] as const satisfies readonly NavigationItem[];
+
+export const navigation: readonly (readonly NavigationItem[])[] = [
   [
     {
       path: "",
@@ -16,41 +52,14 @@ export const navigation = [
       summary: "Rosariumの更新を見る",
       icon: iconForPath("updates"),
     },
-    {
-      path: "cases",
-      title: "実践事例",
-      summary: "実務への適用事例",
-      icon: iconForPath("cases"),
-    },
-    {
-      path: "career",
-      title: "キャリア",
-      summary: "職務経験・希望する役割",
-      icon: iconForPath("career"),
-    },
+  ],
+  [
     {
       path: "articles",
-      title: "読む",
-      summary: "テーマから知識を探す",
+      title: "読み物",
+      summary: "テーマから知識を選ぶ",
       icon: iconForPath("articles"),
-    },
-    {
-      path: "ai-design",
-      title: "AIデザイン",
-      summary: "業務システムへの組込み",
-      icon: iconForPath("ai-design"),
-    },
-    {
-      path: "ai-mathematics",
-      title: "AI数学論",
-      summary: "AIの性質を理解する",
-      icon: iconForPath("ai-mathematics"),
-    },
-    {
-      path: "practices",
-      title: "Practice",
-      summary: "業務・組織への適用",
-      icon: iconForPath("practices"),
+      children: readingCategories,
     },
   ],
   [
@@ -121,8 +130,6 @@ export const isPublication = (e: Entry) =>
   !!e.data.publication_format ||
   (e.data.layer === "publication" && (!e.data.series || e.data.order === 0));
 export const publicationTiming = (e: Entry) => {
-  if (e.data.publication_status === "ongoing")
-    return { label: "状態", value: "連載中" };
   if (e.data.published_at)
     return {
       label: "公開",
@@ -138,6 +145,12 @@ export const publicationTiming = (e: Entry) => {
     };
   return { label: "公開", value: "公開時期未確認" };
 };
+export const publicationStatus = (e: Entry) =>
+  e.data.publication_status
+    ? ({ ongoing: "連載中", published: "公開" } as const)[
+        e.data.publication_status
+      ]
+    : undefined;
 export const publicationDate = (e: Entry) => publicationTiming(e).value;
 export const topicPublications: Record<string, string[]> = {
   applicability: [

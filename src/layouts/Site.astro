@@ -212,22 +212,16 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
         <div class="header-links">
           <nav class="header-primary" aria-label="主要ページ">
             <a
-              href={url("articles")}
-              aria-current={section === "articles" ? "page" : undefined}
-            >
-              読む
-            </a>
-            <a
               href={url("updates")}
               aria-current={section === "updates" ? "page" : undefined}
             >
               成長録
             </a>
             <a
-              href={url("cases")}
-              aria-current={section === "cases" ? "page" : undefined}
+              href={url("articles")}
+              aria-current={section === "articles" ? "page" : undefined}
             >
-              実践事例
+              読み物
             </a>
             <a
               href={url("career")}
@@ -245,8 +239,9 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
         </div>
       ) : (
         <nav class="career-header-links" aria-label="Rosariumへの導線">
-          <a href={url()}>Rosariumへ戻る</a>
-          <a href={url("cases")}>実践事例を見る</a>
+          <a href={url("updates")}>成長録</a>
+          <a href={url("articles")}>読み物</a>
+          <a href={url("career")} aria-current="page">キャリア</a>
         </nav>
       )}
     </header>
@@ -264,18 +259,52 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
             <summary>ナビゲーション</summary>
             <nav>
               {navigation.map((group, i) => (
-                <div class:list={["nav-group", i > 0 && "nav-divider"]}>
+                <div
+                  class:list={[
+                    "nav-group",
+                    i === 1 && "nav-spacing",
+                    i === 2 && "nav-divider",
+                  ]}
+                >
                   {group.map((item) => (
-                    <a
-                      href={url(item.path)}
-                      aria-current={section === item.path ? "page" : undefined}
-                    >
-                      <NavIcon name={item.icon} />
-                      <span class="nav-copy">
-                        <span>{item.title}</span>
-                        <small>{item.summary}</small>
-                      </span>
-                    </a>
+                    <div class:list={["nav-item", item.children && "nav-parent"]}>
+                      <a
+                        href={url(item.path)}
+                        aria-current={section === item.path ? "page" : undefined}
+                        data-section-active={item.children?.some(
+                          (child) => child.path === section,
+                        )
+                          ? true
+                          : undefined}
+                      >
+                        <NavIcon name={item.icon} />
+                        <span class="nav-copy">
+                          <span>{item.title}</span>
+                          <small>{item.summary}</small>
+                        </span>
+                      </a>
+                      {item.children && (
+                        <div
+                          class="nav-children"
+                          aria-label={`${item.title}のカテゴリ`}
+                        >
+                          {item.children.map((child) => (
+                            <a
+                              href={url(child.path)}
+                              aria-current={section === child.path
+                                ? "page"
+                                : undefined}
+                            >
+                              <NavIcon name={child.icon} />
+                              <span class="nav-copy">
+                                <span>{child.title}</span>
+                                <small>{child.summary}</small>
+                              </span>
+                            </a>
+                          ))}
+                        </div>
+                      )}
+                    </div>
                   ))}
                 </div>
               ))}
@@ -313,7 +342,7 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
         <span>学習と実務を通じて育て続ける「庭」</span>
       </div>
       <nav aria-label="フッター">
-        <a href={url("articles")}>読む</a> ·{" "}
+        <a href={url("articles")}>読み物</a> ·{" "}
         <a href={url("updates")}>成長録</a> ·{" "}
         <a href={url("cases")}>実践事例</a> ·{" "}
         <a href={url("career")}>キャリア</a> ·{" "}

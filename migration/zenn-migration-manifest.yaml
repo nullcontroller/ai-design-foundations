@@ -639,7 +639,7 @@ entries:
         - c8af5c
     original_published_at: null
     original_publication_month: 2026-07
-    destination_body_sha256: 70882b641851f4a9ce8cb5e4f24d67b8d386ee541b7dfabc543f3c13b43852e9
+    destination_body_sha256: f1dc084ac5ad84073196392cb6c1a57224815d6d29564a097d01363d0627617a
   - source_file: books/b9a9feaefb4001/c90225.md
     source_type: chapter
     original_slug: c90225
@@ -805,7 +805,7 @@ entries:
     image_count: 0
     notes:
       - Exact publication date absent in source; not inferred from Git dates.
-      - Rosarium presents this Book as ongoing; the recorded source month remains provenance only.
+      - Rosarium records the user-confirmed publication state and month separately from the unknown exact date.
       - "Body: only heading levels, Wiki/internal links and image paths
         mechanically converted."
     source_sha256: d7322965329806430638430a1bb13246073cc6e9c049ad6077d9b60be8937d50
@@ -869,8 +869,8 @@ entries:
         - 6dcbe1
         - a490bc
     original_published_at: null
-    original_publication_month: 2026-03
-    destination_body_sha256: bc64efa33744576849e9bca41227c79a73492cb8fbd079bf22fd1d8439cfb2b6
+    original_publication_month: 2026-02
+    destination_body_sha256: b7ae6d35d040f4bd5b9eab7a9cc8ab3a5b79b77be79a686866d3266aedde5064
   - source_file: books/db491398459cbc/175772.md
     source_type: chapter
     original_slug: "175772"

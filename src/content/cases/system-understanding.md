@@ -14,7 +14,7 @@ tags: &a1
   - rag
 published_at: null
 updated_at: "2026-09-22"
-publication_status: ongoing
+publication_status: published
 canonical: https://zenn.dev/nullcontroller/books/db491398459cbc
 source:
   type: zenn
@@ -24,7 +24,7 @@ source:
   chapter_slug: null
   url: https://zenn.dev/nullcontroller/books/db491398459cbc
   published_at: null
-  publication_month: 2026-03
+  publication_month: 2026-02
   topics: *a1
   zenn_type: null
   metadata:
@@ -91,6 +91,8 @@ cover: /assets/imported/zenn/db491398459cbc-cover.jpg
 長期間運用されたシステムでは、仕様書が不足し、当時の担当者や設計判断の記録が残っていないことがある。一方で、稼働中のソースコードには現在の処理、分岐、依存関係が残っている。
 
 この事例では、既存システムを安全に変更できる状態へ近づけるため、コードから仕様を復元し、人間が確認できるKnowledgeとして再構成した。
+
+この実践で使用した生成AIはGPTであり、当時の作業ではGitHub Copilotを利用していない。現在、同様のコード理解・変更・実装支援を行うなら、GPTにGitHub Copilotを組み合わせることで、より高い生産性を期待できる。
 
 ## Problem
 

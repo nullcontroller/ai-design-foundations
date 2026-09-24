@@ -32,6 +32,7 @@ const coverDimensions = imageDimensions(
   )}
   <div>
     <PublicationLink entry={entry} heading="h2" />
+    <slot name="details" />
     <p class="meta">全{chapters.length}章</p>
     <p>
       <a class="action-link" href={url(entry.id)}>概要・全体構成を読む →</a>

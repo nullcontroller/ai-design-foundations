@@ -1,77 +1,30 @@
 ---
-import { getCollection } from "astro:content";
 import Site from "../layouts/Site.astro";
-import ContentIndex from "../components/ContentIndex.astro";
 import PageHeader from "../components/PageHeader.astro";
 import SectionHeading from "../components/SectionHeading.astro";
 import ActionLink from "../components/ActionLink.astro";
-import { publicEntry, url } from "../lib/site";
-
-const all = await getCollection("pages", publicEntry);
-const select = (ids: string[]) =>
-  ids.map((id) => {
-    const entry = all.find((item) => item.id === id);
-    if (!entry) throw new Error(`Reading entry missing: ${id}`);
-    return entry;
-  });
-
-const areas = [
-  {
-    id: "ai-design",
-    title: "AIデザイン",
-    icon: "ai-design" as const,
-    summary: "AIを業務やシステムへ組み込むための設計原則。",
-    path: "ai-design",
-    entries: select([
-      "foundations/applicability-and-delegation",
-      "evaluation-hitl/responsibility-and-hitl",
-      "architecture/reference-architecture",
-    ]),
-  },
-  {
-    id: "ai-mathematics",
-    title: "AI数学論",
-    icon: "ai-mathematics" as const,
-    summary: "LLMや生成AIの振る舞いを理解するための数学・理論。",
-    path: "ai-mathematics",
-    entries: select([
-      "foundations/conditional-probability",
-      "foundations/temperature-design",
-      "foundations/hallucination-mechanisms",
-    ]),
-  },
-  {
-    id: "practice",
-    title: "Practice",
-    icon: "practices" as const,
-    summary: "AIを実務・開発・組織で使うための実践知。",
-    path: "practices",
-    entries: select([
-      "practices/adoption-governance",
-      "practices/education-and-capability",
-      "software-engineering/development-workflow",
-    ]),
-  },
-];
+import { url } from "../lib/site";
+import { readingCategories } from "../lib/navigation";
 ---
 
-<Site title="読む" section="articles">
+<Site title="読み物" section="articles">
   <PageHeader
     icon="articles"
-    title="読む"
-    summary="気になるテーマからどうぞ。"
+    title="読み物"
+    summary="Rosariumで育てている知識を、テーマごとにまとめています。"
   />
 
-  {areas.map((area) => (
-    <section class="reading-area" id={area.id}>
-      <SectionHeading icon={area.icon} title={area.title} />
-      <p class="lead">{area.summary}</p>
-      <ContentIndex entries={area.entries} />
+  <div class="reading-directory">
+    {readingCategories.map((category) => (
+      <section class="reading-area" id={category.path}>
+      <SectionHeading icon={category.icon} title={category.title} />
+      <p>{category.summary}</p>
       <ActionLink
-        href={url(area.path)}
-        icon={area.icon}
-        label={`${area.title}をもっと見る`}
+        href={url(category.path)}
+        icon={category.icon}
+        label={category.title}
       />
     </section>
-  ))}
+    ))}
+  </div>
 </Site>

@@ -79,12 +79,11 @@ assert.deepEqual(
   [
     "Home",
     "成長録",
-    "実践事例",
-    "キャリア",
-    "読む",
+    "読み物",
     "AIデザイン",
     "AI数学論",
     "Practice",
+    "実践事例",
     "Reference",
   ],
 );
@@ -92,7 +91,7 @@ assert.deepEqual(
   top(".header-primary a")
     .map((_, e) => top(e).text().trim())
     .get(),
-  ["読む", "成長録", "実践事例", "キャリア"],
+  ["成長録", "読み物", "キャリア"],
 );
 assert.equal(top(".header-actions a").length, 0);
 assert.equal(top("#global-search-input").length, 1);
@@ -103,14 +102,21 @@ for (const secondary of ["詳細職務経歴", "Books", "連載", "Essays"])
     !top(".sidebar nav a .nav-copy > span").text().includes(secondary),
     secondary,
   );
-assert.equal(top(".sidebar .icon").length, 9);
+assert.equal(top(".sidebar .icon").length, 8);
 assert.equal(
   new Set(
     top(".sidebar .icon")
       .map((_, e) => top(e).attr("class"))
       .get(),
   ).size,
-  9,
+  8,
+);
+assert.equal(top('.sidebar a[href="/ai-design-foundations/career/"]').length, 0);
+assert.deepEqual(
+  top(".sidebar .nav-children a .nav-copy > span")
+    .map((_, e) => top(e).text())
+    .get(),
+  ["AIデザイン", "AI数学論", "Practice", "実践事例"],
 );
 assert.equal(top(".sidebar").length, 1);
 assert.equal(career(".sidebar,.toc,.global-search").length, 0);
@@ -164,43 +170,69 @@ for (const [route, layer] of [
 }
 const pubs = page("articles");
 assert.equal(top("#use-case-heading,#current-growth-heading").length, 0);
-assert.equal(pubs("h1").text(), "読む");
+assert.equal(pubs("h1").text(), "読み物");
+assert.equal(
+  pubs(".page-heading .lead").text(),
+  "Rosariumで育てている知識を、テーマごとにまとめています。",
+);
 assert.equal(pubs("#current-topics-heading").length, 0);
 assert.equal(pubs("[data-publication]").length, 0);
 assert.equal(pubs("[data-use-case-shortcut]").length, 0);
+assert.equal(pubs("[data-content-id]").length, 0);
 assert.deepEqual(
   pubs(".reading-area > .section-heading h2")
     .map((_, e) => pubs(e).text().trim())
     .get(),
-  ["AIデザイン", "AI数学論", "Practice"],
+  ["AIデザイン", "AI数学論", "Practice", "実践事例"],
 );
 for (const [section, href] of [
   ["ai-design", "/ai-design-foundations/ai-design/"],
   ["ai-mathematics", "/ai-design-foundations/ai-mathematics/"],
-  ["practice", "/ai-design-foundations/practices/"],
+  ["practices", "/ai-design-foundations/practices/"],
+  ["cases", "/ai-design-foundations/cases/"],
 ]) {
   const area = pubs(`#${section}`);
-  assert.equal(area.find("[data-content-id]").length, 3, section);
   assert(area.find(`a[href="${href}"]`).length, section);
 }
 for (const [id, expected] of [
-  ["foundations/ai-business-design", "公開：2026年2月"],
-  ["cases/three-ai-maintenance", "公開：2026年7月"],
-  ["cases/system-understanding", "状態：連載中"],
+  ["foundations/ai-business-design", ["公開：2026年2月"]],
+  ["cases/three-ai-maintenance", ["公開：2026年7月"]],
+  ["cases/system-understanding", ["状態：公開", "公開：2026年2月"]],
 ]) {
   for (const route of [id.startsWith("cases/") ? "cases" : "series"]) {
     const $ = page(route);
-    assert(
-      $('[data-content-id="' + id + '"] .publication-date')
-        .text()
-        .replace(/\s+/g, " ")
-        .trim()
-        .includes(expected),
-      `${route}: ${id} must display ${expected}`,
-    );
+    const metadata = $('[data-content-id="' + id + '"] .publication-date')
+      .text()
+      .replace(/\s+/g, " ")
+      .trim();
+    for (const value of expected)
+      assert(metadata.includes(value), `${route}: ${id} must display ${value}`);
   }
 }
-assert.equal(page("cases")(".case-study-index").length, 2);
+const cases = page("cases");
+assert.equal(cases(".case-study-index").length, 2);
+for (const id of ["cases/system-understanding", "cases/three-ai-maintenance"]) {
+  const study = cases(`[data-series-index="${id}"]`);
+  const descendants = study.find("*").toArray();
+  assert(
+    descendants.indexOf(study.find(".publication-entry").get(0)) <
+      descendants.indexOf(study.find(".case-outcome").get(0)),
+    `${id}: outcome must follow title, summary and metadata`,
+  );
+  assert.deepEqual(
+    study
+      .find(".case-outcome dt")
+      .map((_, e) => cases(e).text())
+      .get(),
+    ["課題", "設計", "結果"],
+  );
+}
+assert.equal(
+  cases('[data-content-id="cases/system-understanding"] .publication-topics')
+    .text()
+    .trim(),
+  "自然言語サービス・RAG・Knowledge / AI × Software Engineering / Case・実務",
+);
 for (const id of [
   "career",
   "reference",
@@ -325,11 +357,27 @@ for (const html of walk("dist").filter((file) => file.endsWith(".html")))
     html,
   );
 for (const [id, expected] of [
-  ["foundations/ai-business-design", "公開：2026年2月"],
-  ["cases/three-ai-maintenance", "公開：2026年7月"],
-  ["cases/system-understanding", "状態：連載中"],
+  ["foundations/ai-business-design", ["公開：2026年2月"]],
+  ["cases/three-ai-maintenance", ["公開：2026年7月"]],
+  ["cases/system-understanding", ["状態：公開", "公開：2026年2月"]],
 ]) {
   const $ = page(id);
-  assert($.root().text().replace(/\s+/g, " ").includes(expected), id);
+  const text = $.root().text().replace(/\s+/g, " ");
+  for (const value of expected) assert(text.includes(value), `${id}: ${value}`);
 }
+assert(
+  page("cases/system-understanding")("main").text().includes(
+    "この実践で使用した生成AIはGPTであり、当時の作業ではGitHub Copilotを利用していない。",
+  ),
+);
+assert(
+  page("cases/system-understanding")("main").text().includes(
+    "GPTにGitHub Copilotを組み合わせることで、より高い生産性を期待できる。",
+  ),
+);
+assert(
+  page("cases/three-ai-maintenance")("main").text().includes(
+    "GPT、GitHub Copilot、Microsoft 365 Copilotを工程ごとに役割分担して利用した。",
+  ),
+);
 console.log("Verified recent growth and exact Book publication presentation.");
