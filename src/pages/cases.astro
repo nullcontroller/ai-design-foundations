@@ -9,16 +9,16 @@ import PageHeader from "../components/PageHeader.astro";
 const all = await getCollection("pages", publicEntry);
 ---
 
-<Site title="Case Studies" section="cases">
-  <PageHeader icon="cases" title="Case Studies" />
+<Site title="実践事例" section="cases">
+  <PageHeader icon="cases" title="実践事例" />
   <SectionVisual
     name="practice-case-study"
-    alt="実務データと知見の関係を表すCase Studiesのシンボル"
+    alt="実務データと知見の関係を表す実践事例のシンボル"
   />
   <p class="lead">実務での課題・設計判断・実装・結果を、2冊のBookで読む。</p>
   <p>各事例の課題、設計、結果を確認し、必要な章へ進めます。</p>
   <nav class="topic-navigation" aria-label="全体と公開物への入口">
-    <a href={url("overview")}>全体目次</a>
+    <a href={url("articles")}>読む</a>
     <a href={url("series")}>設計原則の連載</a>
     <a href={url("articles")}>記事一覧</a>
   </nav>

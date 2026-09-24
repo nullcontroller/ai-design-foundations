@@ -1,114 +1,22 @@
 ---
-import { getCollection } from "astro:content";
 import Site from "../layouts/Site.astro";
-import ContentIndex from "../components/ContentIndex.astro";
-import PublicationLink from "../components/PublicationLink.astro";
-import SeriesIndex from "../components/SeriesIndex.astro";
-import { designTopics, caseStudies, isPublication } from "../lib/navigation";
-import { publicEntry, url } from "../lib/site";
-import PageHeader from "../components/PageHeader.astro";
-import SectionHeading from "../components/SectionHeading.astro";
-import { iconForTopic, layerIcons } from "../lib/icons";
-const all = await getCollection("pages", publicEntry);
-const groups = [
-  ["ai-mathematics", "AI数学論", "AIがなぜそう振る舞うかを理解する。"],
-  ["ai-design", "AI Design", "業務システムへの組込みを設計する。"],
-  ["practice", "Practices", "業務・組織・開発へ適用する。"],
-] as const;
-const anchors = [
-  ["career", "Own Career"],
-  ["ai-mathematics", "AI数学論"],
-  ["ai-design", "AI Design"],
-  ["practice", "Practices"],
-  ["books", "実務Book"],
-  ["series", "連載"],
-  ["articles", "単発記事・Essay"],
-  ["reference", "参照資料"],
-];
+import { url } from "../lib/site";
+
+const reading = url("articles");
+const canonical = new URL(reading, Astro.site).toString();
 ---
 
 <Site
-  title="全体目次"
-  section="overview"
-  headings={anchors.map(([slug, text]) => ({ depth: 2, slug, text }))}
+  title="読むへ統合しました"
+  summary="全体目次の役割は「読む」へ統合しました。"
+  canonical={canonical}
+  noindex
 >
-  <PageHeader icon="overview" title="全体目次" summary="キャリアから設計知識、実務事例、公開記事まで。読みたい領域と全体の構成を、ここから見渡せます。" />
-  <nav class="topic-navigation" aria-label="全体目次の領域">
-    {anchors.map(([id, title]) => (
-      <a href={"#" + id}>{title}</a>
-    ))}
-  </nav>
-  <section>
-    <SectionHeading icon="career" title="Own Career" id="career" />
-    <p>
-      <a href={url("career")}>キャリア概要・専門領域・今後の方向性</a>
-    </p>
-    <p>
-      <a href={url("career/profile")}>詳しい職務経歴・希望条件を見る</a>
-    </p>
-  </section>
-  {groups.map(([layer, title, summary]) => (
-    <section>
-      <SectionHeading icon={layerIcons[layer]} title={title} id={layer} />
-      <p>{summary}</p>
-      {layer === "ai-design" ? (
-        designTopics.map(([key, name, description]) => (
-          <section>
-            <SectionHeading icon={iconForTopic(key)} title={name} level="h3" />
-            <p><a href={url("ai-design/" + key)}>このテーマを見る →</a></p>
-            <p>{description}</p>
-            <ContentIndex
-              entries={all.filter(
-                (e) => e.data.layer === layer && e.data.design_topic === key,
-              )}
-            />
-          </section>
-        ))
-      ) : (
-        <ContentIndex entries={all.filter((e) => e.data.layer === layer)} />
-      )}
-    </section>
-  ))}
-  <section>
-    <SectionHeading icon="cases" title="実務Book — Case Studies" id="books" />
-    <p>2つの実務事例。概要と全章目次から読む章を選べます。</p>
-    {caseStudies.map((study) => (
-      <SeriesIndex entry={all.find((e) => e.id === study.book)!} all={all} />
-    ))}
-  </section>
-  <section>
-    <SectionHeading icon="articles" title="連載" id="series" />
-    {all
-      .filter((e) => e.data.publication_format === "series")
-      .map((entry) => (
-        <SeriesIndex entry={entry} all={all} />
-      ))}
-  </section>
-  <section>
-    <SectionHeading icon="articles" title="単発記事・Essay" id="articles" />
-    <p>
-      <a href={url("articles")}>形式・テーマで絞り込む</a>
-    </p>
-    <ul class="content-index">
-      {all
-        .filter((e) => isPublication(e) && !e.data.series)
-        .map((entry) => (
-          <li>
-            <PublicationLink entry={entry} />
-          </li>
-        ))}
-    </ul>
-  </section>
-  <section>
-    <SectionHeading icon="reference" title="参照資料" id="reference" />
-    <ContentIndex
-      entries={all.filter(
-        (e) =>
-          e.data.layer === "reference" && e.id !== "foundations/wiki-overview",
-      )}
-    />
-    <p>
-      <a href={url("reference")}>Reference</a>
-    </p>
-  </section>
+  <meta slot="head" http-equiv="refresh" content={`0;url=${reading}`} />
+  <script is:inline define:vars={{ reading }}>
+    location.replace(reading);
+  </script>
+  <h1>読むへ統合しました</h1>
+  <p>全体目次の役割は「読む」へ統合しました。</p>
+  <p><a href={reading}>読むへ移動する</a></p>
 </Site>

@@ -19,7 +19,6 @@ const manualRoutes = [
   "career/profile",
   "cases",
   "essays",
-  "overview",
   "practices",
   "reference",
   "series",

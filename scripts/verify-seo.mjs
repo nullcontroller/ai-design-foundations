@@ -99,7 +99,7 @@ for (const canonical of indexable)
     sitemapUrls.has(canonical),
     `Indexable canonical missing from sitemap: ${canonical}`,
   );
-for (const route of ["about/", "search/", "404.html"])
+for (const route of ["about/", "search/", "overview/", "404.html"])
   assert.ok(
     !sitemap.includes(`/ai-design-foundations/${route}`),
     `Sitemap contains noindex route: ${route}`,
@@ -108,9 +108,11 @@ assert.ok(sitemap.startsWith('<?xml version="1.0"'), "Invalid sitemap XML");
 
 const search = load(fs.readFileSync("dist/search/index.html", "utf8"));
 const about = load(fs.readFileSync("dist/about/index.html", "utf8"));
+const overview = load(fs.readFileSync("dist/overview/index.html", "utf8"));
 const notFound = load(fs.readFileSync("dist/404.html", "utf8"));
 assert.match(search('meta[name="robots"]').attr("content") || "", /noindex/);
 assert.match(about('meta[name="robots"]').attr("content") || "", /noindex/);
+assert.match(overview('meta[name="robots"]').attr("content") || "", /noindex/);
 assert.match(notFound('meta[name="robots"]').attr("content") || "", /noindex/);
 
 const robotsFile = fs.readFileSync("dist/robots.txt", "utf8");

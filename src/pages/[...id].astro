@@ -34,7 +34,7 @@ const { entry } = Astro.props;
 const d = entry.data;
 const primaryPath = d.section === "cases" ? "cases" : layerPath(d.layer);
 const primaryLabel =
-  d.section === "cases" ? "Case Studies" : layerLabel(d.layer);
+  d.section === "cases" ? "実践事例" : layerLabel(d.layer);
 const { headings } = await render(entry);
 const all = await getCollection("pages", publicEntry);
 const series = d.series
@@ -159,11 +159,7 @@ const growthType = updateType(entry);
           {purposes.map((purpose, index) => (
             <>
               {index > 0 && " / "}
-              <a
-                href={`${url("articles")}?use_case=${purpose.id}#all-publications`}
-              >
-                {purpose.shortTitle}
-              </a>
+              <a href={url("articles")}>{purpose.shortTitle}</a>
             </>
           ))}
         </p>
@@ -233,7 +229,7 @@ const growthType = updateType(entry);
   )}
   {d.source?.type === "zenn" && d.section === "cases" && (
     <p>
-      <a href={url("cases")}>Case Studies — 適用テーマ・設計原則から読む</a>
+      <a href={url("cases")}>実践事例 — 適用テーマ・設計原則から読む</a>
     </p>
   )}
   {designTopics.some(([key]) =>

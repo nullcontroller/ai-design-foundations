@@ -6,7 +6,7 @@ Applied AI、自然言語、システム設計、AI数学論、実務で得た�
 
 **[サイトを見る](https://nullcontroller.github.io/ai-design-foundations/)**
 
-[Career](https://nullcontroller.github.io/ai-design-foundations/career/) / [AI Design](https://nullcontroller.github.io/ai-design-foundations/ai-design/) / [Articles](https://nullcontroller.github.io/ai-design-foundations/articles/)
+[キャリア](https://nullcontroller.github.io/ai-design-foundations/career/) / [AIデザイン](https://nullcontroller.github.io/ai-design-foundations/ai-design/) / [読む](https://nullcontroller.github.io/ai-design-foundations/articles/)
 
 中心テーマ：Applied AI / System Architecture / Knowledge・Context / Evaluation・HITL / AI-Assisted Software Engineering / AI System Lifecycle。
 既存システムの改善・モダナイゼーションは、設計原則を適用した実務事例として扱います。

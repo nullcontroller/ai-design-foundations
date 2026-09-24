@@ -1,189 +1,77 @@
 ---
 import { getCollection } from "astro:content";
 import Site from "../layouts/Site.astro";
-import PublicationLink from "../components/PublicationLink.astro";
-import { isPublication, publicationType } from "../lib/navigation";
-import { assetUrl, publicEntry, url } from "../lib/site";
-import { contentUseCaseIds, useCases } from "../lib/use-cases";
+import ContentIndex from "../components/ContentIndex.astro";
 import PageHeader from "../components/PageHeader.astro";
-import Icon from "../components/Icon.astro";
-import { iconForUseCase } from "../lib/icons";
-import { currentGrowth } from "../lib/current-growth";
 import SectionHeading from "../components/SectionHeading.astro";
-const entries = (await getCollection("pages", publicEntry))
-  .filter(isPublication)
-  .sort((a, b) =>
-    (
-      b.data.published_at ||
-      b.data.source?.publication_month ||
-      ""
-    ).localeCompare(
-      a.data.published_at || a.data.source?.publication_month || "",
-    ),
-  );
+import ActionLink from "../components/ActionLink.astro";
+import { publicEntry, url } from "../lib/site";
+
+const all = await getCollection("pages", publicEntry);
+const select = (ids: string[]) =>
+  ids.map((id) => {
+    const entry = all.find((item) => item.id === id);
+    if (!entry) throw new Error(`Reading entry missing: ${id}`);
+    return entry;
+  });
+
+const areas = [
+  {
+    id: "ai-design",
+    title: "AIデザイン",
+    icon: "ai-design" as const,
+    summary: "AIを業務やシステムへ組み込むための設計原則。",
+    path: "ai-design",
+    entries: select([
+      "foundations/applicability-and-delegation",
+      "evaluation-hitl/responsibility-and-hitl",
+      "architecture/reference-architecture",
+    ]),
+  },
+  {
+    id: "ai-mathematics",
+    title: "AI数学論",
+    icon: "ai-mathematics" as const,
+    summary: "LLMや生成AIの振る舞いを理解するための数学・理論。",
+    path: "ai-mathematics",
+    entries: select([
+      "foundations/conditional-probability",
+      "foundations/temperature-design",
+      "foundations/hallucination-mechanisms",
+    ]),
+  },
+  {
+    id: "practice",
+    title: "Practice",
+    icon: "practices" as const,
+    summary: "AIを実務・開発・組織で使うための実践知。",
+    path: "practices",
+    entries: select([
+      "practices/adoption-governance",
+      "practices/education-and-capability",
+      "software-engineering/development-workflow",
+    ]),
+  },
+];
 ---
 
-<Site title="読む — 目的から探す" section="articles">
+<Site title="読む" section="articles">
   <PageHeader
     icon="articles"
     title="読む"
-    summary="Rosariumの記事一覧です。目的やテーマで絞り込めます。"
+    summary="気になるテーマからどうぞ。"
   />
 
-  <section class="reading-discovery" aria-labelledby="reading-purpose-heading">
-    <SectionHeading
-      icon="overview"
-      title="何を知りたいですか？"
-      id="reading-purpose-heading"
-    />
-    <p>読む目的を選ぶと、該当する記事へ絞り込めます。読む順番を示すものではありません。</p>
-    <nav class="purpose-shortcuts" aria-label="読む目的のショートカット">
-      <a href={`${url("articles")}#all-publications`} data-use-case-shortcut="">すべて</a>
-      {useCases.map((useCase) => (
-        <a href={`${url("articles")}?use_case=${useCase.id}#all-publications`} data-use-case-shortcut={useCase.id}>
-          <Icon name={iconForUseCase(useCase.id)} size="meta" />
-          <span>{useCase.shortTitle}</span>
-        </a>
-      ))}
-    </nav>
-  </section>
-
-  <section class="reading-discovery" aria-labelledby="current-topics-heading">
-    <SectionHeading
-      icon="ai-design"
-      title="今育てているテーマ"
-      id="current-topics-heading"
-    />
-    <div class="current-growth-list">
-      {currentGrowth.map((theme) => (
-        <article class="icon-entry">
-          <Icon name={theme.icon} size="list" />
-          <div>
-            <h3 class="content-title"><a href={url(theme.path)}>{theme.title}</a></h3>
-            <p>{theme.summary}</p>
-          </div>
-        </article>
-      ))}
-    </div>
-  </section>
-
-  <section class="all-publications" id="all-publications" aria-labelledby="all-publications-heading">
-    <div class="icon-heading compact-heading">
-      <Icon name="articles" size="section" />
-      <h2 id="all-publications-heading">記事一覧</h2>
-    </div>
-    <p>内容を主軸に探せます。Article・Book・連載・Essayは補助情報です。</p>
-    <form
-      class="publication-filters"
-      id="publication-filters"
-      aria-label="公開物の絞り込み"
-    >
-      <label>
-        読む目的
-        <select name="use_case">
-          <option value="">すべて</option>
-          {useCases.map((useCase) => (
-            <option value={useCase.id}>{useCase.shortTitle}</option>
-          ))}
-        </select>
-      </label>
-      <label>
-        形式（補助）
-        <select name="type">
-          <option value="">すべて</option>
-          <option>Article</option>
-          <option>Book</option>
-          <option>連載</option>
-          <option>Essay</option>
-        </select>
-      </label>
-      <button type="reset">解除</button>
-    </form>
-    <p id="publication-count" role="status" aria-live="polite">
-      {entries.length}件
-    </p>
-    <noscript>JavaScriptが無効の場合は全件を表示します。</noscript>
-    <div class="document-list publication-list" aria-label="記事一覧">
-      {entries.map((entry) => (
-        <article
-          data-publication
-          data-type={publicationType(entry)}
-          data-use-case={JSON.stringify(contentUseCaseIds(entry))}
-        >
-          <PublicationLink entry={entry} heading="h2" />
-        </article>
-      ))}
-    </div>
-  </section>
-
-  <details class="secondary-publication-navigation">
-    <summary>出版形式から探す</summary>
-    <nav class="topic-navigation" aria-label="出版形式">
-      <a href={url("books")}>Book</a>
-      <a href={url("series")}>連載</a>
-      <a href={url("essays")}>Essay</a>
-      <a href={assetUrl("feed.xml")}>RSSで購読</a>
-    </nav>
-  </details>
-  <p>
-    <a href={url("overview")}>全体目次</a>
-  </p>
+  {areas.map((area) => (
+    <section class="reading-area" id={area.id}>
+      <SectionHeading icon={area.icon} title={area.title} />
+      <p class="lead">{area.summary}</p>
+      <ContentIndex entries={area.entries} />
+      <ActionLink
+        href={url(area.path)}
+        icon={area.icon}
+        label={`${area.title}をもっと見る`}
+      />
+    </section>
+  ))}
 </Site>
-<script>
-  const form = document.querySelector<HTMLFormElement>("#publication-filters")!;
-  const items = [
-    ...document.querySelectorAll<HTMLElement>("[data-publication]"),
-  ];
-  function filter() {
-    const data = new FormData(form);
-    let count = 0;
-    for (const item of items) {
-      const show = ["type"].every(
-        (key) => !data.get(key) || data.get(key) === item.dataset[key],
-      );
-      const useCase = data.get("use_case");
-      const matchesUseCase =
-        !useCase || JSON.parse(item.dataset.useCase || "[]").includes(useCase);
-      const visible = show && matchesUseCase;
-      item.hidden = !visible;
-      if (visible) count++;
-    }
-    for (const shortcut of document.querySelectorAll<HTMLElement>(
-      "[data-use-case-shortcut]",
-    )) {
-      const selected = (shortcut.dataset.useCaseShortcut || "") === String(data.get("use_case") || "");
-      shortcut.toggleAttribute("aria-current", selected);
-    }
-    document.querySelector("#publication-count")!.textContent = count
-      ? count + "件"
-      : "該当する公開物はありません";
-    const current = new URL(location.href);
-    for (const key of ["use_case", "type"]) {
-      const value = String(data.get(key) || "");
-      if (value) current.searchParams.set(key, value);
-      else current.searchParams.delete(key);
-    }
-    history.replaceState(null, "", current);
-  }
-  form.addEventListener("change", filter);
-  form.addEventListener("reset", () => {
-    for (const select of form.querySelectorAll("select")) select.value = "";
-    filter();
-  });
-  const params = new URLSearchParams(location.search);
-  for (const select of form.querySelectorAll("select")) {
-    const value = params.get(select.name);
-    if (value && [...select.options].some((option) => option.value === value))
-      select.value = value;
-  }
-  filter();
-  document.querySelectorAll<HTMLElement>("[data-use-case-shortcut]").forEach((link) => {
-    link.addEventListener("click", (event) => {
-      event.preventDefault();
-      const select = form.elements.namedItem("use_case") as HTMLSelectElement;
-      select.value = link.dataset.useCaseShortcut || "";
-      filter();
-      document.querySelector("#all-publications")?.scrollIntoView();
-    });
-  });
-</script>

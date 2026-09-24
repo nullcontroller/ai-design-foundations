@@ -218,22 +218,22 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
               読む
             </a>
             <a
-              href={url("cases")}
-              aria-current={section === "cases" ? "page" : undefined}
-            >
-              事例
-            </a>
-            <a
               href={url("updates")}
               aria-current={section === "updates" ? "page" : undefined}
             >
-              最近育ったもの
+              成長録
+            </a>
+            <a
+              href={url("cases")}
+              aria-current={section === "cases" ? "page" : undefined}
+            >
+              実践事例
             </a>
             <a
               href={url("career")}
               aria-current={section?.startsWith("career") ? "page" : undefined}
             >
-              Own Career
+              キャリア
             </a>
           </nav>
           <div class="header-actions">
@@ -246,7 +246,7 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
       ) : (
         <nav class="career-header-links" aria-label="Rosariumへの導線">
           <a href={url()}>Rosariumへ戻る</a>
-          <a href={url("cases")}>事例を見る</a>
+          <a href={url("cases")}>実践事例を見る</a>
         </nav>
       )}
     </header>
@@ -310,13 +310,13 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
     <footer class="site-footer">
       <div class="footer-brand">
         <strong>Rosarium</strong>
-        <span>立林 裕太朗 · Applied AI / System Architecture</span>
+        <span>学習と実務を通じて育て続ける「庭」</span>
       </div>
       <nav aria-label="フッター">
         <a href={url("articles")}>読む</a> ·{" "}
-        <a href={url("cases")}>Case Studies</a> ·{" "}
-        <a href={url("career")}>Own Career</a> ·{" "}
-        <a href={url("updates")}>最近育ったもの</a> ·{" "}
+        <a href={url("updates")}>成長録</a> ·{" "}
+        <a href={url("cases")}>実践事例</a> ·{" "}
+        <a href={url("career")}>キャリア</a> ·{" "}
         <a href={assetUrl("feed.xml")}>RSS</a> ·{" "}
         <a href="https://github.com/nullcontroller/ai-design-foundations">
           Repository

@@ -11,9 +11,9 @@ const all = await getCollection("pages", publicEntry);
 <Site title="Books — 実務事例" section="cases">
   <PageHeader icon="cases" title="Books — 実務事例" summary="実務への適用を章立てで追う、2冊のBook。" />
   <p>
-    <a href={url("cases")}>Case Studies</a> ·{" "}
+    <a href={url("cases")}>実践事例</a> ·{" "}
     <a href={url("series")}>設計原則の連載</a> ·{" "}
-    <a href={url("overview")}>全体目次</a>
+    <a href={url("articles")}>読む</a>
   </p>
   {caseStudies.map((study) => (
     <SeriesIndex entry={all.find((e) => e.id === study.book)!} all={all} />

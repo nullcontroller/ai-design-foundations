@@ -55,7 +55,7 @@ for (const [id, d] of entries) {
     );
 }
 const career = load(fs.readFileSync("dist/career/index.html", "utf8"));
-assert.equal(career("h1").text(), "Own Career — 立林 裕太朗");
+assert.equal(career("h1").text(), "キャリア — 立林 裕太朗");
 assert(career('a[href="/ai-design-foundations/career/profile/"]').length);
 console.log(
   `Verified ${entries.size} summaries/search metadata, ${links} content links and Career profile.`,
@@ -65,20 +65,26 @@ console.log(
 const page = (id) =>
   load(fs.readFileSync("dist/" + id + "/index.html", "utf8"));
 const top = page("");
+assert.equal(top("main h1").first().text(), "Rosarium");
+assert.equal(
+  top(".home-introduction .lead").text(),
+  "学習と実務を通じて育て続ける「庭」",
+);
+assert(!top("main").text().includes("Applied AI / System Architecture"));
+assert(!top("main").text().includes("立林 裕太朗"));
 assert.deepEqual(
   top(".sidebar nav a .nav-copy > span")
     .map((_, e) => top(e).text())
     .get(),
   [
     "Home",
+    "成長録",
+    "実践事例",
+    "キャリア",
     "読む",
-    "Case Studies",
-    "最近育ったもの",
-    "Own Career",
-    "AI Design",
+    "AIデザイン",
     "AI数学論",
-    "Practices",
-    "全体目次",
+    "Practice",
     "Reference",
   ],
 );
@@ -86,7 +92,7 @@ assert.deepEqual(
   top(".header-primary a")
     .map((_, e) => top(e).text().trim())
     .get(),
-  ["読む", "事例", "最近育ったもの", "Own Career"],
+  ["読む", "成長録", "実践事例", "キャリア"],
 );
 assert.equal(top(".header-actions a").length, 0);
 assert.equal(top("#global-search-input").length, 1);
@@ -97,14 +103,14 @@ for (const secondary of ["詳細職務経歴", "Books", "連載", "Essays"])
     !top(".sidebar nav a .nav-copy > span").text().includes(secondary),
     secondary,
   );
-assert.equal(top(".sidebar .icon").length, 10);
+assert.equal(top(".sidebar .icon").length, 9);
 assert.equal(
   new Set(
     top(".sidebar .icon")
       .map((_, e) => top(e).attr("class"))
       .get(),
   ).size,
-  10,
+  9,
 );
 assert.equal(top(".sidebar").length, 1);
 assert.equal(career(".sidebar,.toc,.global-search").length, 0);
@@ -158,47 +164,31 @@ for (const [route, layer] of [
 }
 const pubs = page("articles");
 assert.equal(top("#use-case-heading,#current-growth-heading").length, 0);
-assert.equal(pubs("#reading-purpose-heading").length, 1);
-assert.equal(pubs("#current-topics-heading").length, 1);
-assert.equal(pubs("details#all-publications").length, 0);
-assert.equal(pubs("section#all-publications").length, 1);
-assert.equal(pubs("#all-publications [data-publication]").length > 0, true);
-assert.equal(pubs("[data-use-case-shortcut]").length, 7);
-for (const route of ["books", "series", "essays"])
-  assert(pubs(`a[href="/ai-design-foundations/${route}/"]`).length, route);
-const publicationIds = pubs("[data-publication] [data-content-id]")
-  .map((_, e) => pubs(e).attr("data-content-id"))
-  .get();
-for (const [id, d] of entries)
-  if (
-    d.public !== false &&
-    d.status !== "draft" &&
-    ["article", "book"].includes(d.source?.original_type)
-  )
-    assert(publicationIds.includes(id), "Missing publication " + id);
-assert.equal(new Set(publicationIds).size, publicationIds.length);
-for (const id of publicationIds) {
-  const node = pubs('[data-content-id="' + id + '"]');
-  const item = node.closest("[data-publication]");
-  assert(JSON.parse(item.attr("data-use-case")).length, id + " use case");
-  assert(node.find(".publication-date").text().trim());
-  assert(node.find(".publication-topics").text().trim());
-  assert(
-    node
-      .find(".meta")
-      .text()
-      .match(/Article|Book|Essay|連載/),
-  );
+assert.equal(pubs("h1").text(), "読む");
+assert.equal(pubs("#current-topics-heading").length, 0);
+assert.equal(pubs("[data-publication]").length, 0);
+assert.equal(pubs("[data-use-case-shortcut]").length, 0);
+assert.deepEqual(
+  pubs(".reading-area > .section-heading h2")
+    .map((_, e) => pubs(e).text().trim())
+    .get(),
+  ["AIデザイン", "AI数学論", "Practice"],
+);
+for (const [section, href] of [
+  ["ai-design", "/ai-design-foundations/ai-design/"],
+  ["ai-mathematics", "/ai-design-foundations/ai-mathematics/"],
+  ["practice", "/ai-design-foundations/practices/"],
+]) {
+  const area = pubs(`#${section}`);
+  assert.equal(area.find("[data-content-id]").length, 3, section);
+  assert(area.find(`a[href="${href}"]`).length, section);
 }
 for (const [id, expected] of [
   ["foundations/ai-business-design", "公開：2026年2月"],
   ["cases/three-ai-maintenance", "公開：2026年7月"],
   ["cases/system-understanding", "状態：連載中"],
 ]) {
-  for (const route of [
-    "articles",
-    id.startsWith("cases/") ? "cases" : "series",
-  ]) {
+  for (const route of [id.startsWith("cases/") ? "cases" : "series"]) {
     const $ = page(route);
     assert(
       $('[data-content-id="' + id + '"] .publication-date')
@@ -231,7 +221,7 @@ for (const id of [
 ])
   assert(page(id)("h1").length, id);
 console.log(
-  "Verified use-case-first navigation, layer separation, related publications, complete Publication Hub and existing URLs.",
+  "Verified reading gateway, layer separation, related publications and existing URLs.",
 );
 
 // Phase 4: journal order, preserved summaries, reading route and secondary archives.
@@ -272,27 +262,12 @@ assert.equal(
   page("series")('[data-series-index="foundations/ai-business-design"]').length,
   1,
 );
-assert.equal(
-  pubs('[data-type="連載"] [data-content-id="foundations/ai-business-design"]')
-    .length,
-  1,
-);
 const overview = page("overview");
-for (const [id, d] of entries) {
-  if (
-    d.layer === "career" ||
-    d.public === false ||
-    d.status === "draft" ||
-    id === "foundations/wiki-overview"
-  )
-    continue;
-  assert(
-    overview('[data-content-id="' + id + '"]').length,
-    "Overview missing " + id,
-  );
-}
+assert.match(overview("meta[name=robots]").attr("content") || "", /noindex/);
+assert.equal(overview("meta[http-equiv=refresh]").attr("content"), "0;url=/ai-design-foundations/articles/");
+assert(overview('a[href="/ai-design-foundations/articles/"]').length);
 console.log(
-  "Verified full overview, two case books, independent series and simplified navigation.",
+  "Verified overview compatibility redirect, two case books, independent series and simplified navigation.",
 );
 
 assert(top("#recent-growth-heading").length);
@@ -315,7 +290,7 @@ assert.equal(
 );
 assert.equal(updates(".growth-month h2").text(), "2026年9月");
 assert(
-  updates('.sidebar a[aria-current="page"]').text().includes("最近育ったもの"),
+  updates('.sidebar a[aria-current="page"]').text().includes("成長録"),
 );
 assert.equal(updates(".growth-list [data-content-id]").length, 0);
 assert(
@@ -324,7 +299,6 @@ assert(
 );
 for (const route of [
   "career",
-  "overview",
   "articles",
   "cases",
   "ai-design",
