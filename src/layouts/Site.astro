@@ -5,6 +5,7 @@ import { assetUrl, url } from "../lib/site";
 import { navigation } from "../lib/navigation";
 import NavIcon from "../components/NavIcon.astro";
 import GlobalSearch from "../components/GlobalSearch.astro";
+import type { ReadingGroup } from "../lib/reading";
 interface Props {
   title: string;
   summary?: string;
@@ -17,7 +18,7 @@ interface Props {
   publishedAt?: string | null;
   updatedAt?: string | null;
   breadcrumbs?: { name: string; path: string }[];
-  themeLinks?: { title: string; href: string }[];
+  themeGroups?: ReadingGroup[];
   frame?: boolean;
 }
 const {
@@ -32,7 +33,7 @@ const {
   publishedAt,
   updatedAt,
   breadcrumbs = [],
-  themeLinks = [],
+  themeGroups = [],
   frame = true,
 } = Astro.props;
 const documentTitle =
@@ -60,6 +61,16 @@ const collectionSections = new Set([
   "overview",
   "reference",
   "updates",
+]);
+const readingSections = new Set([
+  "articles",
+  "ai-design",
+  "ai-mathematics",
+  "practices",
+  "cases",
+  "books",
+  "series",
+  "essays",
 ]);
 const pageType =
   ogType === "article"
@@ -207,8 +218,6 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
     <header class:list={["masthead", !frame && "career-masthead"]}>
       <a class="brand" href={url()}>
         <span class="brand-name">Rosarium</span>
-        <span class="brand-author">立林 裕太朗</span>
-        <span class="brand-domain">Applied AI / System Architecture</span>
       </a>
       {frame ? (
         <div class="header-links">
@@ -218,7 +227,7 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
             </a>
             <a
               href={url("articles")}
-              aria-current={section === "articles" ? "page" : undefined}
+              aria-current={readingSections.has(section || "") ? "page" : undefined}
             >
               読み物
             </a>
@@ -250,7 +259,7 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
         frame && "global-frame",
         !frame && "career-shell",
         frame && headings.length > 0 && "has-toc",
-        frame && themeLinks.length > 0 && "has-theme-toc",
+        frame && themeGroups.length > 0 && "has-theme-toc",
       ]}
     >
       {frame && (
@@ -335,14 +344,23 @@ const bingVerification = import.meta.env.PUBLIC_BING_SITE_VERIFICATION;
           </>
         </aside>
       )}
-      {frame && themeLinks.length > 0 && (
+      {frame && themeGroups.length > 0 && (
         <aside class="theme-toc" aria-label="このテーマの記事">
           <p>このテーマの記事</p>
-          <ol>
-            {themeLinks.map((item) => (
-              <li><a href={item.href}>{item.title}</a></li>
+          <div class="theme-nav-groups">
+            {themeGroups.map((group) => (
+              <details open={group.current}>
+                <summary>{group.title} <span>{group.links.length}</span></summary>
+                <ul>
+                  {group.links.map((item) => (
+                    <li class:list={[item.current && "current"]}>
+                      <a href={item.href} aria-current={item.current ? "page" : undefined}>{item.title}</a>
+                    </li>
+                  ))}
+                </ul>
+              </details>
             ))}
-          </ol>
+          </div>
         </aside>
       )}
     </div>

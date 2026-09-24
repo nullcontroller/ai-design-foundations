@@ -6,23 +6,16 @@ import { caseStudies } from "../lib/navigation";
 import { publicEntry, url } from "../lib/site";
 import PageHeader from "../components/PageHeader.astro";
 import ThemeArticleIndex from "../components/ThemeArticleIndex.astro";
+import { readingNavigation } from "../lib/reading";
 const all = await getCollection("pages", publicEntry);
-const caseEntries = caseStudies.map((study) => {
-  const entry = all.find((item) => item.id === study.book);
-  if (!entry) throw new Error(`Missing case study: ${study.book}`);
-  return entry;
-});
-const themeLinks = caseEntries.map((entry) => ({
-  title: entry.data.title,
-  href: url(entry.id),
-}));
+const themeGroups = readingNavigation(all, "cases");
 ---
 
-<Site title="実践事例" section="cases" themeLinks={themeLinks}>
+<Site title="実践事例" section="cases" themeGroups={themeGroups}>
   <PageHeader icon="cases" title="実践事例" />
   <p class="lead">実務での課題・設計判断・実装・結果を、2冊のBookで読む。</p>
   <p>各事例の課題、設計、結果を確認し、必要な章へ進めます。</p>
-  <ThemeArticleIndex links={themeLinks} />
+  <ThemeArticleIndex groups={themeGroups} />
   <nav class="topic-navigation" aria-label="全体と公開物への入口">
     <a href={url("articles")}>読み物</a>
     <a href={url("series")}>設計原則の連載</a>

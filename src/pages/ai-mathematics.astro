@@ -9,7 +9,9 @@ import { mathematicsReadingIds } from "../lib/navigation";
 import PageHeader from "../components/PageHeader.astro";
 import SectionHeading from "../components/SectionHeading.astro";
 import ThemeArticleIndex from "../components/ThemeArticleIndex.astro";
-const entries = (await getCollection("pages", publicEntry)).filter(
+import { readingEntries, readingNavigation } from "../lib/reading";
+const all = await getCollection("pages", publicEntry);
+const entries = all.filter(
   (e) => e.data.layer === "ai-mathematics",
 );
 const reading = mathematicsReadingIds.map((id) => {
@@ -17,17 +19,15 @@ const reading = mathematicsReadingIds.map((id) => {
   if (!entry) throw new Error("Missing mathematics reading: " + id);
   return entry;
 });
-const themeLinks = entries.map((entry) => ({
-  title: entry.data.title,
-  href: url(entry.id),
-}));
+const themeGroups = readingNavigation(all, "ai-mathematics");
+const discoverable = readingEntries(all, "ai-mathematics");
 ---
 
 <Site
   title="AI理論"
   section="ai-mathematics"
   ogImage="og/site.png"
-  themeLinks={themeLinks}
+  themeGroups={themeGroups}
 >
   <PageHeader icon="ai-mathematics" title="AI理論" />
   <SectionVisual
@@ -41,7 +41,7 @@ const themeLinks = entries.map((entry) => ({
     出力の揺らぎ、条件付き確率、Temperature、Hallucination、コード生成モデルの仕組みを扱います。業務への組込みは
     <a href={url("ai-design")}>AI設計</a>から直接読むこともできます。
   </p>
-  <ThemeArticleIndex links={themeLinks} />
+  <ThemeArticleIndex groups={themeGroups} />
   <SectionHeading icon="ai-mathematics" title="AIは数学である" />
   <p>
     生成AIやLLMは言葉を理解しているように見えますが、内部では数値・ベクトル・確率分布・行列演算として処理されています。AI理論では、AIを人格や直感で説明せず、数学的な対象として分解して考えます。
@@ -66,6 +66,6 @@ const themeLinks = entries.map((entry) => ({
       </ol>
     </div>
   </details>
-  <SectionHeading icon="ai-mathematics" title="AI理論の一覧" />
-  <ContentIndex entries={entries} />
+  <SectionHeading icon="ai-mathematics" title="AI理論から読めるもの" />
+  <ContentIndex entries={discoverable} />
 </Site>

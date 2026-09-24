@@ -50,7 +50,7 @@ const canonicalReferences = publicEntries.filter(
 const canonicalPractices = publicEntries.filter(({ data }) => data.layer === "practice");
 assert.ok(canonicalReferences.length >= 4, "Reference needs glossary, mathematics, metrics and responsibility state");
 assert.ok(canonicalPractices.length >= 4, "Practices needs adoption, education, transfer and development workflow");
-assert.equal(files.length, 81, "All audited content must remain traceable");
+assert.equal(files.length, 83, "All audited content must remain traceable");
 
 console.log(
   `Verified content health: ${files.length} audited Markdown pages, ${publicEntries.length} public pages, ${canonicalReferences.length} canonical references, ${canonicalPractices.length} canonical practices.`,

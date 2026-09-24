@@ -52,8 +52,13 @@ for (const file of walk("dist").filter((p) => p.endsWith(".html"))) {
       .match(/GitHub Wiki|Originally published|Repository-native|移行元/),
     file,
   );
-  assert($(".brand").text().includes("Rosarium"), file);
-  assert($(".brand").text().includes("立林 裕太朗"), file);
+  assert.equal($("header.masthead > .brand").length, 1, file);
+  assert.equal($("header.masthead > .brand").text().trim(), "Rosarium", file);
+  assert.equal(
+    $("header.masthead > .brand").attr("href"),
+    "/ai-design-foundations/",
+    file,
+  );
   const canonical = $('link[rel="canonical"]').attr("href");
   assert(
     canonical?.startsWith(

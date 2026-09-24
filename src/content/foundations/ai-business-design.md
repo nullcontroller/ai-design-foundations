@@ -72,6 +72,8 @@ source:
       - 412d8b
       - 62ecee
       - 10802f
+      - 146efb
+      - b165bb
 series: ai-business-design
 series_title: 『生成AIを業務へ組み込む設計原則 ― AI・人間・既存システムの責任をどう分けるか』
 order: 0

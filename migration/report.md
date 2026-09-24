@@ -12,7 +12,7 @@ Zenn `catalog/portfolio.md`を分類根拠に使用。Legacy ModernizationはCas
 |---|---:|---:|---:|
 | Zenn Article | 16 | 0 | 0 |
 | Zenn Book概要 | 3 | 0 | 0 |
-| Zenn Chapter | 22 | 0 | 0 |
+| Zenn Chapter | 24 | 0 | 0 |
 | 公開Wiki本文（Home・索引含む） | 30 | 0 | 0 |
 
 3冊の章順は元config.yamlと一致。第2章と第12章など近似・重複するタイトルもそのまま保持。
@@ -46,7 +46,7 @@ Zenn `catalog/portfolio.md`を分類根拠に使用。Legacy ModernizationはCas
 
 ## 再現性と検証
 
-Zenn41件とWiki30件は、元ファイル・移行先・元metadata・変換後本文hashを台帳化。
+Zenn43件とWiki30件は、元ファイル・移行先・元metadata・変換後本文hashを台帳化。
 `npm run check`で完全性、`npm run build`で静的HTML・検索・内部リンク・画像・アンカーを検証。
 生成物・node_modules・移行元.gitはGit管理対象に含めない。
 
@@ -73,6 +73,6 @@ Mermaidは遅延ロードするローカルbundle。bundleサイズ警告はあ�
 
 ## 追加改修：概要・Layer・Career
 
-全72コンテンツの本文を確認し、front matterにsummaryを追加した。本文・元metadata・canonical・章順は変更していない。Zennの独立公開物41件はpublicationとして設計体系と区別し、テーマは従来のsectionで保持する。Wikiと旧READMEは本文の役割に応じてtheory / design / practiceを設定した。
+全74移行コンテンツの本文を確認し、front matterにsummaryを追加した。本文・元metadata・canonical・章順は変更していない。Zennの独立公開物43件はpublicationとして設計体系と区別し、テーマは従来のsectionで保持する。Wikiと旧READMEは本文の役割に応じてtheory / design / practiceを設定した。
 
 全一覧・章目次・前後・関連・検索は同じsummaryを使用する。buildで全72ページの検索metadataと一覧の概要一致を検証する。Careerは運営者の実務背景を紹介する独立ページとして追加し、詳細職務経歴は別のCareer Profileへリンクする。

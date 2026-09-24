@@ -25,6 +25,8 @@ import { updateLabels, updateType } from "../lib/growth";
 import { iconForEntry, iconForTopic } from "../lib/icons";
 import Icon from "../components/Icon.astro";
 import SectionHeading from "../components/SectionHeading.astro";
+import ThemeArticleIndex from "../components/ThemeArticleIndex.astro";
+import { readingNavigation, readingPathForEntry } from "../lib/reading";
 export async function getStaticPaths() {
   return (await getCollection("pages", publicEntry)).map((entry) => ({
     params: { id: entry.id },
@@ -71,6 +73,10 @@ const purposes = contentUseCases(entry);
 const timing = publicationTiming(entry);
 const publicationState = publicationStatus(entry);
 const growthType = updateType(entry);
+const readingPath = readingPathForEntry(entry, all);
+const themeGroups = readingPath
+  ? readingNavigation(all, readingPath, entry.id)
+  : [];
 ---
 
 <Site
@@ -95,6 +101,7 @@ const growthType = updateType(entry);
       : []),
     { name: d.title, path: entry.id },
   ]}
+  themeGroups={themeGroups}
 >
   <nav class="breadcrumb">
     <a href={url()}>庭</a> / <a href={url(primaryPath)}>{primaryLabel}</a>
@@ -108,6 +115,7 @@ const growthType = updateType(entry);
       </>
     )}
   </nav>
+  {themeGroups.length > 0 && <ThemeArticleIndex groups={themeGroups} />}
   <article data-pagefind-body>
     <header class="document-header">
       <p class="eyebrow">

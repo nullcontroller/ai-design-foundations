@@ -66,6 +66,22 @@ const page = (id) =>
   load(fs.readFileSync("dist/" + id + "/index.html", "utf8"));
 const top = page("");
 assert.equal(top("main h1").first().text(), "Rosarium");
+for (const html of walk("dist").filter((file) => file.endsWith(".html"))) {
+  const $ = load(fs.readFileSync(html, "utf8"));
+  const brand = $("header.masthead > a.brand");
+  assert.equal(brand.length, 1, `${html}: shared header brand`);
+  assert.equal(brand.text().trim(), "Rosarium", `${html}: brand text`);
+  assert.equal(
+    brand.attr("href"),
+    "/ai-design-foundations/",
+    `${html}: base-aware brand link`,
+  );
+  assert.equal(
+    brand.find(".brand-author,.brand-domain,.icon").length,
+    0,
+    `${html}: brand must not contain profile or decorative content`,
+  );
+}
 assert.equal(
   top(".home-introduction .lead").text(),
   "学習と実務を通じて育て続ける「庭」",
@@ -157,14 +173,31 @@ for (const [id, d] of entries) {
       id,
     );
 }
-for (const [route, layer] of [
-  ["ai-mathematics", "ai-mathematics"],
-  ["practices", "practice"],
-  ["reference", "reference"],
-]) {
+for (const [route, layer] of [["reference", "reference"]]) {
   const $ = page(route);
   assert(primaryIds($).length);
   for (const id of primaryIds($)) assert.equal(entries.get(id).layer, layer);
+}
+for (const [route, layer, crossListed] of [
+  [
+    "ai-mathematics",
+    "ai-mathematics",
+    ["foundations/guardrail-models", "foundations/layered-hallucination-controls"],
+  ],
+  [
+    "practices",
+    "practice",
+    ["knowledge-context/prompt-structure", "cases/understanding-systems-as-capability"],
+  ],
+]) {
+  const $ = page(route);
+  const ids = primaryIds($);
+  const canonical = [...entries]
+    .filter(([, data]) => data.layer === layer && data.public !== false)
+    .map(([id]) => id);
+  for (const id of canonical) assert(ids.includes(id), `${route} misses canonical ${id}`);
+  for (const id of crossListed) assert(ids.includes(id), `${route} misses discovery path ${id}`);
+  assert.equal(new Set(ids).size, ids.length, `${route} has duplicate discovery entries`);
 }
 const pubs = page("articles");
 assert.equal(top("#use-case-heading,#current-growth-heading").length, 0);
@@ -407,7 +440,12 @@ for (const route of ["ai-design", "ai-mathematics", "practices", "cases"]) {
   assert(desktop.length, `${route}: desktop article index`);
   assert.deepEqual(mobile, desktop, `${route}: mobile article index`);
   assert.equal($(".theme-toc > p").text(), "このテーマの記事");
-  assert.equal($(".theme-toc-mobile > summary").text(), "このテーマの記事");
+  assert.match(
+    $(".theme-toc-mobile > summary").text(),
+    /^このテーマの記事（\d+）$/,
+  );
+  assert($(".theme-toc .theme-nav-groups > details").length, `${route}: grouped desktop index`);
+  assert($(".theme-toc-mobile .theme-nav-groups > details").length, `${route}: grouped mobile index`);
 }
 console.log(
   "Verified category article indexes, Garden navigation and updates compatibility.",

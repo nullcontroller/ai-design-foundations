@@ -18,14 +18,14 @@
 
 | Decision | Count |
 |---|---:|
-| KEEP | 58 |
+| KEEP | 60 |
 | UPDATE | 9 |
 | REWRITE | 4 |
 | MERGE | 1 |
 | SPLIT | 7 |
 | ARCHIVE | 1 |
 | REMOVE_FROM_PUBLIC | 1 |
-| **Total** | **81** |
+| **Total** | **83** |
 
 ## Full Audit
 
@@ -80,6 +80,8 @@
 | `src/content/foundations/conditional-probability.md` | UPDATE | 現行構造・表現との不一致 | 「確率空間」を説明モデルとして明示し、旧媒体表現を除去 |
 | `src/content/foundations/design-system-overview.md` | ARCHIVE | 履歴価値はあるが現在の主導線には不要 | 過去の章構造を履歴として非公開保持 |
 | `src/content/foundations/generation-and-acceptance.md` | KEEP | 生成と受理の分離を示す現行原則 | — |
+| `src/content/foundations/ai-business-design/explainable-delegation.md` | KEEP | Book第4章のPublication本文と章順を保持 | — |
+| `src/content/foundations/ai-business-design/human-judgment-capability.md` | KEEP | Book第5章のPublication本文と章順を保持 | — |
 | `src/content/foundations/glossary.md` | MERGE | 役割が新しいReferenceと重複 | 既存URLを維持し、4つのReference正本への索引に変更 |
 | `src/content/foundations/guardrail-models.md` | KEEP | Guardrailの説明モデルと限界を保持 | — |
 | `src/content/foundations/hallucination-mechanisms.md` | KEEP | 発生機序をAI数学論として保持 | — |

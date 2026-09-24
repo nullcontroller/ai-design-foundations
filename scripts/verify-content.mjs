@@ -51,6 +51,17 @@ for (const book of z.entries.filter((e) => e.source_type === "book")) {
 for (const a of z.assets.filter((a) => a.downloaded)) {
   assert.equal(hash(fs.readFileSync("public" + a.destination)), a.sha256);
 }
+const completeness = read("migration/content-completeness-audit.md");
+const bookCoverage = read("migration/book-knowledge-coverage.md");
+const readingAudit = read("migration/reading-classification-audit.md");
+assert.match(completeness, /\| MISSING \| 0 \|/);
+assert.match(completeness, /公開孤児 \| 0/);
+assert.match(bookCoverage, /PARTIAL: 0/);
+assert.match(bookCoverage, /ABSENT: 0/);
+assert.match(bookCoverage, /Chapter 4: 9 \/ 9/);
+assert.match(bookCoverage, /Chapter 5: 11 \/ 11/);
+assert.match(readingAudit, /\| AI設計 \| 23 \| 23 \|/);
+assert.match(readingAudit, /\| 実践知 \| 4 \| 4 \|/);
 const source = process.env.ZENN_SOURCE;
 if (source) {
   for (const e of z.entries)
@@ -60,8 +71,36 @@ if (source) {
       "Source changed " + e.source_file,
     );
 }
+const supplementalSource = process.env.ZENN_SUPPLEMENTAL_SOURCE;
+if (supplementalSource) {
+  for (const sourceFile of z.supplemental_files) {
+    const entry = z.entries.find((candidate) => candidate.source_file === sourceFile);
+    assert.ok(entry, `Supplemental source missing from manifest: ${sourceFile}`);
+    assert.equal(
+      hash(read(path.join(supplementalSource, sourceFile))),
+      entry.source_sha256,
+      `Supplemental source changed ${sourceFile}`,
+    );
+    if (entry.source_type === "chapter") {
+      assert.equal(
+        hash(parse(read(entry.destination_file)).body),
+        entry.destination_body_sha256,
+        `Supplemental chapter body changed ${entry.destination_file}`,
+      );
+    }
+  }
+}
+const wikiSource = process.env.WIKI_SOURCE;
+if (wikiSource) {
+  for (const entry of w.entries)
+    assert.equal(
+      hash(read(path.join(wikiSource, entry.source_file))),
+      entry.source_sha256,
+      `Wiki source changed ${entry.source_file}`,
+    );
+}
 console.log(
-  `Verified: 16 articles, 3 books, 22 chapters, ${w.entries.length} Wiki pages, ${z.assets.length} assets; provenance metadata, import checksums, order and slugs.`,
+  `Verified: ${z.expected.article} articles, ${z.expected.book} books, ${z.expected.chapter} chapters, ${w.entries.length} Wiki pages, ${z.assets.length} assets; provenance metadata, coverage audits, order and slugs.`,
 );
 
 // Career source is copied read-only; verify approved mechanical conversion.
